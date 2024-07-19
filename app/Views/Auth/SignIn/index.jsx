@@ -1,10 +1,10 @@
+import InputText from '../Componentes/InputText';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, Image, TouchableOpacity, View } from 'react-native';
+import { StackActions } from '@react-navigation/native';
 import { app, auth } from '../../../../configs/firebase.config.mjs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth, signInWithEmailAndPassword } from '@firebase/auth';
-import { StackActions } from '@react-navigation/native';
-import InputText from '../Componentes/InputText';
+import { StyleSheet, Text, Image, TouchableOpacity, View, Modal } from 'react-native';
 
 const logo = require('../splash.png')
 
@@ -12,11 +12,12 @@ export default function SignIn({ navigation }) {
 
     const [field_email, setEmail] = useState('')
     const [field_password, setPassword] = useState('')
+
     const [isLoading, setIsLoading] = useState(false)
 
     function Login() {
         console.log("Email:", field_email);
-        console.log("Email:", field_password);
+        console.log("Password:", field_password);
         signInWithEmailAndPassword(auth, field_email.replace(' ', ''), field_password)
             .then((user) => {
                 console.log("Welcome:", user.user.email);
@@ -51,20 +52,20 @@ export default function SignIn({ navigation }) {
                 <Image source={logo} style={styles.img} />
             </View>
 
-            <InputText title='Email' placeholder="Type your email here..." onChangeText={setEmail}/>
-            <InputText title='Password' placeholder="Type your password here..." onChangeText={setPassword}/>
+            <InputText title='Email' placeholder="Type your email here..." onChangeText={setEmail} />
+            <InputText title='Password' placeholder="Type your password here..." onChangeText={setPassword} />
 
             <TouchableOpacity
                 onPress={() => { }}>
 
                 {/*  navigation.navigate('SignUp') }}> */}
-                
+
                 <Text style={{
                     textAlign: 'right'
                 }}> </Text>
 
                 {/* Forgot password? Reset</Text> */}
-           
+
             </TouchableOpacity>
 
             <View style={{ height: 10 }}></View>
@@ -87,6 +88,8 @@ export default function SignIn({ navigation }) {
             </TouchableOpacity>
 
             <View style={{ height: 10 }}></View>
+
+            
         </View>
     );
 }
@@ -96,7 +99,8 @@ const styles = StyleSheet.create({
         padding: 20,
         gap: 20,
         flex: 1,
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+        backgroundColor: "#ffffff"
     },
     input: {
         gap: 10

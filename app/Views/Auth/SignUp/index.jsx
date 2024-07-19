@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Modal } from 'react-native';
 import InputText from '../Componentes/InputText';
 import Button from '../Componentes/Button';
 import { createUserWithEmailAndPassword } from '@firebase/auth';
-import { auth } from '../../../../configs/firebase.config.mjs';
+import { app, auth } from '../../../../configs/firebase.config.mjs';
+import { ref, set, getDatabase } from 'firebase/database';
+import sha256 from 'sha256';
 
 const logo = require('../splash.png')
 
@@ -12,6 +14,12 @@ export default function SignUp({ navigation }) {
     const [field_email, setEmail] = useState('')
     const [field_password, setPassword] = useState('')
     const [field_cpassword, setCPassword] = useState('')
+
+    const [field_country, setCountry] = useState('')
+    const [field_name, setName] = useState('')
+    const [field_phoneNumber, setPhoneNumber] = useState('')
+
+    const [isCreated, setCreated] = useState(false)
 
     function Register() {
         console.log("Email:", field_email);
@@ -22,11 +30,8 @@ export default function SignUp({ navigation }) {
             createUserWithEmailAndPassword(auth, field_email.replace(' ', ''), field_password)
                 .then((value) => {
                     console.log('User created successfully!');
-
-                    navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'SignIn' }],
-                    })
+                    setCreated(true)
+                    addToDatabase(value.user.email)
                 })
                 .catch((error) => {
                     console.log('SignUp:', error.code);
@@ -35,7 +40,40 @@ export default function SignUp({ navigation }) {
                     console.log('SignUp: Done!');
                 })
         }
+    }
 
+    function addToDatabase(mail) {
+        console.log(field_name);
+        console.log(field_country);
+        console.log(field_phoneNumber);
+
+        const email = field_email.toLowerCase().replace(' ', '')
+
+        const data = {
+            Name: field_name,
+            Country: field_country,
+            Phone_Number: field_phoneNumber,
+            Email: email
+        }
+
+        if (isCreated) {
+            const db = getDatabase(app)
+            const databaseReference = ref(db, 'users/' + sha256(email))
+
+            console.log("Add to database: Is created!");
+
+            set(databaseReference, data)
+                .then(() => {
+                    console.log("Add to database: Data added successfully!")
+                    navigation.navigate('SignIn')
+                })
+                .catch((error) => {
+                    console.log("Add to database:", error.code);
+                })
+                .finally(() => {
+                    console.log("Add to database: Done!")
+                })
+        }
     }
 
     return (
@@ -73,6 +111,38 @@ export default function SignUp({ navigation }) {
             </TouchableOpacity>
 
             <View style={{ height: 10 }}></View>
+
+            {true ?
+                <Modal animationType='slide' visible={isCreated}>
+                    <View style={styles.container}>
+
+                        <View style={{ width: '100%', alignItems: 'center' }}>
+                            <Image source={logo} style={styles.img} />
+                        </View>
+
+                        <InputText title='Name' placeholder="Type your name here..." onChangeText={setName} />
+                        <InputText title='Phone Number' placeholder="Type your phone number here..." onChangeText={setPhoneNumber} />
+                        <InputText title='Country' placeholder="Type your country here..." onChangeText={setCountry} />
+
+                        <View style={{ height: 10 }}></View>
+                        <Text></Text>
+
+                        <TouchableOpacity
+                            onPress={addToDatabase}
+                            activeOpacity={.8}
+                        >
+                            <View style={styles.button}>
+                                <Text style={styles.button_text}>Salvar</Text>
+                            </View>
+                        </TouchableOpacity>
+
+                        <Text></Text>
+                        <View style={{ height: 10 }}></View>
+
+
+                    </View>
+                </Modal>
+                : []}
         </View>
     );
 }
