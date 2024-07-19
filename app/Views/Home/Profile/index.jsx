@@ -1,11 +1,12 @@
 import { getAuth, signOut } from '@firebase/auth';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { app, auth } from '../../../../configs/firebase.config.mjs';
 import { Link } from 'expo-router';
 import { StackActions } from '@react-navigation/native';
 
 export default function Profile({ navigation }) {
+
 
     if (!getAuth(app).currentUser) {
         navigation.reset({

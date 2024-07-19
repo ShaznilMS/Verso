@@ -52,7 +52,7 @@ export default function SignIn({ navigation }) {
             </View>
 
             <InputText title='Email' placeholder="Type your email here..." onChangeText={setEmail}/>
-            <InputText title='Password' placeholder="Type your password here" onChangeText={setPassword}/>
+            <InputText title='Password' placeholder="Type your password here..." onChangeText={setPassword}/>
 
             <TouchableOpacity
                 onPress={() => { navigation.navigate('SignUp') }}>
@@ -125,6 +125,11 @@ const styles = StyleSheet.create({
     },
     input_field: {
         fontSize: 18
+    },
+    img: {
+        width: 200,
+        height: 100,
+        marginTop: 50
     }
 })
 

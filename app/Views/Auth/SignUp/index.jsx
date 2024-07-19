@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import InputText from '../Componentes/InputText';
 import Button from '../Componentes/Button';
@@ -6,6 +6,8 @@ import Button from '../Componentes/Button';
 const logo = require('../splash.png')
 
 export default function SignUp({ navigation }) {
+
+    const [field_email, setEmail] = useState('')
 
     function Register() {
         console.log('Register');
@@ -18,9 +20,9 @@ export default function SignUp({ navigation }) {
                 <Image source={logo} style={styles.img} />
             </View>
 
-            <InputText title='Email' placeholder="Type your email here" />
-            <InputText title='Password' placeholder="Type your password here" />
-            <InputText title='Confirm Password' placeholder="Confirm your password here" />
+            <InputText title='Email' placeholder="Type your email here..." />
+            <InputText title='Password' placeholder="Type your password here..." />
+            <InputText title='Confirm Password' placeholder="Confirm your password here..." />
 
             <Text style={{
 
