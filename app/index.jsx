@@ -18,10 +18,14 @@ import { StatusBar } from 'expo-status-bar';
 export default function App() {
 
 	const [isLoading, setIsLoading] = useState(false)
-	const [isLogged, setIsLogged] = useState(true)
+	const [isLogged, setIsLogged] = useState(false)
 
 	useEffect(() => {
-		console.log(getAuth(app).currentUser)
+		setIsLoading(true)
+		if (getAuth(app).currentUser) {
+			setIsLogged(true)
+		}
+		setIsLoading(false)
 	})
 
 	return (
