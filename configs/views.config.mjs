@@ -9,9 +9,15 @@ import UserProfile from './../app/Views/UserProfile';
 import Notifications from './../app/Views/Home/Notifications';
 import Home from '../app/Views/Home/Home';
 import HomeConfigs from '../app/Views/Home';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { StackActions } from '@react-navigation/native';
+
+const Stack = createNativeStackNavigator();
 
 const Views = { Home, HomeConfigs, Chats, SignIn, SignUp, Profile, Commentary, Favorite, UserProfile, Notifications }
 
 export {
-    Views
+    Views,
+    Stack,
+    StackActions
 }
