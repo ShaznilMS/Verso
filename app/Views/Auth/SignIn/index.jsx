@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, Image, TouchableOpacity, View } from 'react-native';
 import { app, auth } from '../../../../configs/firebase.config.mjs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth, signInWithEmailAndPassword } from '@firebase/auth';
 import { StackActions } from '@react-navigation/native';
 import InputText from '../Componentes/InputText';
+
+const logo = require('../splash.png')
 
 export default function SignIn({ navigation }) {
 
@@ -30,9 +32,6 @@ export default function SignIn({ navigation }) {
     }
 
     useEffect(() => {
-        setEmail("shaznilmussagysulemane@gmail.com")
-        setPassword("Sm030106")
-
         if (getAuth(app).currentUser) {
             console.log("User allready beem logged!");
             navigation.dispatch(
@@ -46,9 +45,12 @@ export default function SignIn({ navigation }) {
     return (
         <View style={styles.container}>
 
-            <InputText title='Email' placeholder="Type your email here" />
-            <InputText title='Password' placeholder="Type your password here" />
-            
+            <View style={{ width: '100%', alignItems: 'center' }}>
+                <Image source={logo} style={styles.img} />
+            </View>
+
+            <InputText title='Email' placeholder="Type your email here" onChangeText={setEmail}/>
+            <InputText title='Password' placeholder="Type your password here" onChangeText={setEmail}/>
 
             <TouchableOpacity
                 onPress={() => { navigation.navigate('SignUp') }}>
@@ -57,7 +59,7 @@ export default function SignIn({ navigation }) {
                 }}>Forgot password? Reset</Text>
             </TouchableOpacity>
 
-            <View style={{ height: 20 }}></View>
+            <View style={{ height: 10 }}></View>
 
             <TouchableOpacity
                 onPress={Login}
@@ -76,7 +78,7 @@ export default function SignIn({ navigation }) {
                 }}>Have not an account? Create</Text>
             </TouchableOpacity>
 
-            <View style={{ height: 20 }}></View>
+            <View style={{ height: 10 }}></View>
         </View>
     );
 }

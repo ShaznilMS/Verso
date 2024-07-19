@@ -14,50 +14,46 @@ export default function SignUp({ navigation }) {
     return (
         <View style={styles.container}>
 
-            <Image source={logo} style={styles.img}/>
+            <View style={{ width: '100%', alignItems: 'center' }}>
+                <Image source={logo} style={styles.img} />
+            </View>
+
             <InputText title='Email' placeholder="Type your email here" />
             <InputText title='Password' placeholder="Type your password here" />
             <InputText title='Confirm Password' placeholder="Confirm your password here" />
 
-            <TouchableOpacity
-                onPress={() => { navigation.navigate('SignUp') }}>
-                <Text style={{
-                    textAlign: 'right'
-                }}>Forgot password? Reset</Text>
-            </TouchableOpacity>
+            <Text style={{
 
-            <View style={{ height: 20 }}></View>
+            }}></Text>
+
+            <View style={{ height: 10 }}></View>
 
             <TouchableOpacity
                 onPress={Register}
                 activeOpacity={.8}
             >
                 <View style={styles.button}>
-                    <Text style={styles.button_text}>Entrar</Text>
+                    <Text style={styles.button_text}>Registrar</Text>
                 </View>
             </TouchableOpacity>
 
 
             <TouchableOpacity
-                onPress={() => { navigation.navigate('SignUp') }}>
+                onPress={() => { navigation.navigate('SignIn') }}>
                 <Text style={{
                     textAlign: 'center'
-                }}>Have not an account? Create</Text>
+                }}>Have an account? Login</Text>
             </TouchableOpacity>
 
-            <View style={{ height: 20 }}></View>
+            <View style={{ height: 10 }}></View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        gap: 30,
-        flex: 1,
-        alignItems: 'center'
-    },
-    inputs: {
-        gap: 30
+        gap: 0,
+        flex: 1
     },
     img: {
         width: 200,
