@@ -15,7 +15,7 @@ export default function NavBar(props) {
                     style={styles.stretch}
                     source={require('./../../../assets/splash.png')}
                 />
-                <TouchableOpacity activeOpacity={.8}>
+                <TouchableOpacity activeOpacity={.6}>
                     <FontAwesomeIcon size={25} icon={faMessage} />
                 </TouchableOpacity>
             </View>
@@ -26,15 +26,14 @@ export default function NavBar(props) {
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
-        padding: 20,
-        paddingBottom: 5,
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingRight: 40
+        
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'space-between',
+        paddingEnd:20
     },
     stretch: {
-        width: 120,
+        width: 100,
         height: 50,
         resizeMode: 'cover',
     },

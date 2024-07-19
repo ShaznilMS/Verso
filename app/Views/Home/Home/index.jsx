@@ -75,15 +75,14 @@ export default function Home({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: "#ffffff",
-        paddingHorizontal: 20,
         paddingTop: 10
     },
     bg: {
-        gap: 5,
+        gap: 15,
         flex: 1,
-        backgroundColor: "#ffffff"
+        backgroundColor: "#ffffff",
+        paddingHorizontal: 10,
     },
     scrollView: {
         height: 30
@@ -94,7 +93,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     category_item: {
-        paddingHorizontal: 15,
+        paddingHorizontal: 5,
     },
     category_item_name: {
         fontSize: 18
