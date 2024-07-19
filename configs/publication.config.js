@@ -7,10 +7,8 @@ const COMMENTS = {
 
 const PUBLICATION = {
     USER_ID: '',
-    USER_NAME: '',
     CONTENT: '',
     DATE_TIME: '',
-    IMAGE_PATH: '',
     LIKES: {},
     COMMENTARY: {
         COMMENTS
