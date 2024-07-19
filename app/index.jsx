@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react';
 import { ActivityIndicator, SafeAreaView, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Stack = createNativeStackNavigator();
 
 // Components
 import Loading from '../assets/components/Loading';
-import { Views } from '../configs/views.config.mjs';
+import { Stack, Views } from '../configs/views.config.mjs';
 
 // Firebase configs
 import { app, auth, analytics } from '../configs/firebase.config.mjs'
@@ -38,12 +36,17 @@ export default function App() {
 						headerShown: false
 					}}
 				>
-					<Stack.Screen name='SignIn' component={Views.SignIn}/>
+					<Stack.Screen name='SignIn' component={Views.SignIn} />
 					<Stack.Screen name='SignUp' component={Views.SignUp} />
 					<Stack.Screen name='HomeC' component={Views.HomeConfigs} />
-					<Stack.Screen name='Chats' component={Views.Chats} />
-					<Stack.Screen name='Commentary' component={Views.Commentary} />
-					<Stack.Screen name='UserProfile' component={Views.UserProfile} />
+					{isLogged ?
+						<>
+							<Stack.Screen name='Chats' component={Views.Chats} />
+							<Stack.Screen name='Commentary' component={Views.Commentary} />
+							<Stack.Screen name='UserProfile' component={Views.UserProfile} />
+						</>
+						:
+						[]}
 
 				</Stack.Navigator>
 			</NavigationContainer>
