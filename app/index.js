@@ -133,7 +133,29 @@ export default function App() {
 		<>
 			<Loading isLoading={isLoading} />
 			<NavigationContainer independent={true}>
+<<<<<<< HEAD:app/index.jsx
 				<NavigatorManager />
+=======
+				<Stack.Navigator
+					initialRouteName={isLogged ? 'SignIn' : 'SignIn'}
+					screenOptions={{
+						headerShown: false
+					}}
+				>
+					<Stack.Screen name='SignIn' component={Views.SignIn} />
+					<Stack.Screen name='SignUp' component={Views.SignUp} />
+					<Stack.Screen name='HomeC' component={Views.HomeConfigs} />
+					{isLogged ?
+						<>
+							<Stack.Screen name='Chats' component={Views.Chats} />
+							<Stack.Screen name='Commentary' component={Views.Commentary} />
+							<Stack.Screen name='UserProfile' component={Views.UserProfile} />
+						</>
+						:
+						[]}
+
+				</Stack.Navigator>
+>>>>>>> 3293079a250f85dceb18b52866238ce20108ffa9:app/index.js
 			</NavigationContainer>
 		</>
 	);
