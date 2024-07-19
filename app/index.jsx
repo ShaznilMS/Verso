@@ -17,32 +17,31 @@ import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
 
-	const [ isLoading, setIsLoading ] = useState(false)
-	const [ isLogged, setIsLogged ] = useState(false)
+	const [isLoading, setIsLoading] = useState(false)
+	const [isLogged, setIsLogged] = useState(true)
 
 	useEffect(() => {
 		console.log(getAuth(app).currentUser)
 	})
-	
+
+
 	return (
 		<>
 			<Loading isLoading={isLoading} />
 			<NavigationContainer independent={true}>
 				<Stack.Navigator
-					initialRouteName={isLogged ? 'Home' : 'SignIn'}
+					initialRouteName={isLogged ? 'HomeC' : 'SignIn'}
 					screenOptions={{
 						headerShown: false
 					}}
 				>
-					<Stack.Screen name='Home' component={Views.Home} />
-					<Stack.Screen name='SignIn' component={Views.SignIn} />
+					<Stack.Screen name='SignIn' component={Views.SignIn}/>
 					<Stack.Screen name='SignUp' component={Views.SignUp} />
+					<Stack.Screen name='HomeC' component={Views.HomeConfigs} />
 					<Stack.Screen name='Chats' component={Views.Chats} />
-					<Stack.Screen name='Profile' component={Views.Profile} />
-					<Stack.Screen name='Favorite' component={Views.Favorite} />
 					<Stack.Screen name='Commentary' component={Views.Commentary} />
 					<Stack.Screen name='UserProfile' component={Views.UserProfile} />
-					<Stack.Screen name='Notifications' component={Views.Notifications} />
+
 				</Stack.Navigator>
 			</NavigationContainer>
 		</>
