@@ -29,7 +29,7 @@ export default function App() {
 			<Loading isLoading={isLoading} />
 			<NavigationContainer independent={true}>
 				<Stack.Navigator
-					initialRouteName={isLogged ? 'HomeC' : 'SignIn'}
+					initialRouteName={isLogged ? 'SignUp' : 'SignIn'}
 					screenOptions={{
 						headerShown: false
 					}}

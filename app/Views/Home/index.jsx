@@ -39,7 +39,7 @@ export default function HomeConfigs() {
                 <Tab.Screen name='Home' component={Views.Home} options={{
                     tabBarIcon: ({ focused }) => {
                         return (
-                            <View style={focused ? { display: 'flex' } : focusedTab}>
+                            <View style={focused ? focusedTab : { display: 'flex' }}>
                                 <FontAwesomeIcon icon={faHome} size={23} color={'#49454F'} />
                             </View>
                         )
