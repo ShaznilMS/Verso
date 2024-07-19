@@ -2,15 +2,40 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import InputText from '../Componentes/InputText';
 import Button from '../Componentes/Button';
+import { createUserWithEmailAndPassword } from '@firebase/auth';
+import { auth } from '../../../../configs/firebase.config.mjs';
 
 const logo = require('../splash.png')
 
 export default function SignUp({ navigation }) {
 
     const [field_email, setEmail] = useState('')
+    const [field_password, setPassword] = useState('')
+    const [field_cpassword, setCPassword] = useState('')
 
     function Register() {
-        console.log('Register');
+        console.log("Email:", field_email);
+        console.log("Password:", field_password);
+        console.log("Confirm Password:", field_cpassword);
+
+        if (field_password, field_cpassword) {
+            createUserWithEmailAndPassword(auth, field_email.replace(' ', ''), field_password)
+                .then((value) => {
+                    console.log('User created successfully!');
+
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'SignIn' }],
+                    })
+                })
+                .catch((error) => {
+                    console.log('SignUp:', error.code);
+                })
+                .finally(() => {
+                    console.log('SignUp: Done!');
+                })
+        }
+
     }
 
     return (
@@ -20,9 +45,9 @@ export default function SignUp({ navigation }) {
                 <Image source={logo} style={styles.img} />
             </View>
 
-            <InputText title='Email' placeholder="Type your email here..." />
-            <InputText title='Password' placeholder="Type your password here..." />
-            <InputText title='Confirm Password' placeholder="Confirm your password here..." />
+            <InputText title='Email' placeholder="Type your email here..." onChangeText={setEmail} />
+            <InputText title='Password' placeholder="Type your password here..." onChangeText={setPassword} />
+            <InputText title='Confirm Password' placeholder="Confirm your password here..." onChangeText={setCPassword} />
 
             <Text style={{
 

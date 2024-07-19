@@ -55,10 +55,16 @@ export default function SignIn({ navigation }) {
             <InputText title='Password' placeholder="Type your password here..." onChangeText={setPassword}/>
 
             <TouchableOpacity
-                onPress={() => { navigation.navigate('SignUp') }}>
+                onPress={() => { }}>
+
+                {/*  navigation.navigate('SignUp') }}> */}
+                
                 <Text style={{
                     textAlign: 'right'
-                }}>Forgot password? Reset</Text>
+                }}> </Text>
+
+                {/* Forgot password? Reset</Text> */}
+           
             </TouchableOpacity>
 
             <View style={{ height: 10 }}></View>
