@@ -7,22 +7,29 @@ import NavBar from '../../../../assets/components/NavBar'
 export default function Notifications({ navigation }) {
 
     if (!getAuth(app).currentUser) {
-        navigation.navigate('SignIn')
+        
     }
+
     return (
-        <>
+        <View style={styles.bg}>
             <NavBar />
             <View style={styles.container}>
             </View>
-        </>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        alignItems: 'center',
         justifyContent: 'center',
-        alignItems: 'center'
+        backgroundColor: "#ffffff"
+    },
+    bg: {
+        gap: 5,
+        flex: 1,
+        backgroundColor: "#ffffff"
     }
 })
 

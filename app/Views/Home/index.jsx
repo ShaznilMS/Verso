@@ -13,7 +13,7 @@ const Tab = createBottomTabNavigator();
 export default function HomeConfigs({ navigation }) {
 
     if (!getAuth(app).currentUser) {
-        navigation.navigate('SignIn')
+        // navigation.navigate('SignIn')
     }
 
     return (
@@ -22,6 +22,10 @@ export default function HomeConfigs({ navigation }) {
                 initialRouteName='Home'
                 screenOptions={{
                     headerShown: false,
+                    tabBarStyle: {
+                        height: 70,
+                        paddingTop: 15
+                    }
                 }}
             >
                 <Tab.Screen name='Home' component={Views.Home} options={{
