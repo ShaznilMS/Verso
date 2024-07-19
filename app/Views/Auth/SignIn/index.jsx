@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { app, auth } from '../../../../configs/firebase.config.mjs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth, signInWithEmailAndPassword } from '@firebase/auth';
-import InputText from '../Componentes/InputText';
-import Button from '../Componentes/Button';
-
-const logo = require('../splash.png')
+import { StackActions } from '@react-navigation/native';
 
 export default function SignIn({ navigation }) {
 
@@ -18,7 +15,10 @@ export default function SignIn({ navigation }) {
         signInWithEmailAndPassword(auth, field_email.replace(' ', ''), field_password)
             .then((user) => {
                 console.log("Welcome:", user.user.email);
-                navigation.navigate('HomeC')
+                console.log("User allready beem logged!");
+                navigation.dispatch(
+                    StackActions.replace('TabNavigator')
+                )
             })
             .catch((e) => {
                 console.log("Sign In:", e.code.replace('/', '').replace('-', ''));
@@ -31,9 +31,12 @@ export default function SignIn({ navigation }) {
     useEffect(() => {
         setEmail("shaznilmussagysulemane@gmail.com")
         setPassword("Sm030106")
+
         if (getAuth(app).currentUser) {
             console.log("User allready beem logged!");
-            navigation.navigate('HomeC')
+            navigation.dispatch(
+                StackActions.replace('TabNavigator')
+            )
         } else {
             // Login()
         }
@@ -41,28 +44,78 @@ export default function SignIn({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Image source={logo} style={styles.img} />
-            <InputText onChangeText={setEmail} title='Email' placeholder='Type your email here' />
-            <View style={{gap:10}}>
-                <InputText onChangeText={setPassword} title='Password' placeholder='Type your password here' />
-                <Text style={{alignSelf:'flex-end'}}>Esqueceu sua senha?</Text>
+            <View style={styles.input}>
+                <Text style={styles.title}>Email</Text>
+                <View style={styles.input_view}>
+                    <TextInput onChangeText={setEmail} style={styles.input_field} placeholder='Type your email...' />
+                </View>
             </View>
-            <Button text='Entrar' color='#fff' onPress={Login}/>
-            <Text>Ainda não possui conta? Criar</Text>
+            <View style={styles.input}>
+                <Text style={styles.title}>Password</Text>
+                <View style={styles.input_view}>
+                    <TextInput onChangeText={setPassword} style={styles.input_field} placeholder='Type your password...' />
+                </View>
+            </View>
+
+            <TouchableOpacity
+                onPress={() => { navigation.navigate('SignUp') }}>
+                <Text style={{
+                    textAlign: 'right'
+                }}>Forgot password? Reset</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                onPress={Login}
+                activeOpacity={.8}
+            >
+                <View style={styles.button}>
+                    <Text style={styles.button_text}>Entrar</Text>
+                </View>
+            </TouchableOpacity>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
+        padding: 20,
+        gap: 20,
         flex: 1,
-        alignItems: 'center',
-        gap: 30
+        justifyContent: 'flex-end'
     },
-    img: {
-        width: 200,
-        height: 100,
-        marginTop: 50
+    input: {
+        gap: 10
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: '700'
+    },
+    input_view: {
+        width: '100%',
+        borderWidth: 2,
+        borderColor: '#000000',
+        borderRadius: 10,
+        padding: 10,
+        height: 60
+    },
+    button: {
+        width: '100%',
+        borderWidth: 2,
+        borderColor: '#000000',
+        backgroundColor: '#000000',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10,
+        height: 60
+    },
+    button_text: {
+        fontSize: 25,
+        fontWeight: '700',
+        color: "#ffffff"
+    },
+    input_field: {
+        fontSize: 18
     }
 })
 

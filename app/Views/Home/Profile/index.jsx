@@ -2,18 +2,31 @@ import { getAuth, signOut } from '@firebase/auth';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { app, auth } from '../../../../configs/firebase.config.mjs';
+import { Link } from 'expo-router';
+import { StackActions } from '@react-navigation/native';
 
-export default function Profile() {
+export default function Profile({ navigation }) {
 
     if (!getAuth(app).currentUser) {
-        navigation.navigate('SignIn')
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'StackNavigator' }],
+        })
     }
 
     function Sair() {
-        if (getAuth(app).currentUser) {
+
+        console.log('Sair!');
+        const user = getAuth(app).currentUser
+        if (user) {
+            console.log('Usuário', user.email.toUpperCase(), "saiu da conta!");
             signOut(auth)
                 .then(() => {
-                    navigation.navigate('SignIn')
+                    console.log('Sign out has been executed successfully!');
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'StackNavigator' }],
+                    })
                 })
         }
     }
