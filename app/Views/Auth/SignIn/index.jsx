@@ -3,6 +3,7 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 import { app, auth } from '../../../../configs/firebase.config.mjs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth, signInWithEmailAndPassword } from '@firebase/auth';
+import { StackActions } from '@react-navigation/native';
 
 export default function SignIn({ navigation }) {
 
@@ -14,7 +15,10 @@ export default function SignIn({ navigation }) {
         signInWithEmailAndPassword(auth, field_email.replace(' ', ''), field_password)
             .then((user) => {
                 console.log("Welcome:", user.user.email);
-                navigation.navigate('HomeC')
+                console.log("User allready beem logged!");
+                navigation.dispatch(
+                    StackActions.replace('TabNavigator')
+                )
             })
             .catch((e) => {
                 console.log("Sign In:", e.code.replace('/', '').replace('-', ''));
@@ -27,15 +31,16 @@ export default function SignIn({ navigation }) {
     useEffect(() => {
         setEmail("shaznilmussagysulemane@gmail.com")
         setPassword("Sm030106")
+
         if (getAuth(app).currentUser) {
             console.log("User allready beem logged!");
-            navigation.navigate('HomeC')
+            navigation.dispatch(
+                StackActions.replace('TabNavigator')
+            )
         } else {
             // Login()
         }
     })
-
-
 
     return (
         <View style={styles.container}>
@@ -51,6 +56,13 @@ export default function SignIn({ navigation }) {
                     <TextInput onChangeText={setPassword} style={styles.input_field} placeholder='Type your password...' />
                 </View>
             </View>
+
+            <TouchableOpacity
+                onPress={() => { navigation.navigate('SignUp') }}>
+                <Text style={{
+                    textAlign: 'right'
+                }}>Forgot password? Reset</Text>
+            </TouchableOpacity>
 
             <TouchableOpacity
                 onPress={Login}
