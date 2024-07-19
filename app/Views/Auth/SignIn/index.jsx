@@ -4,6 +4,7 @@ import { app, auth } from '../../../../configs/firebase.config.mjs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth, signInWithEmailAndPassword } from '@firebase/auth';
 import { StackActions } from '@react-navigation/native';
+import InputText from '../Componentes/InputText';
 
 export default function SignIn({ navigation }) {
 
@@ -44,18 +45,10 @@ export default function SignIn({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <View style={styles.input}>
-                <Text style={styles.title}>Email</Text>
-                <View style={styles.input_view}>
-                    <TextInput onChangeText={setEmail} style={styles.input_field} placeholder='Type your email...' />
-                </View>
-            </View>
-            <View style={styles.input}>
-                <Text style={styles.title}>Password</Text>
-                <View style={styles.input_view}>
-                    <TextInput onChangeText={setPassword} style={styles.input_field} placeholder='Type your password...' />
-                </View>
-            </View>
+
+            <InputText title='Email' placeholder="Type your email here" />
+            <InputText title='Password' placeholder="Type your password here" />
+            
 
             <TouchableOpacity
                 onPress={() => { navigation.navigate('SignUp') }}>
@@ -63,6 +56,8 @@ export default function SignIn({ navigation }) {
                     textAlign: 'right'
                 }}>Forgot password? Reset</Text>
             </TouchableOpacity>
+
+            <View style={{ height: 20 }}></View>
 
             <TouchableOpacity
                 onPress={Login}
@@ -72,6 +67,16 @@ export default function SignIn({ navigation }) {
                     <Text style={styles.button_text}>Entrar</Text>
                 </View>
             </TouchableOpacity>
+
+
+            <TouchableOpacity
+                onPress={() => { navigation.navigate('SignUp') }}>
+                <Text style={{
+                    textAlign: 'center'
+                }}>Have not an account? Create</Text>
+            </TouchableOpacity>
+
+            <View style={{ height: 20 }}></View>
         </View>
     );
 }
