@@ -23,7 +23,7 @@ export default function App() {
 	useEffect(() => {
 		console.log(getAuth(app).currentUser)
 	})
-
+	
 	return (
 		<>
 			<Loading isLoading={isLoading} />
