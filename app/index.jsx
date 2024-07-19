@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createNativeStackNavigator();
-
+ssi
 // Components
 import Loading from '../assets/components/Loading';
 import { Views } from '../configs/views.config.mjs';
