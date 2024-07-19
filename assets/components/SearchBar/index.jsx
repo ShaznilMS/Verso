@@ -10,41 +10,32 @@ export default function SearchBar(props) {
 
     return (
         <View style={styles.container}>
-            <View style={styles.searchBar}>
-                <TextInput
-                    cursorColor={"#666666"}
-                    style={styles.searchText}
-                    placeholder='Search...'
-                />
-                <TouchableOpacity activeOpacity={.8} onPress={props.onPress}>
-                    <FontAwesomeIcon size={20} icon={faSearch} />
-                </TouchableOpacity>
-            </View>
+            <TextInput style={styles.input} placeholder='Pesquise aqui...' />
+            <TouchableOpacity style={styles.search} activeOpacity={.5}><FontAwesomeIcon icon={faSearch} size={20}/></TouchableOpacity>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        justifyContent: 'column',
-        alignItems: 'center',
-        paddingHorizontal: 20,
-        backgroundColor:'#ff00007'
+    input: {
+        width: 355,
+        height: 56,
+        shadowColor: '#171717',
+        shadowOffset: { width: -1, height: 1 },
+        shadowOpacity: .5,
+        shadowRadius: 2,
+        elevation: 5,
+        borderRadius: 30,
+        paddingStart: 25,
+        backgroundColor: '#fff',
+        fontWeight:'bold'
     },
-    searchBar: {
-        width: '100%',
-        borderRadius: 25,
-        height: 50,
-        backgroundColor: "#ffffff",
-        resizeMode: 'cover',
-        elevation: 4,
-        paddingHorizontal: 20,
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexDirection: 'row'
-    },
-    searchText: {
-        fontSize: 20,
-        flex: 1
+    search:{
+        position:'absolute',
+        alignSelf:'flex-end',
+        right:20,
+        height:'100%',
+        justifyContent:'center',
+        alignItems:'center'
     }
 })

@@ -13,22 +13,15 @@ export default function Favorite({ navigation }) {
     return (
         <View style={styles.bg}>
             <NavBar />
-            <View style={styles.container}>
-            </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: "#ffffff"
-    },
     bg: {
-        gap: 5,
+        gap: 15,
         flex: 1,
-        backgroundColor: "#ffffff"
+        backgroundColor: "#ffffff",
+        paddingHorizontal:10
     }
 })

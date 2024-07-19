@@ -60,7 +60,7 @@ export default function HomeConfigs({ navigation }) {
                         )
                     },
                     title: ''
-                }} />
+                }} /> 
 
 
                 <Tab.Screen name='Profile' component={Views.Profile} options={{

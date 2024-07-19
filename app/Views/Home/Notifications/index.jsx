@@ -3,32 +3,27 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { app } from '../../../../configs/firebase.config.mjs';
 import NavBar from '../../../../assets/components/NavBar'
+import FollowCard from './Componentes/NotificationCards/FollowCard';
 
 export default function Notifications({ navigation }) {
 
     if (!getAuth(app).currentUser) {
-        
+
     }
 
     return (
         <View style={styles.bg}>
             <NavBar />
-            <View style={styles.container}>
-            </View>
+            <FollowCard />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: "#ffffff"
-    },
     bg: {
-        gap: 5,
+        gap: 15,
         flex: 1,
+        paddingHorizontal: 10,
         backgroundColor: "#ffffff"
     }
 })
