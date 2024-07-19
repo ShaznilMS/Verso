@@ -15,6 +15,8 @@ export default function SignIn({ navigation }) {
     const [isLoading, setIsLoading] = useState(false)
 
     function Login() {
+        console.log("Email:", field_email);
+        console.log("Email:", field_password);
         signInWithEmailAndPassword(auth, field_email.replace(' ', ''), field_password)
             .then((user) => {
                 console.log("Welcome:", user.user.email);
@@ -50,7 +52,7 @@ export default function SignIn({ navigation }) {
             </View>
 
             <InputText title='Email' placeholder="Type your email here" onChangeText={setEmail}/>
-            <InputText title='Password' placeholder="Type your password here" onChangeText={setEmail}/>
+            <InputText title='Password' placeholder="Type your password here" onChangeText={setPassword}/>
 
             <TouchableOpacity
                 onPress={() => { navigation.navigate('SignUp') }}>

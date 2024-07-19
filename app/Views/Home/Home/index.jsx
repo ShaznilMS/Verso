@@ -44,7 +44,8 @@ export default function Home({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#ffffff",
-        paddingTop: 10
+        paddingTop: 10,
+        paddingHorizontal:15
     },
     bg: {
         gap: 15,

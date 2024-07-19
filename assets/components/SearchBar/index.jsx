@@ -18,7 +18,7 @@ export default function SearchBar(props) {
 
 const styles = StyleSheet.create({
     input: {
-        width: 355,
+        width: '100%',
         height: 56,
         shadowColor: '#171717',
         shadowOffset: { width: -1, height: 1 },
