@@ -6,15 +6,24 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 
 // Importing views
+import Home from './Views/Home';
+import Chats from './Views/Home/Chats';
 import SignIn from './Views/Auth/SignIn';
 import SignUp from './Views/Auth/SignUp';
-import Home from './Views/Home';
+import Profile from './Views/Home/Profile';
+import Commentary from './Views/Commentary';
+import Favorite from './Views/Home/Favorite';
+import UserProfile from './Views/UserProfile';
+import Notifications from './Views/Home/Notifications';
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer independent={true}>
       <Stack.Navigator
         initialRouteName='SignIn'
+        screenOptions={{
+          headerShown: false
+        }}
       >
         <Stack.Screen name='SignIn' component={SignIn}/>
         <Stack.Screen name='SignUp' component={SignIn}/>
