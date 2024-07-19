@@ -43,7 +43,7 @@ export default function HomeConfigs({ navigation }) {
                 <Tab.Screen name='Favorite' component={Views.Favorite} options={{
                     tabBarIcon: ({ focused }) => {
                         return (
-                            <View style={focused ? focusedTab.focusedTab : { display: 'flex' }}>
+                            <View style={focused ? focusedTab : { display: 'flex' }}>
                                 <FontAwesomeIcon icon={faBookmark} size={23} color={'#49454F'} />
                             </View>
                         )
@@ -54,19 +54,19 @@ export default function HomeConfigs({ navigation }) {
                 <Tab.Screen name='Notifications' component={Views.Notifications} options={{
                     tabBarIcon: ({ focused }) => {
                         return (
-                            <View style={focused ? focusedTab.focusedTab : { display: 'flex' }}>
+                            <View style={focused ? focusedTab: { display: 'flex' }}>
                                 <FontAwesomeIcon icon={faBell} size={23} color={'#49454F'} />
                             </View>
                         )
                     },
                     title: ''
                 }} />
-                
+
 
                 <Tab.Screen name='Profile' component={Views.Profile} options={{
                     tabBarIcon: ({ focused }) => {
                         return (
-                            <View style={focused ? focusedTab.focusedTab : { display: 'flex' }}>
+                            <View style={focused ? focusedTab : { display: 'flex' }}>
                                 <FontAwesomeIcon icon={faUser} size={20} color={'#49454F'} />
                             </View>
                         )
@@ -80,11 +80,9 @@ export default function HomeConfigs({ navigation }) {
 }
 
 
-const focusedTab = StyleSheet.create({
-    focusedTab: {
-        backgroundColor: '#E8DEF8',
-        paddingHorizontal: 20,
-        paddingVertical: 5,
-        borderRadius: 20   
-    }
-})
+const focusedTab = {
+    backgroundColor: '#E8DEF8',
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+    borderRadius: 20
+}

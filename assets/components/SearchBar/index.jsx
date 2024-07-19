@@ -16,8 +16,8 @@ export default function SearchBar(props) {
                     style={styles.searchText}
                     placeholder='Search...'
                 />
-                <TouchableOpacity activeOpacity={.8}>
-                    <FontAwesomeIcon size={25} icon={faSearch} />
+                <TouchableOpacity activeOpacity={.8} onPress={props.onPress}>
+                    <FontAwesomeIcon size={20} icon={faSearch} />
                 </TouchableOpacity>
             </View>
         </View>
@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'column',
         alignItems: 'center',
-        paddingHorizontal: 20
+        paddingHorizontal: 20,
+        backgroundColor:'#ff00007'
     },
     searchBar: {
         width: '100%',

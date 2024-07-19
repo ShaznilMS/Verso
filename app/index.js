@@ -31,7 +31,7 @@ export default function App() {
 			<Loading isLoading={isLoading} />
 			<NavigationContainer independent={true}>
 				<Stack.Navigator
-					initialRouteName={isLogged ? 'SignUp' : 'SignIn'}
+					initialRouteName={isLogged ? 'SignIn' : 'SignIn'}
 					screenOptions={{
 						headerShown: false
 					}}
