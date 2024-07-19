@@ -24,7 +24,6 @@ export default function App() {
 		console.log(getAuth(app).currentUser)
 	})
 
-
 	return (
 		<>
 			<Loading isLoading={isLoading} />
