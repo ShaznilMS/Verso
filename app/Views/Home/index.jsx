@@ -17,7 +17,6 @@ export default function HomeConfigs({ navigation }) {
     return (
         <NavigationContainer independent={true}>
             <Tab.Navigator
-                screenOptions={ScreenOptions}
                 initialRouteName='Home'
                 screenOptions={{
                     headerShown: false
