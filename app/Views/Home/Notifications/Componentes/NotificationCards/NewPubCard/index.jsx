@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 3,
         backgroundColor: '#fff',
+        elevation:4,
         borderRadius: 30,
         paddingHorizontal: 20,
         flexDirection: 'row',
