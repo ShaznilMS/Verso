@@ -87,7 +87,7 @@ export default function Home({ navigation }) {
                         <View style={publication.container}>
                             <View style={publication.top}>
                                 <Image style={publication.user_profile} source={USER_PROFILE} />
-                                <Text style={publication.user_name} >{item['item'].USER_NAME}</Text>
+                                <Text style={publication.user_name} numberOfLines={1} >{item['item'].USER_NAME}</Text>
                             </View>
 
                             <Text style={publication.content}>{item['item'].CONTENT}</Text>
@@ -158,7 +158,8 @@ const publication = StyleSheet.create({
     },
     user_name: {
         fontSize: 20,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        maxWidth:200
     },
     content: {
         fontSize: 18,
