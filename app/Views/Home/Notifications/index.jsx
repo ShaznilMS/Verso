@@ -1,6 +1,6 @@
 import { getAuth } from '@firebase/auth';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { app } from '../../../../configs/firebase.config.mjs';
 import NavBar from '../../../../assets/components/NavBar'
 import FollowCard from './Componentes/NotificationCards/FollowCard';
@@ -10,16 +10,30 @@ import NewPubCard from './Componentes/NotificationCards/NewPubCard';
 
 export default function Notifications({ navigation }) {
 
+    const [isRefreshing, setIsRefrshing] = useState(false)
+
     if (!getAuth(app).currentUser) {
 
     }
 
+    function handleRefresh() {
+        console.log('Refresh!');
+    }
+
     return (
-        <View style={styles.bg}>
-            <NavBar />
-            <ShareCard msg='O homem que diz a verdade o tempo todo está fadado a ruina' />
-            <NewPubCard msg='O homem que diz a verdade o tempo todo está fadado a ruina'/>
-        </View>
+
+        <FlatList
+            data={[{}]}
+            refreshing={isRefreshing}
+            style={{ flex: 1, backgroundColor: "#fff" }}
+            onRefresh={handleRefresh}
+            renderItem={() => (
+                <View style={styles.bg}>
+                    <NavBar />
+                    <FollowCard />
+                </View>
+            )}
+        />
     );
 }
 

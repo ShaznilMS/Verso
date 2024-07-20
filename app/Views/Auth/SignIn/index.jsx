@@ -1,18 +1,23 @@
+import InputText from '../Componentes/InputText';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StackActions } from '@react-navigation/native';
 import { app, auth } from '../../../../configs/firebase.config.mjs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth, signInWithEmailAndPassword } from '@firebase/auth';
-import { StackActions } from '@react-navigation/native';
-import InputText from '../Componentes/InputText';
+import { StyleSheet, Text, Image, TouchableOpacity, View, Modal } from 'react-native';
+
+const logo = require('../splash.png')
 
 export default function SignIn({ navigation }) {
 
     const [field_email, setEmail] = useState('')
     const [field_password, setPassword] = useState('')
+
     const [isLoading, setIsLoading] = useState(false)
 
     function Login() {
+        console.log("Email:", field_email);
+        console.log("Password:", field_password);
         signInWithEmailAndPassword(auth, field_email.replace(' ', ''), field_password)
             .then((user) => {
                 console.log("Welcome:", user.user.email);
@@ -30,9 +35,6 @@ export default function SignIn({ navigation }) {
     }
 
     useEffect(() => {
-        setEmail("shaznilmussagysulemane@gmail.com")
-        setPassword("Sm030106")
-
         if (getAuth(app).currentUser) {
             console.log("User allready beem logged!");
             navigation.dispatch(
@@ -46,18 +48,27 @@ export default function SignIn({ navigation }) {
     return (
         <View style={styles.container}>
 
-            <InputText title='Email' placeholder="Type your email here" />
-            <InputText title='Password' placeholder="Type your password here" />
-            
+            <View style={{ width: '100%', alignItems: 'center' }}>
+                <Image source={logo} style={styles.img} />
+            </View>
+
+            <InputText title='Email' placeholder="Type your email here..." onChangeText={setEmail} />
+            <InputText title='Password' placeholder="Type your password here..." onChangeText={setPassword} />
 
             <TouchableOpacity
-                onPress={() => { navigation.navigate('SignUp') }}>
+                onPress={() => { }}>
+
+                {/*  navigation.navigate('SignUp') }}> */}
+
                 <Text style={{
                     textAlign: 'right'
-                }}>Forgot password? Reset</Text>
+                }}> </Text>
+
+                {/* Forgot password? Reset</Text> */}
+
             </TouchableOpacity>
 
-            <View style={{ height: 20 }}></View>
+            <View style={{ height: 10 }}></View>
 
             <TouchableOpacity
                 onPress={Login}
@@ -76,7 +87,9 @@ export default function SignIn({ navigation }) {
                 }}>Have not an account? Create</Text>
             </TouchableOpacity>
 
-            <View style={{ height: 20 }}></View>
+            <View style={{ height: 10 }}></View>
+
+            
         </View>
     );
 }
@@ -86,7 +99,8 @@ const styles = StyleSheet.create({
         padding: 20,
         gap: 20,
         flex: 1,
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+        backgroundColor: "#ffffff"
     },
     input: {
         gap: 10
@@ -121,6 +135,11 @@ const styles = StyleSheet.create({
     },
     input_field: {
         fontSize: 18
+    },
+    img: {
+        width: 200,
+        height: 100,
+        marginTop: 50
     }
 })
 

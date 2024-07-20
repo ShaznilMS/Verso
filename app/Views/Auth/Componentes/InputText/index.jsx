@@ -5,7 +5,7 @@ const InputText = (props) => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{props.title}</Text>
-            <TextInput style={styles.input} placeholder={props.placeholder} onChangeText={props.onChangeText} />
+            <TextInput style={styles.input} cursorColor={"#555555"} placeholder={props.placeholder} onChangeText={props.onChangeText} />
         </View>
     )
 }
