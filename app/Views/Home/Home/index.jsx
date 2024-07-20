@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { app } from '../../../../configs/firebase.config.mjs';
 import NavBar from '../../../../assets/components/NavBar'
 import Categorie from '../../../../assets/components/Categorie';
@@ -8,12 +8,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faHeart, faMessage } from '@fortawesome/free-regular-svg-icons';
 import { faArrowUpFromBracket, faPlus } from '@fortawesome/free-solid-svg-icons';
 
+let PostCount
+let Publication = [{}, {}]
+
 export default function Home({ navigation }) {
 
+    const [Pub, setPub] = useState([])
+    const [started, setStarted] = useState(false)
     const [category, setCategory] = useState('Tudo')
     const [isRefreshing, setIsRefrshing] = useState(false)
-    const [Publication, setPublication] = useState([])
-    const [showAddPublication, setShowAddPublication] = useState(false)
     const USER_PROFILE = require('./../../../../assets/USER/USER_PROFILE.jpg')
 
     const handleCategory = (category) => {
@@ -21,26 +24,34 @@ export default function Home({ navigation }) {
     }
 
     function handleRefresh() {
+        setIsRefrshing(true)
         getPublications()
+        setIsRefrshing(false)
     }
 
     function getPublications() {
+        console.log('Get publication!');
         const db = getDatabase(app)
 
         const referenceDatabase = ref(db, 'publication/')
 
         get(referenceDatabase)
             .then((val) => {
-                setPublication(val.val())
+                Publication = val.val()
+                atualizar(val.val())
             })
     }
 
-    function addPublication() {
-        console.log('Add Publication');
+    function atualizar(data) {
+        setPub(data)
+        console.log(Pub)
     }
 
     useEffect(() => {
-        getPublications()
+        if (!started) {
+            getPublications()
+            setStarted(true)
+        }
     })
 
     return (
@@ -65,12 +76,13 @@ export default function Home({ navigation }) {
             </View>
 
             <FlatList
-                data={Publication}
+                data={Pub}
                 style={{ flex: 1, backgroundColor: "#fff" }}
                 showsVerticalScrollIndicator={false}
                 refreshing={isRefreshing}
                 onRefresh={handleRefresh}
                 renderItem={(item) => {
+                    console.log(' ');
                     return (
                         <View style={publication.container}>
                             <View style={publication.top}>
@@ -97,7 +109,9 @@ export default function Home({ navigation }) {
                     bottom: 20,
                     right: 20,
                 }}
-                onPress={() => { setShowAddPublication(!showAddPublication) }}
+                onPress={() => {
+                    navigation.navigate('StackNavigator', { screen: 'AddPublication' })
+                }}
             >
 
                 <View
@@ -115,85 +129,9 @@ export default function Home({ navigation }) {
                 </View>
             </TouchableOpacity>
 
-            <Modal
-                animationType='slide'
-                visible={showAddPublication}
-            >
-
-                <View style={add_publication.container}>
-                    <View>
-                        <Text style={add_publication.title_page}>New Publication</Text>
-                        <Text style={add_publication.title}>Post</Text>
-
-                        <TextInput style={{ width: '100%', flexWrap: 'wrap', fontSize: 25, fontWeight: '700', textDecorationLine: 'none', textDecorationStyle: 'dotted', textDecorationColor: '#ffffff' }} multiline={true} placeholder='Post...' />
-
-                    </View>
-                    <View style={{ gap: 10 }}>
-                        <TouchableOpacity
-                            onPress={addPublication}
-                            activeOpacity={.8}
-                        >
-                            <View style={add_publication.button}>
-                                <Text style={add_publication.button_text}>Publicar</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => { setShowAddPublication(!showAddPublication) }}
-                            activeOpacity={.8}
-                        >
-                            <View style={add_publication.button}>
-                                <Text style={add_publication.button_text}>Voltar</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-
-                </View>
-
-            </Modal>
-
         </View>
     )
 }
-
-const add_publication = StyleSheet.create({
-    container: {
-        padding: 20,
-        flex: 1,
-        justifyContent: 'space-between'
-    },
-    title_page: {
-        fontSize: 40,
-        fontWeight: '700',
-        color: '#38434D'
-    },
-    title: {
-        fontSize: 30,
-        fontWeight: '700',
-        color: '#38434D'
-    },
-    textarea: {
-        flex: 1,
-        backgroundColor: "#f00",
-        height: 100,
-        width: '100%'
-    },
-    button: {
-        width: '100%',
-        borderWidth: 2,
-        borderColor: '#000000',
-        backgroundColor: '#000000',
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 10,
-        height: 60
-    },
-    button_text: {
-        fontSize: 25,
-        fontWeight: '700',
-        color: "#ffffff"
-    }
-})
 
 const publication = StyleSheet.create({
     container: {
@@ -207,7 +145,7 @@ const publication = StyleSheet.create({
     top: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 20
+        gap: 15
     },
     user_profile: {
         width: 60,

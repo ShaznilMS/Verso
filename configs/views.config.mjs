@@ -9,8 +9,9 @@ import UserProfile from './../app/Views/UserProfile';
 import Notifications from './../app/Views/Home/Notifications';
 import Home from '../app/Views/Home/Home';
 import HomeConfigs from '../app/Views/Home';
+import AddPublication from '../app/Views/Home/Publication';
 
-const Views = { Home, HomeConfigs, Chats, SignIn, SignUp, Profile, Commentary, Favorite, UserProfile, Notifications }
+const Views = { Home, HomeConfigs, Chats, SignIn, SignUp, Profile, Commentary, Favorite, UserProfile, Notifications, AddPublication }
 
 export {
     Views

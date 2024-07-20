@@ -54,7 +54,8 @@ export default function SignUp({ navigation }) {
             Country: field_country,
             Phone_Number: field_phoneNumber,
             Email: email,
-            image_path: ''
+            image_path: '',
+            Post_Count: 0
         }
 
         if (isCreated) {
