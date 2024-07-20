@@ -52,6 +52,8 @@ export default function Home({ navigation }) {
             getPublications()
             setStarted(true)
         }
+        
+        getPublications()
     })
 
     return (
