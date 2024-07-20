@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faHeart, faMessage } from '@fortawesome/free-regular-svg-icons';
 import { faArrowUpFromBracket, faPlus } from '@fortawesome/free-solid-svg-icons';
 
+
 let PostCount
 let Publication = [{}, {}]
 
