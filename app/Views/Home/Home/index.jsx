@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { app } from '../../../../configs/firebase.config.mjs';
 import NavBar from '../../../../assets/components/NavBar'
 import Categorie from '../../../../assets/components/Categorie';
 import { get, getDatabase, ref } from 'firebase/database';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faHeart, faMessage } from '@fortawesome/free-regular-svg-icons';
-import { faArrowUpFromBracket, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faMessage, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
+import { faArrowUpFromBracket, faPen, faPlus, faRecycle } from '@fortawesome/free-solid-svg-icons';
 
 
 let PostCount
@@ -19,6 +19,7 @@ export default function Home({ navigation }) {
     const [category, setCategory] = useState('Tudo')
     const [isRefreshing, setIsRefrshing] = useState(false)
     const USER_PROFILE = require('./../../../../assets/USER/USER_PROFILE.jpg')
+    const [selected, setSelected] = useState()
 
     const handleCategory = (category) => {
         setCategory(category)
@@ -44,7 +45,11 @@ export default function Home({ navigation }) {
     }
 
     function atualizar(data) {
-        setPub(data)
+        setPub(data.reverse())
+    }
+
+    const onSelect = ind => {
+        setSelected(ind)
     }
 
     useEffect(() => {
@@ -52,8 +57,6 @@ export default function Home({ navigation }) {
             getPublications()
             setStarted(true)
         }
-        
-        getPublications()
     })
 
     return (
@@ -78,27 +81,57 @@ export default function Home({ navigation }) {
             </View>
 
             <FlatList
-                data={Pub.reverse()}
+                data={Pub}
                 style={{ flex: 1, backgroundColor: "#fff" }}
                 showsVerticalScrollIndicator={false}
                 refreshing={isRefreshing}
                 onRefresh={handleRefresh}
-                renderItem={(item) => {
+                onTouchStart={() => {
+                    onSelect(null)
+                }}
+                renderItem={({ item, index }) => {
+                    let color = "#ffffff"
+                    let isSelected = false
+                    if (selected == index) {
+                        isSelected = true
+                        color = "#E8DEF8"
+                    } else {
+                        color = "#ffffff"
+                    }
+
                     return (
-                        <View style={publication.container}>
-                            <View style={publication.top}>
-                                <Image style={publication.user_profile} source={USER_PROFILE} />
-                                <Text style={publication.user_name} numberOfLines={1} >{item['item'].USER_NAME}</Text>
-                            </View>
+                        <TouchableWithoutFeedback
+                            activeOpacity={.9}
+                            style={{ elevation: 0, shadowColor: "#fff" }}
 
-                            <Text style={publication.content}>{item['item'].CONTENT}</Text>
+                            onLongPress={() => {
+                                onSelect(index)
+                            }}
+                        >
 
-                            <View style={publication.bottom}>
-                                <FontAwesomeIcon size={22} color='#666666' icon={faHeart} />
-                                <FontAwesomeIcon size={22} color='#666666' icon={faMessage} />
-                                <FontAwesomeIcon size={22} color='#666666' icon={faArrowUpFromBracket} />
+                            <View style={[publication.container, { backgroundColor: color }]}>
+                                <View style={publication.top}>
+                                    <Image style={publication.user_profile} source={USER_PROFILE} />
+                                    <Text style={publication.user_name} numberOfLines={1} >{item.USER_NAME}</Text>
+                                </View>
+
+                                <Text style={publication.content}>{item.CONTENT}</Text>
+
+                                <View style={publication.bottom_bar}>
+                                    <View style={publication.bottom}>
+                                        <FontAwesomeIcon size={22} color='#666666' icon={faHeart} />
+                                        <FontAwesomeIcon size={22} color='#666666' icon={faMessage} />
+                                        <FontAwesomeIcon size={22} color='#666666' icon={faArrowUpFromBracket} />
+                                    </View>
+                                    {isSelected ?
+                                        <View style={publication.bottom}>
+                                            <FontAwesomeIcon size={22} color='#666666' icon={faPen} />
+                                            <FontAwesomeIcon size={22} color='#666666' icon={faTrashAlt} />
+                                        </View>
+                                        : []}
+                                </View>
                             </View>
-                        </View>
+                        </TouchableWithoutFeedback>
                     )
                 }}
             />
@@ -160,7 +193,7 @@ const publication = StyleSheet.create({
     user_name: {
         fontSize: 20,
         fontWeight: 'bold',
-        maxWidth:200
+        maxWidth: 200
     },
     content: {
         fontSize: 18,
@@ -172,6 +205,10 @@ const publication = StyleSheet.create({
         flexDirection: 'row',
         gap: 25,
         paddingHorizontal: 10
+    },
+    bottom_bar: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     }
 })
 
