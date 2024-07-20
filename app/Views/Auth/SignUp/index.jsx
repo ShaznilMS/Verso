@@ -122,7 +122,7 @@ export default function SignUp({ navigation }) {
                             <Image source={logo} style={styles.img} />
                         </View>
 
-                        <InputText title='Name' placeholder="Type your name here..." onChangeText={setName} />
+                        <InputText maxLength={24} title='Name' placeholder="Type your name here..." onChangeText={setName} />
                         <InputText title='Phone Number' placeholder="Type your phone number here..." onChangeText={setPhoneNumber} />
                         <InputText title='Country' placeholder="Type your country here..." onChangeText={setCountry} />
 
