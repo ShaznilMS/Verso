@@ -19,7 +19,7 @@ const FollowCard = (props) => {
 
                 <View style={styles.bottom}>
                     <Text style={styles.head_text}>Antonio Cossa<Text style={styles.head_msg}> Seguio voce</Text></Text>
-                    <Button style={{ width: 48, height: 20 }} text='Perfil' color='#fff' fontSize='10' />
+                    <Button style={{ width: 48, height: 20 }} text='Perfil' color='#fff' fontSize={10} />
                 </View>
             </View>
 
