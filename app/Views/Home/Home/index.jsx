@@ -76,11 +76,10 @@ export default function Home({ navigation }) {
             </View>
 
             <FlatList
-                data={Pub}
+                data={Pub.reverse()}
                 style={{ flex: 1, backgroundColor: "#fff" }}
                 showsVerticalScrollIndicator={false}
                 refreshing={isRefreshing}
-                inverted
                 onRefresh={handleRefresh}
                 renderItem={(item) => {
                     return (
