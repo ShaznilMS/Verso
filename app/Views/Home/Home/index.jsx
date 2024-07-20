@@ -44,7 +44,6 @@ export default function Home({ navigation }) {
 
     function atualizar(data) {
         setPub(data)
-        console.log(Pub)
     }
 
     useEffect(() => {
@@ -82,7 +81,6 @@ export default function Home({ navigation }) {
                 refreshing={isRefreshing}
                 onRefresh={handleRefresh}
                 renderItem={(item) => {
-                    console.log(' ');
                     return (
                         <View style={publication.container}>
                             <View style={publication.top}>
