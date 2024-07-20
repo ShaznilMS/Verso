@@ -4,6 +4,9 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { app } from '../../../../configs/firebase.config.mjs';
 import NavBar from '../../../../assets/components/NavBar'
 import FollowCard from './Componentes/NotificationCards/FollowCard';
+import LikeCard from './Componentes/NotificationCards/LikeCard';
+import ShareCard from './Componentes/NotificationCards/ShareCard';
+import NewPubCard from './Componentes/NotificationCards/NewPubCard';
 
 export default function Notifications({ navigation }) {
 
@@ -14,7 +17,8 @@ export default function Notifications({ navigation }) {
     return (
         <View style={styles.bg}>
             <NavBar />
-            <FollowCard />
+            <ShareCard msg='O homem que diz a verdade o tempo todo está fadado a ruina' />
+            <NewPubCard msg='O homem que diz a verdade o tempo todo está fadado a ruina'/>
         </View>
     );
 }
