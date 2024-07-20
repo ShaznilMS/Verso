@@ -1,7 +1,6 @@
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import Button from '../../../../../Auth/Componentes/Button'
-import { width } from '@fortawesome/free-brands-svg-icons/fa42Group'
 
 const img = require('./imagem.png')
 
