@@ -80,6 +80,7 @@ export default function Home({ navigation }) {
                 style={{ flex: 1, backgroundColor: "#fff" }}
                 showsVerticalScrollIndicator={false}
                 refreshing={isRefreshing}
+                inverted
                 onRefresh={handleRefresh}
                 renderItem={(item) => {
                     return (
