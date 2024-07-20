@@ -1,11 +1,10 @@
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import Button from '../../../../../Auth/Componentes/Button'
-import { width } from '@fortawesome/free-brands-svg-icons/fa42Group'
 
-const img = require('../images.jpg')
+const img = require('./imagem.png')
 
-const FollowCard = (props) => {
+const NewPubCard = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.img_cont}><Image source={img} style={styles.img} /></View>
@@ -18,8 +17,14 @@ const FollowCard = (props) => {
 
 
                 <View style={styles.bottom}>
-                    <Text style={styles.head_text}>Antonio Cossa<Text style={styles.head_msg}> Seguio voce</Text></Text>
-                    <Button style={{ width: 48, height: 20 }} text='Perfil' color='#fff' fontSize='10' />
+                    <Text style={styles.head_text}>Raimundo Chitava</Text>
+                    <Text style={styles.head_msg_1}>Tem uma nova publicação</Text>
+                    <Text numberOfLines={2} style={styles.head_msg_2}>{props.msg}</Text>
+                    <View style={styles.btns}>
+                        <Button style={{ width: 55, height: 25, backgroundColor:'none',borderColor:'#000',borderWidth:2 }} text='Perfil' color='#000' fontSize='10' />
+                        <Button style={{ width: 55, height: 25 }} text='Ver' color='#fff' fontSize='10' />
+                    </View>
+
                 </View>
             </View>
 
@@ -28,12 +33,12 @@ const FollowCard = (props) => {
     )
 }
 
-export default FollowCard
+export default NewPubCard
 
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height: 100,
+        height: 150,
         shadowColor: '#171717',
         shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.2,
@@ -59,7 +64,7 @@ const styles = StyleSheet.create({
     },
     top: {
         height: '100%',
-        gap: 20
+        gap: 15
     },
     headline: {
         flexDirection: 'row',
@@ -76,11 +81,18 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: '#000'
     },
-    head_msg: {
-        fontWeight: 'regular',
+    head_msg_1: {
         color: '#afafaf'
     },
-    bottom:{
-        gap:10
+    head_msg_2: {
+        fontWeight: 'bold',
+        color: '#474747',
+        maxWidth: 200
+    },
+    bottom: {
+        gap: 3
+    },btns:{
+        flexDirection:'row',
+        gap:15
     }
 })
