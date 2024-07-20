@@ -31,7 +31,7 @@ export default function Home({ navigation }) {
     }
 
     function getPublications() {
-        console.log('Get publication!');
+        // console.log('Get publication!');
         const db = getDatabase(app)
 
         const referenceDatabase = ref(db, 'publication/')
