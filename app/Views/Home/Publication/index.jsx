@@ -4,6 +4,8 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-nativ
 import sha256 from "sha256";
 import { app } from "../../../../configs/firebase.config.mjs";
 import { get, getDatabase, ref, set, update } from 'firebase/database';
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function AddPublication({ navigation }) {
@@ -75,7 +77,16 @@ export default function AddPublication({ navigation }) {
     return (
         <View style={add_publication.container}>
             <View>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Text style={add_publication.title_page}>New Publication</Text>
+                <TouchableOpacity
+                    onPress={addPublication}
+                    activeOpacity={.8}>
+                    <View style={{padding: 15, borderRadius: 30, backgroundColor: "#000000"}}>
+                        <FontAwesomeIcon icon={faPaperPlane} size={20} color="#ffffff"/>
+                    </View>
+                </TouchableOpacity>
+                </View>
                 <Text style={add_publication.title}>Post</Text>
 
                 <TextInput onChangeText={setContent} style={{ width: '100%', flexWrap: 'wrap', fontSize: 25, fontWeight: '700', textDecorationLine: 'none', textDecorationStyle: 'dotted', textDecorationColor: '#ffffff' }} multiline={true} placeholder='Post...' />
@@ -112,7 +123,7 @@ const add_publication = StyleSheet.create({
         justifyContent: 'space-between'
     },
     title_page: {
-        fontSize: 40,
+        fontSize: 30,
         fontWeight: '700',
         color: '#38434D'
     },
