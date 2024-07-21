@@ -8,17 +8,17 @@ const ActionBar = (props) => {
     return (
         <View style={styles.container}>
             <TouchableOpacity activeOpacity={.8} onPress={props.onPress} style={styles.holder}>
-                <FontAwesomeIcon size={20} color='#afaeae' icon={faHeart} />
+                <FontAwesomeIcon size={16} color='#afaeae' icon={faHeart} />
                 <Text style={{color:'#afaeae', fontSize: 16}}>{props.likes}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity activeOpacity={.8} onPress={props.onPress} style={styles.holder}>
-                <FontAwesomeIcon size={20} color='#afaeae' icon={faMessage} />
+                <FontAwesomeIcon size={16} color='#afaeae' icon={faMessage} />
                 <Text style={{color:'#afaeae', fontSize: 16}}>{props.coments}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity activeOpacity={.8} onPress={props.onPress} style={styles.holder}>
-                <FontAwesomeIcon size={20} color='#afaeae' icon={faArrowUpFromBracket} />
+                <FontAwesomeIcon size={16} color='#afaeae' icon={faArrowUpFromBracket} />
                 <Text style={{color:'#afaeae', fontSize: 16}}>{props.shares}</Text>
             </TouchableOpacity>
         </View>
