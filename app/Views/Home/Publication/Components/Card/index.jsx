@@ -13,7 +13,6 @@ const Card = (props) => {
                     <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>~ {props.cit}Raimundo Chitava</Text>
                 </View>
             </View>
-                <Text style={{ textAlign: 'left', paddingRight: 20, fontWeight: '900' }}>Emmanuel Kant</Text>
             <ActionBar likes='50' coments='3' shares='23' />
         </TouchableOpacity>
     )
