@@ -55,7 +55,8 @@ export default function SignUp({ navigation }) {
             Phone_Number: field_phoneNumber,
             Email: email,
             image_path: '',
-            Post_Count: 0
+            Post_Count: 0,
+            Verified: false
         }
 
         if (isCreated) {
