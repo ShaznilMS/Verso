@@ -2,7 +2,7 @@
 
 # dependencies
 node_modules/
-
+app/index.jsx
 # Expo
 .expo/
 dist/
