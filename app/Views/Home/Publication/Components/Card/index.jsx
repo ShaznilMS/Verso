@@ -30,7 +30,6 @@ export default function Card(props) {
     return (
         <View style={styles.container}>
             <Animated.View style={[card.container, { backgroundColor: color }]}>
-
                 <User time={props.time} user={props.name} />
                 <View style={styles.content}>
                     <View>
