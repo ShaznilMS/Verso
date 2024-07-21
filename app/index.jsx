@@ -113,6 +113,7 @@ export default function App() {
 				<Stack.Screen name='AddPublication' component={Views.AddPublication}/>
 				<Stack.Screen name='Commentary' component={Views.Commentary} />
 				<Stack.Screen name='UserProfile' component={Views.UserProfile} />
+				<Stack.Screen name='Details' component={Views.Details} />
 			</Stack.Navigator>
 		)
 	}

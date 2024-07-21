@@ -1,23 +1,43 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, Text, TextInputComponent, View } from 'react-native'
 import User from './Components/User'
 import ActionBar from './Components/ActionBar'
 import InputComent from './Components/InputComent'
 import Coment from './Components/Coment'
 
-const Details = () => {
+
+const Details = ({ route, navigation }) => {
+
+    const {data} = route.params
+    console.log(data)
+    useEffect(() => {
+        navigation.getParent().setOptions({ tabBarStyle: { display: 'none' } })
+    })
+
+    const tabBarStyl = {
+        position: 'absolute',
+        bottom: 0,
+        rigth: 0,
+        left: 0,
+        elevation: 0,
+        height: 80,
+        background: '#fff'
+    }
+
     return (
         <View>
-            <User user='Antonio Cossa' time='20/07/24' />
+            <User back={() => {
+                navigation.getParent().setOptions({ tabBarStyle: tabBarStyl })
+                navigation.goBack()
+            }} user={data.USER_NAME} time={data.DATE_TIME} />
             <View style={styles.content}>
-                <Text style={{ fontSize: 15, textAlign: 'center', fontWeight: 400 }}>O Mundo pertence aos sabios📍
-                    Aos ingênuos cabe o destino de acreditar.</Text>
-                <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>Antonio Cossa</Text>
+                <Text style={{ paddingHorizontal:20, fontSize: 15, textAlign: 'center', fontWeight: 400 }}>{data.CONTENT}</Text>
+                <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>{}</Text>
             </View>
-            <ActionBar likes='20' shares='25' coments='2'/>
+            <ActionBar likes='20' shares='25' coments='2' />
             <View style={styles.coments}>
-                <InputComent/>
-                <Coment ComentLikes='20' user='Antonio Cossa' time='20/07/24'/>
+                {/* <Coment ComentLikes='20' user='Antonio Cossa' time='20/07/24' /> */}
+                <InputComent style={styles.InputComent}/>
             </View>
         </View>
     )
@@ -33,12 +53,16 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         borderBottomWidth: 1,
         borderColor: '#f5f5f5a4',
-        backgroundColor: '#f5f5f5a4',
+        backgroundColor: '#e9e7e7',
         justifyContent: 'center'
     },
     coments: {
         width: '100%',
-        minHeight:300,
+        minHeight: 300,
         backgroundColor: '#f5f5f5a4'
+    },
+    InputComent:{
+        position:'absolute',
+        bottom:0
     }
 })

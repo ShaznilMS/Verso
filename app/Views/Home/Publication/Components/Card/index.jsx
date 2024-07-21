@@ -28,7 +28,7 @@ export default function Card(props) {
     })
 
     return (
-        <View style={styles.container}>
+        <TouchableOpacity onPress={props.onPress} activeOpacity={1} style={styles.container}>
             <Animated.View style={[card.container, { backgroundColor: color }]}>
                 <User time={props.time} user={props.name} />
                 <View style={styles.content}>
@@ -39,7 +39,7 @@ export default function Card(props) {
                 </View>
                 <ActionBar likes='3' coments='1' shares='2' />
             </Animated.View>
-        </View>
+        </TouchableOpacity>
     )
 }
 
