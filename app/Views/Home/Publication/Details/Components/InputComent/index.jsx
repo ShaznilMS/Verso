@@ -5,7 +5,7 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 
 const InputComent = (props) => {
     return (
-        <View style={styles.container}>
+        <View style={[styles.container,props.style]}>
             <TextInput style={styles.input} placeholder='Escreva o seu comentario...' />
             <TouchableOpacity activeOpacity={.6} style={styles.btn} onPress={props.onPress}>
                 <FontAwesomeIcon icon={faPaperPlane} size={20}/>

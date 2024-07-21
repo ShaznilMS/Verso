@@ -9,7 +9,7 @@ const User = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.user}>
-            <TouchableOpacity style={{paddingEnd:10}} onPress={props.onPress}><FontAwesomeIcon icon={faArrowLeft} size={25}/></TouchableOpacity>
+            <TouchableOpacity style={{paddingEnd:10}} onPress={props.back}><FontAwesomeIcon icon={faArrowLeft} size={25}/></TouchableOpacity>
                 <View style={styles.img_cont}>
                     <Image source={img} style={styles.img} />
                 </View>

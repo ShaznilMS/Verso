@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faHeart, faMessage, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { faArrowUpFromBracket, faPen, faPlus, faRecycle } from '@fortawesome/free-solid-svg-icons';
 import Card from '../Publication/Components/Card';
+import { createStackNavigator } from '@react-navigation/stack';
+import Details from '../Publication/Details';
 
 
 let PostCount
@@ -127,7 +129,7 @@ export default function Home({ navigation }) {
                     }
 
                     return (
-                       <Card name={item.USER_NAME} text={item.CONTENT} time={item.DATE_TIME}></Card>
+                        <Card name={item.USER_NAME} text={item.CONTENT} time={item.DATE_TIME} onPress={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
                     )
                 }}
             />
@@ -204,6 +206,7 @@ export default function Home({ navigation }) {
         </View>
     )
 }
+
 
 const publication = StyleSheet.create({
     container: {
