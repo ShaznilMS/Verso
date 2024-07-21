@@ -90,11 +90,13 @@ const styles = StyleSheet.create({
     },
     content: {
         width: '100%',
+        minHeight:250,
         borderTopWidth: 1,
         paddingVertical: 20,
         borderBottomWidth: 1,
         borderColor: '#f5f5f5a4',
         backgroundColor: '#f5f5f5a4',
+        justifyContent:'center'
     }
 })
 
