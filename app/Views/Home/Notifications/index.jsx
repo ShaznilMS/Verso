@@ -6,6 +6,7 @@ import NavBar from '../../../../assets/components/NavBar'
 import FollowCard from './Componentes/NotificationCards/FollowCard';
 import User from '../Publication/Components/User';
 import Card from '../Publication/Components/Card';
+import Details from '../Publication/Details';
 // import LikeCard from './Componentes/NotificationCards/LikeCard';
 // import ShareCard from './Componentes/NotificationCards/ShareCard';
 // import NewPubCard from './Componentes/NotificationCards/NewPubCard';
@@ -26,9 +27,7 @@ export default function Notifications({ navigation }) {
 
         <View style={styles.bg}>
 
-            <NavBar />
-            <Card/>
-            <Card/>
+<Details/>
 
             <FlatList
                 data={[{}]}

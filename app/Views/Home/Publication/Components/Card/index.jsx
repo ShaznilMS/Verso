@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import User from '../User'
-import ActionBar from '../ActionBar'
+import ActionBar from '../ActionBar/index'
 
 const Card = (props) => {
     return (
