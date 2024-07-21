@@ -68,7 +68,7 @@ export default function Card(props) {
                     <User time={props.time} user={props.name} />
                     <View style={styles.content}>
                         <View>
-                            <Animated.Text onLongPress={() => zoomIn.start()} onPressOut={() => zoomOut.start()} style={{ paddingHorizontal: 20, fontSize: font, textAlign: 'center', fontWeight: 500 }}>{props.text}</Animated.Text>
+                            <Animated.Text onLongPress={() => zoomIn.start()} onPressOut={() => zoomOut.start()} style={{ paddingHorizontal: 20, fontSize: font, textAlign: 'center', fontWeight: 400 }}>{props.text}</Animated.Text>
                             <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>{props.citation ? props.citation : ''}</Text>
                         </View>
                     </View>
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: "#ffffff",
-        borderTopWidth: 2,
+        borderTopWidth: 5,
         borderTopColor: '#eee'
     },
     content: {
