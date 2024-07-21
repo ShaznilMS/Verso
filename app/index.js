@@ -1,193 +1,145 @@
-// import { useState, useEffect } from 'react';
-// import { ActivityIndicator, FlatList, SafeAreaView, StyleSheet, View } from 'react-native';
-// import { NavigationContainer } from '@react-navigation/native';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-// import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
-// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+// // import { useState } from "react";
+// // import { StyleSheet, Text, TouchableOpacity, View, Animated, Vibration } from "react-native";
+// // import User from "./Views/Home/Publication/Components/User";
+// // import ActionBar from "./Views/Home/Publication/Components/ActionBar";
 
-// import './../gesture-handler';
+// // export default function App(props) {
 
-// const Stack = createStackNavigator();
-// const Tab = createBottomTabNavigator();
+// //     const [selected, setSelected] = useState(false)
 
-// // Components
-// import Loading from '../assets/components/Loading';
-// import { Views } from '../configs/views.config.mjs';
+// //     const value = useState(new Animated.Value(1))[0]
 
-// // Firebase configs
-// import { app, auth, analytics } from '../configs/firebase.config.mjs'
-// import { getAuth } from 'firebase/auth'
-// import { StatusBar } from 'expo-status-bar';
-// import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-// import { faBell, faBookmark, faUser } from '@fortawesome/free-regular-svg-icons';
-// import { faHomeAlt } from '@fortawesome/free-solid-svg-icons';
+// //     const font = useState(new Animated.Value(18))[0]
 
-// export default function App() {
+// //     const color = useState(new Animated.Value(0))[0]
 
-// 	const [isLoading, setIsLoading] = useState(false)
-// 	const [isLogged, setIsLogged] = useState(false)
+// //     const clickIn = Animated.timing(value, {
+// //         toValue: .6,
+// //         duration: 500,
+// //         useNativeDriver: false
+// //     })
 
-// 	useEffect(() => {
-// 		setIsLoading(true)
-// 		if (getAuth(app).currentUser) {
-// 			setIsLogged(true)
-// 		}
-// 		setIsLoading(false)
-// 	})
+// //     const clickOut = Animated.timing(value, {
+// //         toValue: 1,
+// //         duration: 500,
+// //         useNativeDriver: false
+// //     })
 
-// 	function TabNavigator() {
-// 		return (
-// 			<Tab.Navigator
-// 				initialRouteName='Home'
-// 				screenOptions={{
-// 					headerShown: false,
-// 					tabBarStyle: {
-// 						height: 70,
-// 						paddingTop: 15
-// 					},
-// 				}}
-// 			>
-// 				<Tab.Screen name='Home' component={Views.Home} options={{
-// 					tabBarIcon: ({ focused }) => {
-// 						return (
-// 							<View style={focused ? focusedTab.focusedTab : { display: 'flex' }}>
-// 								<FontAwesomeIcon icon={faHomeAlt} size={23} color={'#49454F'} />
-// 							</View>
-// 						)
-// 					},
-// 					title: ''
-// 				}} />
+// //     const zoomIn = Animated.timing(font, {
+// //         toValue: 30,
+// //         duration: 500,
+// //         useNativeDriver: false
+// //     })
 
-// 				<Tab.Screen name='Notifications' component={Views.Notifications} options={{
-// 					tabBarIcon: ({ focused }) => {
-// 						return (
-// 							<View style={focused ? focusedTab.focusedTab : { display: 'flex' }}>
-// 								<FontAwesomeIcon icon={faBell} size={23} color={'#49454F'} />
-// 							</View>
-// 						)
-// 					},
-// 					title: ''
-// 				}} />
+// //     const zoomOut = Animated.timing(font, {
+// //         toValue: 18,
+// //         duration: 500,
+// //         delay: 2000,
+// //         useNativeDriver: false
+// //     })
 
-// 				<Tab.Screen name='Favorite' component={Views.Favorite} options={{
-// 					tabBarIcon: ({ focused }) => {
-// 						return (
-// 							<View style={focused ? focusedTab.focusedTab : { display: 'flex' }}>
-// 								<FontAwesomeIcon icon={faBookmark} size={23} color={'#49454F'} />
-// 							</View>
-// 						)
-// 					},
-// 					title: ''
-// 				}} />
+// //     // const dark = Animated.timing(color, {
+// //     //     toValue: "#333333",
+// //     //     duration: 1000,
+// //     //     useNativeDriver: false
+// //     // })
 
-// 				<Tab.Screen name='Profile' component={Views.Profile} options={{
-// 					tabBarIcon: ({ focused }) => {
-// 						return (
-// 							<View style={focused ? focusedTab.focusedTab : { display: 'flex' }}>
-// 								<FontAwesomeIcon icon={faUser} size={20} color={'#49454F'} />
-// 							</View>
-// 						)
-// 					},
-// 					title: ''
-// 				}} />
+// //     return (
+// //         <View style={styles.container}>
 
-// 			</Tab.Navigator>
-// 		)
-// 	}
+// //             <TouchableOpacity
+// //                 onLongPress={() => {
+// //                     clickIn.start();
+// //                     setSelected(true);
+// //                     console.log('Long Press')
+// //                     Vibration.vibrate(40)
+// //                 }}
+// //                 onPressOut={() => {
+// //                     clickOut.start()
+// //                 }}
+// //                 onPressIn={() => {
+// //                     console.log('Blur');
+// //                     setSelected(false)
+// //                 }}
+// //                 activeOpacity={1}
+// //             >
+// //                 <Animated.View style={[card.container, { opacity: value }, { backgroundColor: color }]}>
 
-// 	function StackNavigator() {
-// 		return (
-// 			<Stack.Navigator
-// 				screenOptions={{
-// 					headerShown: false,
-// 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-// 				}}
-// 			>
-// 				<Stack.Screen name='SignIn' component={Views.SignIn} />
-// 				<Stack.Screen name='SignUp' component={Views.SignUp} />
-// 				<Stack.Screen name='HomeC' component={Views.HomeConfigs} />
-// 				<Stack.Screen name='Chats' component={Views.Chats} />
-// 				<Stack.Screen name='Commentary' component={Views.Commentary} />
-// 				<Stack.Screen name='UserProfile' component={Views.UserProfile} />
-// 			</Stack.Navigator>
-// 		)
-// 	}
+// //                     <User time={props.time} user={props.name} />
+// //                     <View style={styles.content}>
+// //                         <View>
+// //                             <Animated.Text onLongPress={() => zoomIn.start()} onPressOut={() => zoomOut.start()} style={{ paddingHorizontal: 20, fontSize: font, textAlign: 'center', fontWeight: 500 }}>{props.text}</Animated.Text>
+// //                             <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>{props.citation ? props.citation : ''}</Text>
+// //                         </View>
+// //                     </View>
+// //                     <ActionBar likes='50' coments='3' shares='23' />
+// //                 </Animated.View>
+// //             </TouchableOpacity>
+// //         </View>
+// //     )
+// // }
 
-// 	function NavigatorManager() {
-// 		return (
-// 			<Stack.Navigator
-// 				initialRouteName='StackNavigator'
-// 				screenOptions={{
-// 					headerShown: false,
-// 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-// 				}}
-// 			>
-// 				<Stack.Screen name='StackNavigator' component={StackNavigator} />
-// 				<Stack.Screen name='TabNavigator' component={TabNavigator} />
+// // const styles = StyleSheet.create({
+// //     container: {
+// //         flex: 1,
+// //         paddingVertical: 20,
+// //         alignItems: 'center',
+// //         justifyContent: 'center',
+// //         backgroundColor: "#ffffff"
+// //     },
+// //     content: {
+// //         width: '100%',
+// //         borderTopWidth: 1,
+// //         paddingVertical: 30,
+// //         borderBottomWidth: 1,
+// //         borderColor: '#f5f5f5a4',
+// //         backgroundColor: '#f5f5f5a4',
+// //     }
+// // })
 
-// 			</Stack.Navigator>
-// 		)
-// 	}
+// // const card = StyleSheet.create({
+// //     container: {
+// //         backgroundColor: "#fff"
+// //     }
+// // })
 
-// 	return (
-// 		<>
-// 			<Loading isLoading={isLoading} />
-// 			<NavigationContainer independent={true}>
-// <<<<<<< HEAD:app/index.jsx
-// 				<NavigatorManager />
-// =======
-// 				<Stack.Navigator
-// 					initialRouteName={isLogged ? 'SignIn' : 'SignIn'}
-// 					screenOptions={{
-// 						headerShown: false
-// 					}}
-// 				>
-// 					<Stack.Screen name='SignIn' component={Views.SignIn} />
-// 					<Stack.Screen name='SignUp' component={Views.SignUp} />
-// 					<Stack.Screen name='HomeC' component={Views.HomeConfigs} />
-// 					{isLogged ?
-// 						<>
-// 							<Stack.Screen name='Chats' component={Views.Chats} />
-// 							<Stack.Screen name='Commentary' component={Views.Commentary} />
-// 							<Stack.Screen name='UserProfile' component={Views.UserProfile} />
-// 						</>
-// 						:
-// 						[]}
+// <TouchableWithoutFeedback
+// activeOpacity={.9}
+// style={{ elevation: 0, shadowColor: "#fff" }}
 
-// 				</Stack.Navigator>
-// >>>>>>> 3293079a250f85dceb18b52866238ce20108ffa9:app/index.js
-// 			</NavigationContainer>
-// 		</>
-// 	);
-// }
+// onLongPress={() => {
+//     onSelect(index)
+// }}
+// >
 
-// const focusedTab = StyleSheet.create({
-// 	focusedTab: {
-// 		backgroundColor: '#E8DEF8',
-// 		paddingHorizontal: 20,
-// 		paddingVertical: 5,
-// 		borderRadius: 20
-// 	}
-// })
+// <View style={[publication.container, { backgroundColor: color }]}>
+//     <View style={publication.top}>
+//         <Image style={publication.user_profile} source={USER_PROFILE} />
+//         <Text style={publication.user_name} numberOfLines={1} >{item.USER_NAME}</Text>
+//     </View>
 
-// const styles = StyleSheet.create({
-// 	container: {
-// 		flex: 1,
-// 		alignItems: "center",
-// 		padding: 24,
-// 	},
-// 	main: {
-// 		flex: 1,
-// 		justifyContent: "center",
-// 		maxWidth: 960,
-// 		marginHorizontal: "auto",
-// 	},
-// 	title: {
-// 		fontSize: 64,
-// 		fontWeight: "bold",
-// 	},
-// 	subtitle: {
-// 		fontSize: 36,
-// 		color: "#38434D",
-// 	},
-// });
+//     <Text style={publication.content}>{item.CONTENT}</Text>
+
+//     <View style={publication.bottom_bar}>
+//         <View style={publication.bottom}>
+//             <FontAwesomeIcon size={22} color='#666666' icon={faHeart} />
+//             <FontAwesomeIcon size={22} color='#666666' icon={faMessage} />
+//             <FontAwesomeIcon size={22} color='#666666' icon={faArrowUpFromBracket} />
+//         </View>
+//         {isSelected ?
+//             <View style={publication.bottom}>
+//                 <TouchableOpacity
+//                     onPress={() => {
+//                         setEdited(false)
+//                         setEdit(true)
+//                     }}
+//                 >
+
+//                     <FontAwesomeIcon size={22} color='#666666' icon={faPen} />
+//                 </TouchableOpacity>
+//                 <FontAwesomeIcon size={22} color='#666666' icon={faTrashAlt} />
+//             </View>
+//             : []}
+//     </View>
+// </View>
+// </TouchableWithoutFeedback>

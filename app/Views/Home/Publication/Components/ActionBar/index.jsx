@@ -7,19 +7,19 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 const ActionBar = (props) => {
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={props.onPress} style={styles.holder}>
-                <FontAwesomeIcon color='#afaeae' icon={faHeart} />
-                <Text style={{color:'#afaeae'}}>{props.likes}</Text>
+            <TouchableOpacity activeOpacity={.8} onPress={props.onPress} style={styles.holder}>
+                <FontAwesomeIcon size={20} color='#afaeae' icon={faHeart} />
+                <Text style={{color:'#afaeae', fontSize: 16}}>{props.likes}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={props.onPress} style={styles.holder}>
-                <FontAwesomeIcon color='#afaeae' icon={faMessage} />
-                <Text style={{color:'#afaeae'}}>{props.coments}</Text>
+            <TouchableOpacity activeOpacity={.8} onPress={props.onPress} style={styles.holder}>
+                <FontAwesomeIcon size={20} color='#afaeae' icon={faMessage} />
+                <Text style={{color:'#afaeae', fontSize: 16}}>{props.coments}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={props.onPress} style={styles.holder}>
-                <FontAwesomeIcon color='#afaeae' icon={faArrowUpFromBracket} />
-                <Text style={{color:'#afaeae'}}>{props.shares}</Text>
+            <TouchableOpacity activeOpacity={.8} onPress={props.onPress} style={styles.holder}>
+                <FontAwesomeIcon size={20} color='#afaeae' icon={faArrowUpFromBracket} />
+                <Text style={{color:'#afaeae', fontSize: 16}}>{props.shares}</Text>
             </TouchableOpacity>
         </View>
     )
@@ -29,20 +29,19 @@ export default ActionBar
 
 const styles = StyleSheet.create({
     container: {
+        gap: 10,
+        height: 50,
         width: '100%',
-        height: 20,
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 20,
-        paddingHorizontal: 20,
-        backgroundColor: '#f3f33',
-        top:10
+        paddingHorizontal: 40,
+        backgroundColor: '#f3f3f3'
     },
     holder: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        height: '100%',
+        gap: 5,
         width: '20%',
-        gap: 5
+        height: '100%',
+        alignItems: 'center',
+        flexDirection: 'row',
     }
 })

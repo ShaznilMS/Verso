@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import './../gesture-handler';
+import '../gesture-handler';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
