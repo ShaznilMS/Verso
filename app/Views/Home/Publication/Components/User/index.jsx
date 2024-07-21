@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
         backgroundColor: "#fff"
     },
     img: {
