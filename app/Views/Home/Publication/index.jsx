@@ -42,11 +42,15 @@ export default function AddPublication({ navigation }) {
                         let Post_index = _post_index
 
                         console.log(Post_index);
+
+                        let time = new Date();
+                        const tm = time.getUTCFullYear() + '/' + time.getUTCMonth() + '/' + time.getUTCDate()
+
                         set(setReferenceDatabase, {
                             USER_ID: sha256(user.currentUser.email),
                             USER_NAME: data.Name,
                             CONTENT: content,
-                            DATE_TIME: new Date().toISOString(),
+                            DATE_TIME: tm,
                             LIKES: "",
                             ID: num,
                             CATEGORY: "Filosoficas",
