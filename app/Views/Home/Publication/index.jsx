@@ -48,6 +48,7 @@ export default function AddPublication({ navigation }) {
                             CONTENT: content,
                             DATE_TIME: new Date().toISOString(),
                             LIKES: "",
+                            ID: num,
                             COMMENTARY: ""
                         }).then(() => {
                             console.log('Setted!');
