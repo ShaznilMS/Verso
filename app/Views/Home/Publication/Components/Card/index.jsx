@@ -15,7 +15,7 @@ export default function Card(props) {
 
 
     const zoomIn = Animated.timing(font, {
-        toValue: 30,
+        toValue: 22,
         duration: 500,
         useNativeDriver: false
     })
@@ -37,7 +37,7 @@ export default function Card(props) {
                         <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>{props.citation ? props.citation : ''}</Text>
                     </View>
                 </View>
-                <ActionBar likes='50' coments='3' shares='23' />
+                <ActionBar likes='3' coments='1' shares='2' />
             </Animated.View>
         </TouchableOpacity>
     )
