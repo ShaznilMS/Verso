@@ -20,7 +20,7 @@ export default function Home({ navigation }) {
     const [isRefreshing, setIsRefrshing] = useState(false)
     const USER_PROFILE = require('./../../../../assets/USER/USER_PROFILE.jpg')
     const [selected, setSelected] = useState()
-    const [edit, setEdit] = useState(true)
+    const [edit, setEdit] = useState(false)
     const [editText, setEditText] = useState('')
     const [edited, setEdited] = useState(false)
 
