@@ -10,9 +10,10 @@ const Card = (props) => {
             <View style={styles.content}>
                 <View>
                     <Text style={{ textAlign: 'center', fontWeight: 500 }}>{props.content}Prefiro encarar a derrota com plena consciência de sua inevitabilidade do que me iludir com uma falsa expectativa de vitória</Text>
-                    <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>{props.cit}Raimundo Chitava</Text>
+                    <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>~ {props.cit}Raimundo Chitava</Text>
                 </View>
             </View>
+                <Text style={{ textAlign: 'left', paddingRight: 20, fontWeight: '900' }}>Emmanuel Kant</Text>
             <ActionBar likes='50' coments='3' shares='23' />
         </TouchableOpacity>
     )
