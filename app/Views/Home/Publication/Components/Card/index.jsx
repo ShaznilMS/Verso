@@ -15,7 +15,7 @@ export default function Card(props) {
 
 
     const zoomIn = Animated.timing(font, {
-        toValue: 30,
+        toValue: 22,
         duration: 500,
         useNativeDriver: false
     })
