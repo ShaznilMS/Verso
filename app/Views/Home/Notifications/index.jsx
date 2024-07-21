@@ -28,6 +28,7 @@ export default function Notifications({ navigation }) {
 
             <NavBar />
             <Card/>
+            <Card/>
 
             <FlatList
                 data={[{}]}
