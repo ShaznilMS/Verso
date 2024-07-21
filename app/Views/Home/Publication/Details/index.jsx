@@ -32,7 +32,7 @@ const Details = ({ route, navigation }) => {
             }} user={data.USER_NAME} time={data.DATE_TIME} />
             <View style={styles.content}>
                 <Text style={{ paddingHorizontal:20, fontSize: 15, textAlign: 'center', fontWeight: 400 }}>{data.CONTENT}</Text>
-                <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>{}</Text>
+                <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>{data.Quote}</Text>
             </View>
             <ActionBar likes='20' shares='25' coments='2' />
             <View style={styles.coments}>
