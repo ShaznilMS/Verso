@@ -49,6 +49,8 @@ export default function AddPublication({ navigation }) {
                             DATE_TIME: new Date().toISOString(),
                             LIKES: "",
                             ID: num,
+                            CATEGORY: "Filosoficas",
+                            QUOTE: '',
                             STATUS: "Initial",
                             COMMENTARY: ""
                         }).then(() => {

@@ -8,7 +8,7 @@ const db = getDatabase(app)
 for (let i = 0; i <= 14; i++) {
     console.log('Make:',i);
     const reference = ref(db, 'publication/' + i)
-    update(reference, { STATUS: 'Initial', DATE_TIME: '21/07/2024', CATEGORY: 'Filosofica' })
+    update(reference, { STATUS: 'Initial', DATE_TIME: '21/07/2024', CATEGORY: 'Filosofica', QUOTE: "" })
         .then(() => {
             console.log('Then');
         })
