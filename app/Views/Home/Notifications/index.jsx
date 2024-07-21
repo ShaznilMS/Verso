@@ -2,6 +2,7 @@ import { getAuth } from '@firebase/auth';
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { app } from '../../../../configs/firebase.config.mjs';
+import Details from '../Publication/Details';
 
 export default function Notifications({ navigation }) {
 
@@ -18,7 +19,7 @@ export default function Notifications({ navigation }) {
     return (
 
         <View style={styles.bg}>
-
+            <Details />
             <FlatList
                 data={[{}]}
                 refreshing={isRefreshing}
