@@ -4,6 +4,7 @@
 // import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 // import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import '../gesture-handler';
 import { StyleSheet, View } from "react-native";
 import InputComent from "./Views/Home/Publication/Details/Components/InputComent";
 import Coment from "./Views/Home/Publication/Details/Components/Coment";

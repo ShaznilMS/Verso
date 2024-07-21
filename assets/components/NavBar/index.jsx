@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'space-between',
-        paddingEnd:20
+        paddingEnd:20,
     },
     stretch: {
         width: 100,

@@ -7,6 +7,7 @@ import { update, get, getDatabase, ref } from 'firebase/database';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faHeart, faMessage, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { faArrowUpFromBracket, faPen, faPlus, faRecycle } from '@fortawesome/free-solid-svg-icons';
+import Card from '../Publication/Components/Card';
 
 
 let PostCount
@@ -126,46 +127,7 @@ export default function Home({ navigation }) {
                     }
 
                     return (
-                        <TouchableWithoutFeedback
-                            activeOpacity={.9}
-                            style={{ elevation: 0, shadowColor: "#fff" }}
-
-                            onLongPress={() => {
-                                onSelect(index)
-                            }}
-                        >
-
-                            <View style={[publication.container, { backgroundColor: color }]}>
-                                <View style={publication.top}>
-                                    <Image style={publication.user_profile} source={USER_PROFILE} />
-                                    <Text style={publication.user_name} numberOfLines={1} >{item.USER_NAME}</Text>
-                                </View>
-
-                                <Text style={publication.content}>{item.CONTENT}</Text>
-
-                                <View style={publication.bottom_bar}>
-                                    <View style={publication.bottom}>
-                                        <FontAwesomeIcon size={22} color='#666666' icon={faHeart} />
-                                        <FontAwesomeIcon size={22} color='#666666' icon={faMessage} />
-                                        <FontAwesomeIcon size={22} color='#666666' icon={faArrowUpFromBracket} />
-                                    </View>
-                                    {isSelected ?
-                                        <View style={publication.bottom}>
-                                            <TouchableOpacity
-                                                onPress={() => {
-                                                    setEdited(false)
-                                                    setEdit(true)
-                                                }}
-                                            >
-
-                                                <FontAwesomeIcon size={22} color='#666666' icon={faPen} />
-                                            </TouchableOpacity>
-                                            <FontAwesomeIcon size={22} color='#666666' icon={faTrashAlt} />
-                                        </View>
-                                        : []}
-                                </View>
-                            </View>
-                        </TouchableWithoutFeedback>
+                       <Card name={item.USER_NAME} text={item.CONTENT} time={item.DATE_TIME}></Card>
                     )
                 }}
             />
@@ -298,7 +260,7 @@ const styles = StyleSheet.create({
         gap: 15,
         flex: 1,
         backgroundColor: "#ffffff",
-        paddingHorizontal: 10,
+        paddingHorizontal: 0,
     },
 
 })
