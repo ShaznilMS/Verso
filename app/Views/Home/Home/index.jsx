@@ -127,7 +127,7 @@ export default function Home({ navigation }) {
                     }
 
                     return (
-                       <Card name={item.USER_NAME} text={item.CONTENT} time={item.DATE_TIME}></Card>
+                       <Card name={item.USER_NAME} text={item.CONTENT} time={item.DATE_TIME} citation={item.QUOTE}></Card>
                     )
                 }}
             />
