@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { FlatList, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { app } from '../../../../configs/firebase.config.mjs';
 import NavBar from '../../../../assets/components/NavBar'
 import Categorie from '../../../../assets/components/Categorie';
-import { get, getDatabase, ref } from 'firebase/database';
+import { update, get, getDatabase, ref } from 'firebase/database';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faHeart, faMessage, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { faArrowUpFromBracket, faPen, faPlus, faRecycle } from '@fortawesome/free-solid-svg-icons';
@@ -20,6 +20,9 @@ export default function Home({ navigation }) {
     const [isRefreshing, setIsRefrshing] = useState(false)
     const USER_PROFILE = require('./../../../../assets/USER/USER_PROFILE.jpg')
     const [selected, setSelected] = useState()
+    const [edit, setEdit] = useState(true)
+    const [editText, setEditText] = useState('')
+    const [edited, setEdited] = useState(false)
 
     const handleCategory = (category) => {
         setCategory(category)
@@ -52,12 +55,34 @@ export default function Home({ navigation }) {
         setSelected(ind)
     }
 
+    const Edited = (valor) => {
+        if (!edited) {
+            setEdited(true)
+        }
+        setEditText(valor)
+    }
+
     useEffect(() => {
         if (!started) {
             getPublications()
             setStarted(true)
         }
     })
+
+    const Edit = (ind, value) => {
+        let old = selected >= 0 ? Pub[selected] : []
+        if (edited && old.CONTENT != value) {
+            console.log(ind, value);
+            const db = getDatabase(app)
+            const reference = ref(db, 'publication/' + old.ID)
+            update(reference, { CONTENT: value })
+                .then(() => {
+                    console.log('Post: ' + ind + ', ' + value);
+                    setEdit(false)
+                    getPublications()
+                })
+        }
+    }
 
     return (
 
@@ -86,7 +111,8 @@ export default function Home({ navigation }) {
                 showsVerticalScrollIndicator={false}
                 refreshing={isRefreshing}
                 onRefresh={handleRefresh}
-                onTouchStart={() => {
+                onScroll={() => {
+                    setEdited(false)
                     onSelect(null)
                 }}
                 renderItem={({ item, index }) => {
@@ -125,7 +151,15 @@ export default function Home({ navigation }) {
                                     </View>
                                     {isSelected ?
                                         <View style={publication.bottom}>
-                                            <FontAwesomeIcon size={22} color='#666666' icon={faPen} />
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    setEdited(false)
+                                                    setEdit(true)
+                                                }}
+                                            >
+
+                                                <FontAwesomeIcon size={22} color='#666666' icon={faPen} />
+                                            </TouchableOpacity>
                                             <FontAwesomeIcon size={22} color='#666666' icon={faTrashAlt} />
                                         </View>
                                         : []}
@@ -162,6 +196,48 @@ export default function Home({ navigation }) {
                     <FontAwesomeIcon size={25} color='#333333' icon={faPlus} />
                 </View>
             </TouchableOpacity>
+
+            <Modal animationType='slide' visible={edit} transparent>
+                <View style={{ flex: 1, backgroundColor: "#fff", padding: 20, gap: 20 }}>
+                    <Text style={{ fontWeight: '700', fontSize: 30 }}>Edit</Text>
+
+                    <Text style={{ fontWeight: '700', fontSize: 20 }}>Current</Text>
+                    {edit ?
+                        <Text style={{ fontWeight: '500', fontSize: 18, color: "#aaa" }}>{selected >= 0 ? Pub[selected].CONTENT : []}</Text>
+                        : []
+                    }
+
+                    <Text style={{ fontWeight: '700', fontSize: 20 }}>New</Text>
+                    {edit ?
+                        <TextInput style={{ fontWeight: '500', fontSize: 18, color: "#333" }} multiline defaultValue={selected >= 0 ? Pub[selected].CONTENT : ''} onChangeText={(valor) => { Edited(valor) }}></TextInput>
+                        : []
+                    }
+
+                    <View style={{ flexDirection: 'row', gap: 10 }}>
+                        <TouchableOpacity
+                            activeOpacity={.8}
+                            onPress={() => {
+                                setEdit(false)
+                            }}
+                        >
+                            <View style={{ borderRadius: 5, paddingHorizontal: 20, paddingVertical: 10, backgroundColor: "#000000" }}>
+                                <Text style={{ color: "#ffffff", fontSize: 20, fontWeight: '700', letterSpacing: 4 }}>Back</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            activeOpacity={.8}
+                            onPress={() => {
+                                Edit(selected, editText)
+                            }}
+                        >
+                            <View style={{ borderRadius: 5, paddingHorizontal: 20, paddingVertical: 10, backgroundColor: "#000000" }}>
+                                <Text style={{ color: "#ffffff", fontSize: 20, fontWeight: '700', letterSpacing: 4 }}>Edit</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+
+                </View>
+            </Modal>
 
         </View>
     )
