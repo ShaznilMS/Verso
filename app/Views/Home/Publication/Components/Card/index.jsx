@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: "#ffffff",
         borderTopWidth: 2,
-        borderTopColor: '#eee'
+        borderTopColor: '#aaa'
     },
     content: {
         width: '100%',
