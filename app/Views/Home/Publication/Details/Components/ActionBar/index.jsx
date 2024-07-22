@@ -9,17 +9,17 @@ const ActionBar = (props) => {
         <View style={styles.container}>
             <TouchableOpacity activeOpacity={.8} onPress={props.onPress} style={styles.holder}>
                 <FontAwesomeIcon size={18} color='#afaeae' icon={faHeart} />
-                <Text style={{color:'#afaeae', fontSize: 16}}>{props.likes}</Text>
+                <Text style={{ color: '#afaeae', fontSize: 16 }}>{props.likes}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity activeOpacity={.8} onPress={props.onPress} style={styles.holder}>
                 <FontAwesomeIcon size={18} color='#afaeae' icon={faMessage} />
-                <Text style={{color:'#afaeae', fontSize: 16}}>{props.coments}</Text>
+                <Text style={{ color: '#afaeae', fontSize: 16 }}>{props.coments}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity activeOpacity={.8} onPress={props.onPress} style={styles.holder}>
                 <FontAwesomeIcon size={18} color='#afaeae' icon={faArrowUpFromBracket} />
-                <Text style={{color:'#afaeae', fontSize: 16}}>{props.shares}</Text>
+                <Text style={{ color: '#afaeae', fontSize: 16 }}>{props.shares}</Text>
             </TouchableOpacity>
         </View>
     )
@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal:20
+        paddingHorizontal: 20,
+        borderBottomWidth:1
     },
     holder: {
         gap: 5,

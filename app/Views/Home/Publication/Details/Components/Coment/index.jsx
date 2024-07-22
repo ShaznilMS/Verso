@@ -19,13 +19,13 @@ const Coment = (props) => {
                 </View>
             </View>
             <View style={styles.coment}>
-                <Text>{props.content}</Text>
+                <Text>{props.coment}</Text>
                 <View style={styles.bottom}>
                     <Text style={{ color: '#777777', fontWeight: 500 }}>Responder</Text>
-                    <View style={{ flexDirection: 'row', gap: 5 }}>
-                        <TouchableOpacity><FontAwesomeIcon color='#777777' icon={faHeart} /></TouchableOpacity>
-                        <TouchableOpacity><Text style={{ color: '#777777', fontWeight: 500 }}>{props.ComentLikes} </Text></TouchableOpacity>
-                    </View>
+                    <TouchableOpacity style={{ flexDirection: 'row', gap: 5 }}>
+                        <FontAwesomeIcon color='#777777' icon={faHeart} />
+                        <Text style={{ color: '#777777', fontWeight: 500 }}>{props.ComentLikes} </Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'space-between',
         paddingHorizontal: 20,
-        gap: 20
+        gap: 5
     },
     img: {
         width: '100%',
@@ -47,8 +47,8 @@ const styles = StyleSheet.create({
         borderRadius: 100,
     },
     img_cont: {
-        width: 60,
-        height: 60,
+        width: 40,
+        height: 40,
         borderRadius: 100,
         shadowColor: '#171717',
         shadowOffset: { width: -2, height: 4 },
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     },
     name: {
         fontWeight: 'bold',
-        fontSize: 15
+        fontSize: 13
     },
     content: {
         fontWeight: 'bold',
@@ -75,11 +75,12 @@ const styles = StyleSheet.create({
         maxWidth: 200
     },
     coment: {
-        backgroundColor: '#eeeeee',
+        backgroundColor: '#e2e2e2',
         borderRadius: 15,
         gap: 20,
         paddingVertical: 15,
-        paddingHorizontal: 20
+        paddingHorizontal: 20,
+        marginLeft: 50
     },
     bottom: {
         width: '100%',

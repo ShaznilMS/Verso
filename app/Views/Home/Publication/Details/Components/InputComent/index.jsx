@@ -5,10 +5,10 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 
 const InputComent = (props) => {
     return (
-        <View style={[styles.container,props.style]}>
+        <View style={[styles.container, props.style]}>
             <TextInput style={styles.input} placeholder='Escreva o seu comentario...' />
             <TouchableOpacity activeOpacity={.6} style={styles.btn} onPress={props.onPress}>
-                <FontAwesomeIcon icon={faPaperPlane} size={20}/>
+                <FontAwesomeIcon icon={faPaperPlane} size={20} />
             </TouchableOpacity>
         </View>
     )
@@ -22,18 +22,19 @@ const styles = StyleSheet.create({
         height: 50,
         paddingHorizontal: 20,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     input: {
         width: 363,
         height: 50,
         borderRadius: 30,
         padding: 15,
-        borderWidth: 1
+        borderWidth: 1,
+        backgroundColor: '#fff'
     },
     btn: {
         position: 'absolute',
         alignSelf: 'flex-end',
-        left:'95%'
+        left: '95%'
     }
 })

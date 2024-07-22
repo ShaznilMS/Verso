@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { StyleSheet, Text, TextInputComponent, View } from 'react-native'
+import { FlatList, StyleSheet, Text, TextInputComponent, View } from 'react-native'
 import User from './Components/User'
 import ActionBar from './Components/ActionBar'
 import InputComent from './Components/InputComent'
@@ -8,7 +8,7 @@ import Coment from './Components/Coment'
 
 const Details = ({ route, navigation }) => {
 
-    const {data} = route.params
+    const { data } = route.params
     console.log(data)
     useEffect(() => {
         navigation.getParent().setOptions({ tabBarStyle: { display: 'none' } })
@@ -23,7 +23,26 @@ const Details = ({ route, navigation }) => {
         height: 80,
         background: '#fff'
     }
-
+    const comentData = [
+        {
+        comentLikes: 2,
+        user:'Antonio Cossa',
+        coment:'Faço minhas suas palavras',
+        time:'20/07/24'
+    },
+    {
+        comentLikes: 2,
+        user:'Shaznil Sulemane',
+        coment:'Gajo mau',
+        time:'20/07/24'
+    },
+    {
+        comentLikes: 2,
+        user:'Raimundo Chitava',
+        coment:'Valeu pessoal',
+        time:'20/07/24'
+    }
+]
     return (
         <View>
             <User back={() => {
@@ -31,13 +50,21 @@ const Details = ({ route, navigation }) => {
                 navigation.goBack()
             }} user={data.USER_NAME} time={data.DATE_TIME} />
             <View style={styles.content}>
-                <Text style={{ paddingHorizontal:20, fontSize: 15, textAlign: 'center', fontWeight: 400 }}>{data.CONTENT}</Text>
-                <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>{data.Quote}</Text>
+                <Text style={{ paddingHorizontal: 20, fontSize: 15, textAlign: 'center', fontWeight: 400 }}>{data.CONTENT}</Text>
+                <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>{data.QUOTE}</Text>
             </View>
             <ActionBar likes='20' shares='25' coments='2' />
             <View style={styles.coments}>
-                {/* <Coment ComentLikes='20' user='Antonio Cossa' time='20/07/24' /> */}
-                <InputComent style={styles.InputComent}/>
+                <InputComent style={styles.InputComent} />
+
+                <FlatList data={comentData}
+                style={{flex:1,paddingVertical:20}}
+                    renderItem={({ item }) => {
+                        return (
+                            <Coment ComentLikes={item.comentLikes} user={item.user} time={item.time} coment={item.coment} />
+                        )
+                    }} />
+                
             </View>
         </View>
     )
@@ -57,12 +84,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     coments: {
+        paddingTop: 20,
         width: '100%',
         minHeight: 300,
-        backgroundColor: '#f5f5f5a4'
+        gap: 50
     },
-    InputComent:{
-        position:'absolute',
-        bottom:0
+    InputComent: {
+        top: 5
     }
 })
