@@ -1,48 +1,35 @@
-import { ref, getDatabase, push, get, limitToFirst, query } from "firebase/database";
+import { ref, getDatabase, push, get, query, limitToFirst } from "firebase/database";
 import { app } from "./configs/firebase.config.mjs";
 
 console.log('Get database!');
 
-const db = getDatabase(app)
+const db = getDatabase(app);
 
-// for (let i = 0; i <= 14; i++) {
-//     console.log('Make:',i);
-//     const reference = ref(db, 'publication/' + i)
-//     update(reference, { STATUS: 'Initial', DATE_TIME: '21/07/2024', CATEGORY: 'Filosofica', QUOTE: "" })
-//         .then(() => {
-//             console.log('Then');
-//         })
-//         .catch((error) => {
-//             console.log('Error');
-//         })
-//         .finally(() => {
-//             console.log('Finally');
-//         })
-// }
-const tm = new Date()
-const reference_comment = ref(db, 'publication/16/COMMENTARY')
+// Function to get a limited number of random comments
+function GetRandom(limit) {
+    const reference_comment = ref(db, 'publication/');
 
-function Push() {
-    push(reference_comment, { Name: 'Shaznil Mussagy Sulemane', Time: (tm.getUTCFullYear(), tm.getUTCMonth(), tm.getUTCDay()), Comment: 'Opah mo chapa' })
-        .then(() => {
-            console.log('Then');
-        })
-}
+    // Fetch all comments
+    get(reference_comment)
+        .then((snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                const keys = Object.keys(data);
+                const randomKeys = keys.sort(() => 0.5 - Math.random()).slice(0, limit);
+                const randomItems = randomKeys.map(key => data[key]);
 
-function Get() {
-
-    const limitedQuery = query(reference_comment, limitToFirst(1));
-    
-    get(limitedQuery)
-        .then((value) => {
-            console.log(value.val());
+                console.log('Random items:', randomItems.length);
+            } else {
+                console.log('No data available');
+            }
         })
         .catch((error) => {
-            console.log(error.code);
+            console.log('Error:', error.code);
         })
         .finally(() => {
             console.log('Finally!');
-        })
+        });
 }
 
-Get()
+// Example usage: Get 10 random comments
+GetRandom(10);
