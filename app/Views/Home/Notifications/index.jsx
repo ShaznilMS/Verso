@@ -2,22 +2,16 @@ import { getAuth } from '@firebase/auth';
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { app } from '../../../../configs/firebase.config.mjs';
-import Details from '../Publication/Details';
 
 export default function Notifications({ navigation }) {
 
     const [isRefreshing, setIsRefrshing] = useState(false)
-
-    // if (!getAuth(app).currentUser) {
-
-    // }
 
     function handleRefresh() {
         console.log('Refresh!');
     }
 
     return (
-
         <View style={styles.bg}>
         </View>
     );
