@@ -54,7 +54,7 @@ export default function AddPublication({ navigation }) {
                             LIKES: "",
                             ID: num,
                             CATEGORY: "Filosoficas",
-                            QUOTE: '',
+                            QUOTE: '~ '+ data.Name,
                             STATUS: "Initial",
                             COMMENTARY: ""
                         }).then(() => {
