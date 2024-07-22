@@ -25,24 +25,24 @@ const Details = ({ route, navigation }) => {
     }
     const comentData = [
         {
-        comentLikes: 2,
-        user:'Antonio Cossa',
-        coment:'Faço minhas suas palavras',
-        time:'20/07/24'
-    },
-    {
-        comentLikes: 2,
-        user:'Shaznil Sulemane',
-        coment:'Gajo mau',
-        time:'20/07/24'
-    },
-    {
-        comentLikes: 2,
-        user:'Raimundo Chitava',
-        coment:'Valeu pessoal',
-        time:'20/07/24'
-    }
-]
+            comentLikes: 2,
+            user: 'Antonio Cossa',
+            coment: 'Faço minhas suas palavras',
+            time: '20/07/24'
+        },
+        {
+            comentLikes: 2,
+            user: 'Shaznil Sulemane',
+            coment: 'Gajo mau',
+            time: '20/07/24'
+        },
+        {
+            comentLikes: 2,
+            user: 'Raimundo Chitava',
+            coment: 'Valeu pessoal',
+            time: '20/07/24'
+        }
+    ]
     return (
         <View>
             <User back={() => {
@@ -54,17 +54,18 @@ const Details = ({ route, navigation }) => {
                 <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>{data.QUOTE}</Text>
             </View>
             <ActionBar likes='20' shares='25' coments='2' />
+
             <View style={styles.coments}>
                 <InputComent style={styles.InputComent} />
 
                 <FlatList data={comentData}
-                style={{flex:1,paddingVertical:20}}
+                    style={{ flex: 1, marginVertical: 20 }}
                     renderItem={({ item }) => {
                         return (
                             <Coment ComentLikes={item.comentLikes} user={item.user} time={item.time} coment={item.coment} />
                         )
                     }} />
-                
+
             </View>
         </View>
     )
@@ -91,5 +92,10 @@ const styles = StyleSheet.create({
     },
     InputComent: {
         top: 5
+    },
+    comentArea: {
+        backgroungColor: '#8000ff',
+        width: '100%',
+        height: '100%'
     }
 })
