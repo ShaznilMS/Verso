@@ -125,7 +125,7 @@ const Details = ({ route, navigation }) => {
 
         const tm = new Date()
 
-        console.log('Push Comments', getUserId());
+        // console.log('Push Comments', getUserId());
 
 
         get(reference_user)
@@ -138,7 +138,7 @@ const Details = ({ route, navigation }) => {
                     })
             })
             .catch((error) => {
-                console.log(error)
+                // console.log(error)
             })
             .finally(() => {
                 // console.log(data);
@@ -146,7 +146,7 @@ const Details = ({ route, navigation }) => {
     }
 
     function doNothing() {
-        console.log('Do Nothing!');
+        // console.log('Do Nothing!');
     }
 
     // setInterval(() => {
@@ -187,7 +187,7 @@ const Details = ({ route, navigation }) => {
                         )
                     }} />
             </View>
-            <InputComent onSendComment={() => { pushComments() }} onText={setText} style={styles.InputComent} />
+            <InputComent onSendComment={() => {pushComments()}} onText={setText} style={styles.InputComent} />
         </View>
     )
 }
