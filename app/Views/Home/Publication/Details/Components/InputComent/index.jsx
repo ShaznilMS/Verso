@@ -6,8 +6,8 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 const InputComent = (props) => {
     return (
         <View style={[styles.container, props.style]}>
-            <TextInput style={styles.input} placeholder='Escreva o seu comentario...' />
-            <TouchableOpacity activeOpacity={.6} style={styles.btn} onPress={props.onPress}>
+            <TextInput onChangeText={props.onText} style={styles.input} placeholder='Escreva o seu comentario...' />
+            <TouchableOpacity activeOpacity={.6} style={styles.btn} onPress={props.onSendComment}>
                 <FontAwesomeIcon icon={faPaperPlane} size={20} />
             </TouchableOpacity>
         </View>
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     input: {
-        width: 363,
+        width: '100%',
         height: 50,
         borderRadius: 30,
         padding: 15,
