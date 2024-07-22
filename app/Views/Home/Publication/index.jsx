@@ -12,6 +12,7 @@ export default function AddPublication({ navigation }) {
 
     const [postCount, setPostCount] = useState()
     const [content, setContent] = useState('')
+    const [ImageID, setImageID] = useState(0)
 
     function addPublication() {
         const user = getAuth(app)
@@ -56,7 +57,8 @@ export default function AddPublication({ navigation }) {
                             CATEGORY: "Filosoficas",
                             QUOTE: '',
                             STATUS: "Initial",
-                            COMMENTARY: ""
+                            COMMENTARY: "",
+                            IMAGE_ID: ImageID
                         }).then(() => {
                             console.log('Setted!');
                             _post_index.push(POST_ID)
@@ -85,20 +87,20 @@ export default function AddPublication({ navigation }) {
     return (
         <View style={add_publication.container}>
             <View>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text style={add_publication.title_page}>New Publication</Text>
-                <TouchableOpacity
-                    onPress={addPublication}
-                    activeOpacity={.8}>
-                    <View style={{padding: 15, borderRadius: 30, backgroundColor: "#000000"}}>
-                        <FontAwesomeIcon icon={faPaperPlane} size={20} color="#ffffff"/>
-                    </View>
-                </TouchableOpacity>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <Text style={add_publication.title_page}>New Publication</Text>
+                    <TouchableOpacity
+                        onPress={addPublication}
+                        activeOpacity={.8}>
+                        <View style={{ padding: 15, borderRadius: 30, backgroundColor: "#000000" }}>
+                            <FontAwesomeIcon icon={faPaperPlane} size={20} color="#ffffff" />
+                        </View>
+                    </TouchableOpacity>
                 </View>
                 <Text style={add_publication.title}>Post</Text>
 
                 <TextInput onChangeText={setContent} style={{ width: '100%', flexWrap: 'wrap', fontSize: 25, fontWeight: '700', textDecorationLine: 'none', textDecorationStyle: 'dotted', textDecorationColor: '#ffffff' }} multiline={true} placeholder='Post...' />
-
+                <TextInput onChangeText={setImageID} keyboardType="decimal-pad" placeholder="Insert_image_id..." style={{ width: '100%', flexWrap: 'wrap', fontSize: 25, fontWeight: '700', textDecorationLine: 'none', textDecorationStyle: 'dotted', textDecorationColor: '#ffffff' }}/>
             </View>
             <View style={{ gap: 10 }}>
                 <TouchableOpacity
@@ -110,8 +112,9 @@ export default function AddPublication({ navigation }) {
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => { 
-                        navigation.goBack()}}//navigate('TabNavigator', {screen: 'Home'})  }}
+                    onPress={() => {
+                        navigation.goBack()
+                    }}//navigate('TabNavigator', {screen: 'Home'})  }}
                     activeOpacity={.8}
                 >
                     <View style={add_publication.button}>

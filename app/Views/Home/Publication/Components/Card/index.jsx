@@ -1,14 +1,17 @@
 import { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View, Animated, Vibration } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, Animated, Vibration, ImageBackground } from "react-native";
 import User from "../User";
 import ActionBar from "../ActionBar";
-import IMAGES from '../../../../../../assets/USER/links.mjs'
+import { IMAGES } from '../../../../../../assets/USER/links.mjs'
 
 export default function Card(props) {
 
-    const BG = IMAGES
-    const elemento = BG[1]
-    // console.log(elemento)
+    const [ImageNumber, SetImageNumber] = useState(0)
+
+    function Choose() { 
+        SetImageNumber(props.img)
+    }
+
     const [selected, setSelected] = useState(false)
 
     const value = useState(new Animated.Value(1))[0]
@@ -32,18 +35,22 @@ export default function Card(props) {
     })
 
     return (
-        <View style={styles.container}>
+
+        <View View style={styles.container} >
             <Animated.View style={[card.container, { backgroundColor: color }]}>
                 <User time={props.time} user={props.name} />
-                <View style={styles.content}>
-                    <View>
-                        <Animated.Text onLongPress={() => zoomIn.start()} onPressOut={() => zoomOut.start()} style={{ paddingHorizontal: 20, fontSize: font, textAlign: 'center', fontWeight: 400 }}>{props.text}</Animated.Text>
-                        <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>{props.citation ? props.citation : ''}</Text>
+                <ImageBackground source={{ uri: IMAGES[ImageNumber].image }} style={{ width: '100%', minHeight: 250, resizeMode: "cover" }}>
+                    <View style={styles.content}>
+                        <View>
+                            <Animated.Text onLongPress={() => zoomIn.start()} onPressOut={() => zoomOut.start()} style={{ paddingHorizontal: 20, fontSize: font, textAlign: 'center', fontWeight: 400 }}>{props.text}</Animated.Text>
+                            <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>{props.citation ? props.citation : ''}</Text>
+                        </View>
                     </View>
-                </View>
+                </ImageBackground>
                 <ActionBar likes='3' coments='1' shares='2' onComment={props.onComment} />
             </Animated.View>
         </View>
+
     )
 }
 
@@ -59,11 +66,7 @@ const styles = StyleSheet.create({
     content: {
         width: '100%',
         minHeight: 250,
-        borderTopWidth: 1,
         paddingVertical: 20,
-        borderBottomWidth: 1,
-        borderColor: '#f5f5f5a4',
-        backgroundColor: '#f5f5f5a4',
         justifyContent: 'center'
     }
 })
