@@ -86,12 +86,12 @@ const Details = ({ route, navigation }) => {
         }
         setIsRefreshing(false)
 
-        // const interval = setInterval(() => {
-        //     getComments()
-        // }, 1000); // Update every 5 seconds
+        const interval = setInterval(() => {
+            getComments()
+        }, 1000); // Update every 5 seconds
 
-        // // Cleanup interval on component unmount
-        // return () => clearInterval(interval);
+        // Cleanup interval on component unmount
+        return () => clearInterval(interval);
     });
 
     function getComments() {
