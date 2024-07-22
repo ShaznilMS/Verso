@@ -2,9 +2,13 @@ import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Animated, Vibration } from "react-native";
 import User from "../User";
 import ActionBar from "../ActionBar";
+import IMAGES from '../../../../../../assets/USER/links.mjs'
 
 export default function Card(props) {
 
+    const BG = IMAGES
+    const elemento = BG[1]
+    console.log(elemento)
     const [selected, setSelected] = useState(false)
 
     const value = useState(new Animated.Value(1))[0]
@@ -37,7 +41,7 @@ export default function Card(props) {
                         <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>{props.citation ? props.citation : ''}</Text>
                     </View>
                 </View>
-                <ActionBar likes='3' coments='1' shares='2' onComment={props.onComment}/>
+                <ActionBar likes='3' coments='1' shares='2' onComment={props.onComment} />
             </Animated.View>
         </View>
     )
