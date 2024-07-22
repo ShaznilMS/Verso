@@ -145,6 +145,7 @@ export default function Home({ navigation }) {
                     navigation.navigate('StackNavigator', { screen: 'AddPublication' })
                 }}
             >
+                
 
                 <View
                     style={{

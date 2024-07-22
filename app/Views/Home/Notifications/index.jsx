@@ -19,19 +19,6 @@ export default function Notifications({ navigation }) {
     return (
 
         <View style={styles.bg}>
-            <Details />
-            <FlatList
-                data={[{}]}
-                refreshing={isRefreshing}
-                style={{ flex: 1, backgroundColor: "#fff" }}
-                onRefresh={handleRefresh}
-                renderItem={() => {
-
-                }}
-
-            />
-
-
         </View>
     );
 }
