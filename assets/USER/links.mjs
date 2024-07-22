@@ -51,6 +51,6 @@ const IMAGES = [
     }
 ]
 
-export default {
+export {
     IMAGES
 }
