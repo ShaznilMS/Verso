@@ -41,7 +41,7 @@ export default function SignIn({ navigation }) {
                 StackActions.replace('TabNavigator')
             )
         } else {
-            // Login()
+            console.log('User does not exist!');
         }
     })
 

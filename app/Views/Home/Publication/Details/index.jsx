@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Animated, FlatList, StyleSheet, Text, TextInputComponent, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Animated, FlatList, StyleSheet, Text, TextInputComponent, TouchableOpacity, View } from 'react-native'
 import User from './Components/User'
 import ActionBar from './Components/ActionBar'
 import InputComent from './Components/InputComent'
 import Coment from './Components/Coment'
-import { get, getDatabase, ref, push } from 'firebase/database'
+import { get, getDatabase, ref, push, limitToFirst, query } from 'firebase/database'
 import { app } from '../../../../../configs/firebase.config.mjs'
 import sha256 from 'sha256'
 import { getAuth } from '@firebase/auth'
@@ -14,7 +14,7 @@ const Details = ({ route, navigation }) => {
 
     const { data } = route.params
 
-    const tabBarStyl = {
+    const tabBarStyle = {
         position: 'absolute',
         bottom: 0,
         rigth: 0,
@@ -23,27 +23,8 @@ const Details = ({ route, navigation }) => {
         height: 80,
         background: '#fff'
     }
-    const comentData = [
-        {
-            comentLikes: 2,
-            user: 'Antonio Cossa',
-            coment: 'Faço minhas suas palavras',
-            time: '20/07/24'
-        },
-        {
-            comentLikes: 2,
-            user: 'Shaznil Sulemane',
-            coment: 'Gajo mau',
-            time: '20/07/24'
-        },
-        {
-            comentLikes: 2,
-            user: 'Raimundo Chitava',
-            coment: 'Valeu pessoal',
-            time: '20/07/24'
-        }
-    ]
 
+    const [limitQuery, setLimitQuery] = useState(7)
     const hideValue = useState(new Animated.Value(0))[0]
     const [hideContent, setHideContent] = useState(true)
     const [display, setDisplay] = useState('none')
@@ -82,26 +63,30 @@ const Details = ({ route, navigation }) => {
     useEffect(() => {
         navigation.getParent().setOptions({ tabBarStyle: { display: 'none' } })
         if (isRefreshing) {
-            getComments()
+            getComments(limitQuery)
         }
         setIsRefreshing(false)
 
         const interval = setInterval(() => {
-            getComments()
+            getComments(limitQuery)
         }, 1000); // Update every 5 seconds
 
         // Cleanup interval on component unmount
         return () => clearInterval(interval);
     });
 
-    function getComments() {
+    function getComments(limit) {
         const db = getDatabase(app)
         const reference = ref(db, 'publication/' + data.ID + '/COMMENTARY')
+
+        const limitedQuery = query(reference, limitToFirst(limitQuery));
+
         setIsRefreshing(true)
-        get(reference)
+        get(limitedQuery)
             .then((value) => {
                 if (value.val()) {
                     setComments(value.val())
+                    setLimitQuery(limitQuery + 7)
                 }
             })
             .catch((error) => {
@@ -134,7 +119,7 @@ const Details = ({ route, navigation }) => {
                 const comment = { Name: user_data.Name, Time: tm.getUTCFullYear() + '/' + (tm.getUTCMonth() + 1 < 10 ? '0' + (tm.getUTCMonth() + 1) : tm.getUTCMonth() + 1) + '/' + (tm.getUTCDate() < 10 ? '0' + tm.getUTCDate() : tm.getUTCDate()), Comment: text }
                 push(reference_comment, comment)
                     .then(() => {
-                        getComments()
+                        getComments(limitQuery)
                     })
             })
             .catch((error) => {
@@ -160,7 +145,7 @@ const Details = ({ route, navigation }) => {
             }}
         >
             <User back={() => {
-                navigation.getParent().setOptions({ tabBarStyle: tabBarStyl })
+                navigation.getParent().setOptions({ tabBarStyle: tabBarStyle })
                 navigation.goBack()
             }} user={data.USER_NAME} time={data.DATE_TIME} onCallHide={() => { handleHide() }} />
 
@@ -180,17 +165,34 @@ const Details = ({ route, navigation }) => {
                     data={Object.values(Comments).reverse()}
                     style={{ flex: 1 }}
                     inverted
-                    ItemSeparatorComponent={<View style={{ height: 10 }}></View>}
+                    onEndReached={() => getComments(limitQuery)}
+                    onEndReachedThreshold={0.2}
+                    ItemSeparatorComponent={<View style={{ width: '100%', height: 20, backgroundColor: "#fff0" }}></View>}
+                    ListFooterComponent={<Loading isLoading={isRefreshing} />}
                     renderItem={({ item }) => {
                         return (
                             <Coment user={item.Name} time={item.Time} coment={item.Comment} />
                         )
                     }} />
             </View>
-            <InputComent onSendComment={() => {pushComments()}} onText={setText} style={styles.InputComent} />
+            <InputComent onSendComment={() => { pushComments() }} onText={setText} style={styles.InputComent} />
         </View>
     )
+    function Loading({ isLoading }) {
+
+        if(!isLoading) return null
+
+        return (
+            <View style={{
+                width: '100%',
+                height: 30
+            }}>
+                <ActivityIndicator color={"#000"} size={30}></ActivityIndicator>
+            </View>
+        )
+    }
 }
+
 
 export default Details
 
