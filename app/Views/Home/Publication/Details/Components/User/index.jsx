@@ -2,6 +2,7 @@ import React from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowLeft, faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { faEye } from '@fortawesome/free-regular-svg-icons';
 
 const img = require('./images.jpg')
 
@@ -10,15 +11,15 @@ const User = (props) => {
         <View style={styles.container}>
             <View style={styles.user}>
             <TouchableOpacity style={{paddingEnd:10}} onPress={props.back}><FontAwesomeIcon icon={faArrowLeft} size={25}/></TouchableOpacity>
-                <View style={styles.img_cont}>
+                {/* <View style={styles.img_cont}>
                     <Image source={img} style={styles.img} />
-                </View>
+                </View> */}
                 <View style={styles.info}>
                     <Text style={styles.name}>{props.user}</Text>
                     <Text style={styles.time}>{props.time}</Text>
                 </View>
             </View>
-            <TouchableOpacity style={styles.options} onPress={props.onPress}><FontAwesomeIcon icon={faEllipsis} color='#cfcfcf' size={25}/></TouchableOpacity>
+            <TouchableOpacity style={styles.options} onPress={props.onCallHide}><FontAwesomeIcon icon={faEye} color='#cfcfcf' size={25}/></TouchableOpacity>
         </View>
     )
 }
@@ -28,11 +29,12 @@ export default User
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height: 100,
+        height: 80,
         alignItems: "center",
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal:20
+        paddingHorizontal:20,
+        backgroundColor: '#fff'
     },
     img: {
         width: '100%',
@@ -51,10 +53,9 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffffff",
         padding: 5
     },
-    info: {},
     user:{
         flexDirection:'row',
-        gap:10,
+        gap: 5,
         alignItems:'center'
     },
     name:{

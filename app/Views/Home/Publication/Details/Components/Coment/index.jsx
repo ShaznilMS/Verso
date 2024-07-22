@@ -20,13 +20,13 @@ const Coment = (props) => {
             </View>
             <View style={styles.coment}>
                 <Text>{props.coment}</Text>
-                <View style={styles.bottom}>
+                {/* <View style={styles.bottom}>
                     <Text style={{ color: '#777777', fontWeight: 500 }}>Responder</Text>
                     <TouchableOpacity style={{ flexDirection: 'row', gap: 5 }}>
                         <FontAwesomeIcon color='#777777' icon={faHeart} />
                         <Text style={{ color: '#777777', fontWeight: 500 }}>{props.ComentLikes} </Text>
                     </TouchableOpacity>
-                </View>
+                </View> */}
             </View>
         </View>
     )

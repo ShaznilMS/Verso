@@ -8,7 +8,7 @@ export default function Card(props) {
 
     const BG = IMAGES
     const elemento = BG[1]
-    console.log(elemento)
+    // console.log(elemento)
     const [selected, setSelected] = useState(false)
 
     const value = useState(new Animated.Value(1))[0]
