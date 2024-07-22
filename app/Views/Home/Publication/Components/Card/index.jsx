@@ -28,18 +28,18 @@ export default function Card(props) {
     })
 
     return (
-        <TouchableOpacity onPress={props.onPress} activeOpacity={1} style={styles.container}>
+        <View style={styles.container}>
             <Animated.View style={[card.container, { backgroundColor: color }]}>
                 <User time={props.time} user={props.name} />
                 <View style={styles.content}>
                     <View>
-                        <Animated.Text onPress={props.onPress} onLongPress={() => zoomIn.start()} onPressOut={() => zoomOut.start()} style={{ paddingHorizontal: 20, fontSize: font, textAlign: 'center', fontWeight: 400 }}>{props.text}</Animated.Text>
+                        <Animated.Text onLongPress={() => zoomIn.start()} onPressOut={() => zoomOut.start()} style={{ paddingHorizontal: 20, fontSize: font, textAlign: 'center', fontWeight: 400 }}>{props.text}</Animated.Text>
                         <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>{props.citation ? props.citation : ''}</Text>
                     </View>
                 </View>
                 <ActionBar likes='3' coments='1' shares='2' onComment={props.onComment}/>
             </Animated.View>
-        </TouchableOpacity>
+        </View>
     )
 }
 

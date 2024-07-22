@@ -45,19 +45,21 @@ export default function Profile({ navigation }) {
                     flexDirection: 'row',
                     width: '100%',
                     justifyContent: 'space-between',
-                    marginVertical: 7
+                    marginVertical: 7,
+                    alignItems:'center'
                 }}
             >
                 <View
                     style={{
                         flexDirection: 'row',
-                        gap: 10
+                        gap: 10,
+                        alignItems:'center'
                     }}
                 >
-                    <FontAwesomeIcon size={18} color='#333' icon={props.icon} />
+                    <FontAwesomeIcon size={16} color='#333' icon={props.icon} />
                     <Text
                         style={{
-                            fontSize: 18
+                            fontSize: 16
                         }}
                     >{props.name}</Text>
                 </View>
@@ -79,28 +81,31 @@ export default function Profile({ navigation }) {
             <View style={{
                 paddingHorizontal: 15,
                 borderRadius: 50,
-                borderWidth: 2,
-                paddingVertical: 4,
-                borderColor: '#aaa',
+                paddingVertical:3,
                 gap: 8,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: '#ffffff',
-                flexDirection: 'row'
+                flexDirection: 'row',
+                shadowColor: '#171717',
+                shadowOffset: { width: -2, height: 4 },
+                shadowOpacity: 0.3,
+                shadowRadius: 3,
+                elevation: 4,
+                backgroundColor: "#ffffff"
             }}>
                 <Text
                     style={{
-                        fontSize: 20,
-                        fontWeight: '700',
+                        fontSize: 18,
+                        fontWeight: '400',
                         color: "#000"
                     }}
                 >{props.name}</Text>
 
                 <Text
                     style={{
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: '700',
-                        color: "#aaa",
+                        color:'#aaa'
                     }}
                 >{props.num}</Text>
 
@@ -138,7 +143,8 @@ export default function Profile({ navigation }) {
                     </View>
                     <Text style={{
                         color: "#ffffff",
-                        fontSize: 30
+                        fontSize: 20,
+                        fontWeight:'bold'
                     }}>Raimundo Chitava</Text>
 
                     <TouchableOpacity activeOpacity={.8} onPress={Sair}>
@@ -258,7 +264,10 @@ export default function Profile({ navigation }) {
                     <View
                         style={{
                             gap: 4,
-                            paddingHorizontal: 20
+                            paddingHorizontal: 20,
+                            paddingVertical: 15,
+                            borderTopWidth:1,
+                            borderBottomWidth:1
                         }}
                     >
                         <Text
@@ -278,7 +287,7 @@ export default function Profile({ navigation }) {
                     <ScrollView
                         style={{
                             width: '100%',
-                            marginTop: 20,
+                            marginTop: 10
                         }}
                         horizontal
                         showsHorizontalScrollIndicator={false}
@@ -288,6 +297,7 @@ export default function Profile({ navigation }) {
                                 width: '100%',
                                 flexDirection: 'row',
                                 paddingHorizontal: 20,
+                                paddingVertical: 5,
                                 gap: 10
                             }}
                         >
