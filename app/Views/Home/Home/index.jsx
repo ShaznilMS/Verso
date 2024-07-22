@@ -129,7 +129,7 @@ export default function Home({ navigation }) {
                     }
 
                     return (
-                        <Card name={item.USER_NAME} text={item.CONTENT} time={item.DATE_TIME} citation={item.QUOTE} onPress={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
+                        <Card name={item.USER_NAME} text={item.CONTENT} time={item.DATE_TIME} citation={item.QUOTE} onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
                     )
                 }}
             />

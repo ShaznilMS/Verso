@@ -37,7 +37,7 @@ export default function Card(props) {
                         <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>{props.citation ? props.citation : ''}</Text>
                     </View>
                 </View>
-                <ActionBar likes='3' coments='1' shares='2' />
+                <ActionBar likes='3' coments='1' shares='2' onComment={props.onComment}/>
             </Animated.View>
         </TouchableOpacity>
     )

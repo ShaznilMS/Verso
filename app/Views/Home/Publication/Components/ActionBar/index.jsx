@@ -7,17 +7,17 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 const ActionBar = (props) => {
     return (
         <View style={styles.container}>
-            <TouchableOpacity activeOpacity={.8} onPress={props.onPress} style={styles.holder}>
+            <TouchableOpacity activeOpacity={.8} onPress={props.onLike} style={styles.holder}>
                 <FontAwesomeIcon size={18} color='#afaeae' icon={faHeart} />
                 <Text style={{color:'#afaeae', fontSize: 16}}>{props.likes}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity activeOpacity={.8} onPress={props.onPress} style={styles.holder}>
+            <TouchableOpacity activeOpacity={.8} onPress={props.onComment} style={styles.holder}>
                 <FontAwesomeIcon size={18} color='#afaeae' icon={faMessage} />
                 <Text style={{color:'#afaeae', fontSize: 16}}>{props.coments}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity activeOpacity={.8} onPress={props.onPress} style={styles.holder}>
+            <TouchableOpacity activeOpacity={.8} onPress={props.onShare} style={styles.holder}>
                 <FontAwesomeIcon size={18} color='#afaeae' icon={faArrowUpFromBracket} />
                 <Text style={{color:'#afaeae', fontSize: 16}}>{props.shares}</Text>
             </TouchableOpacity>
