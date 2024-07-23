@@ -1,18 +1,39 @@
 import { getAuth } from "@firebase/auth";
-import { useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
+import { FlatList, Image, ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import sha256 from "sha256";
 import { app } from "../../../../configs/firebase.config.mjs";
 import { get, getDatabase, ref, set, update } from 'firebase/database';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-
+import User from "./Components/User";
+import IMAGES from "../../../../assets/USER/links.mjs";
 
 export default function AddPublication({ navigation }) {
 
+    const [ImageNumber, SetImageNumber] = useState(0)
     const [postCount, setPostCount] = useState()
     const [content, setContent] = useState('')
     const [ImageID, setImageID] = useState(0)
+
+    const [stamp, SetStamp] = useState('')
+
+    function timeStamp() {
+        let time = new Date();
+        const tm = time.getUTCDate() + '/' + time.getUTCMonth() + '/' + time.getUTCFullYear()
+        SetStamp(tm)
+    }
+
+    stamp === '' ? timeStamp() : console.log(stamp)
+
+    function IMG(id) {
+        console.log(id)
+        SetImageNumber(id)
+    }
+
+    function back() {
+        navigation.goBack()
+    }
 
     function addPublication() {
         const user = getAuth(app)
@@ -44,14 +65,13 @@ export default function AddPublication({ navigation }) {
 
                         console.log(Post_index);
 
-                        let time = new Date();
-                        const tm = time.getUTCFullYear() + '/' + time.getUTCMonth() + '/' + time.getUTCDate()
+
 
                         set(setReferenceDatabase, {
                             USER_ID: sha256(user.currentUser.email),
                             USER_NAME: data.Name,
                             CONTENT: content,
-                            DATE_TIME: tm,
+                            DATE_TIME: stamp,
                             LIKES: "",
                             ID: num,
                             CATEGORY: "Filosoficas",
@@ -85,9 +105,38 @@ export default function AddPublication({ navigation }) {
     }
 
     return (
-        <View>
 
-            <View>
+
+        <View style={styles.container}>
+            <View style={styles.Card}>
+                <User user='Antonio Cossa' time={stamp} back={back} pub={addPublication} />
+                <ImageBackground source={{ uri: IMAGES[ImageNumber].image }} style={{ width: '100%', minHeight: 250, resizeMode: "cover" }}>
+                    <View style={styles.content}>
+
+                        <TextInput onChangeText={setContent} style={styles.input} multiline={true} placeholder='Insira seu pensamento...' placeholderTextColor='#fff' />
+                        <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Citacao</Text>
+                    </View>
+                </ImageBackground>
+            </View>
+
+            <FlatList data={IMAGES}
+                horizontal={true}
+                renderItem={({ item }) => {
+
+                    return (
+
+                        <TouchableOpacity onPress={IMG(item.id)} style={styles.img_cont}>
+                            <Image source={{ uri: item.image }} style={styles.img} resizeMode="cover" />
+                        </TouchableOpacity>
+
+                    )
+                }
+                } />
+        </View>
+    )
+}
+
+{/* <View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text style={add_publication.title_page}>New Publication</Text>
                     <TouchableOpacity
@@ -122,48 +171,53 @@ export default function AddPublication({ navigation }) {
                         <Text style={add_publication.button_text}>Voltar</Text>
                     </View>
                 </TouchableOpacity>
-            </View>
+            </View> */}
 
-        </View>
-    )
-}
 
-const add_publication = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
-        padding: 20,
         flex: 1,
-        justifyContent: 'space-between'
+        alignItems: 'center'
     },
-    title_page: {
-        fontSize: 30,
-        fontWeight: '700',
-        color: '#38434D'
-    },
-    title: {
-        fontSize: 30,
-        fontWeight: '700',
-        color: '#38434D'
-    },
-    textarea: {
-        flex: 1,
-        backgroundColor: "#f00",
-        height: 100,
-        width: '100%'
-    },
-    button: {
+    content: {
         width: '100%',
-        borderWidth: 2,
-        borderColor: '#000000',
-        backgroundColor: '#000000',
-        borderRadius: 10,
+        minHeight: 250,
+        paddingVertical: 30,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 10,
-        height: 60
+        gap: 30
     },
-    button_text: {
-        fontSize: 25,
-        fontWeight: '700',
-        color: "#ffffff"
+    Card: {
+        backgroundColor: "#fff",
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    input: {
+        width: '100%',
+        flexWrap: 'wrap',
+        fontSize: 18,
+        fontWeight: 'regular',
+        textDecorationLine: 'none',
+        textDecorationStyle: 'dotted',
+        textDecorationColor: '#ffffff',
+        textAlign: 'center',
+        color: '#fff'
+    },
+    img_cont: {
+        width: 100,
+        height: 100,
+        shadowColor: '#171717',
+        shadowOffset: { width: -2, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 4,
+        backgroundColor: "#ffffff"
+    },
+    img: {
+        width: '100%',
+        height: '100%',
+        borderWidth: 3,
+        borderColor: '#fff'
     }
 })

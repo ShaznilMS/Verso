@@ -1,8 +1,8 @@
 import React from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faArrowLeft, faEllipsis, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-import { faEye } from '@fortawesome/free-regular-svg-icons';
+import { faArrowLeft, faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 
 const img = require('./images.jpg')
 
@@ -19,7 +19,7 @@ const User = (props) => {
                     <Text style={styles.time}>{props.time}</Text>
                 </View>
             </View>
-            <TouchableOpacity style={{width:50,height:50,borderRadius:100, justifyContent:'center',alignItems:'center'}} onPress={props.onCallHide}><FontAwesomeIcon icon={faPaperPlane} size={25} /></TouchableOpacity>
+            <TouchableOpacity style={styles.options} onPress={props.pub}><FontAwesomeIcon icon={faPaperPlane}  size={25} /></TouchableOpacity>
         </View>
     )
 }
@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
         borderRadius: 100,
     },
     img_cont: {
-        width: 50,
-        height: 50,
+        width: 60,
+        height: 60,
         borderRadius: 100,
         shadowColor: '#171717',
         shadowOffset: { width: -2, height: 4 },
