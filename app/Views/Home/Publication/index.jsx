@@ -10,7 +10,7 @@ import User from "./Components/User";
 import IMAGES from "../../../../assets/USER/links.mjs";
 
 export default function AddPublication({ navigation }) {
-    const [Autor, setAutor] = useState()
+    const [Autor, setAutor] = useState('')
     const [ImageNumber, SetImageNumber] = useState(0)
     const [postCount, setPostCount] = useState()
     const [content, setContent] = useState('')
@@ -25,8 +25,11 @@ export default function AddPublication({ navigation }) {
 
     stamp === '' ? timeStamp() : console.log(stamp)
 
+    function handleAutor(autor) {
+        setAutor(autor)
+    }
+
     function IMG(id) {
-        console.log(id)
         SetImageNumber(id)
     }
 
@@ -72,7 +75,7 @@ export default function AddPublication({ navigation }) {
                             LIKES: "",
                             ID: num,
                             CATEGORY: "Filosoficas",
-                            QUOTE: '~ ' + data.Name,
+                            QUOTE: '~ ' + Autor || data.Name,
                             STATUS: "Initial",
                             COMMENTARY: "",
                             IMAGE_ID: ImageNumber
@@ -111,7 +114,7 @@ export default function AddPublication({ navigation }) {
                     <View style={styles.content}>
 
                         <TextInput onChangeText={setContent} style={styles.input} multiline={true} placeholder='Insira seu pensamento...' placeholderTextColor='#fff' />
-                        <Text style={{ fontWeight: 'bold', fontSize: 15 }}>{Autor}</Text>
+                        <TextInput onChangeText={handleAutor} style={styles.input_autor} placeholder="Insira o nome do autor..." placeholderTextColor='#fff' />
                     </View>
                 </ImageBackground>
             </View>
@@ -130,48 +133,9 @@ export default function AddPublication({ navigation }) {
                 }
                 } />
 
-
         </View>
     )
 }
-
-{/* <View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text style={add_publication.title_page}>New Publication</Text>
-                    <TouchableOpacity
-                        onPress={addPublication}
-                        activeOpacity={.8}>
-                        <View style={{ padding: 15, borderRadius: 30, backgroundColor: "#000000" }}>
-                            <FontAwesomeIcon icon={faPaperPlane} size={20} color="#ffffff" />
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                <Text style={add_publication.title}>Post</Text>
-
-                <TextInput onChangeText={setContent} style={{ width: '100%', flexWrap: 'wrap', fontSize: 25, fontWeight: '700', textDecorationLine: 'none', textDecorationStyle: 'dotted', textDecorationColor: '#ffffff' }} multiline={true} placeholder='Post...' />
-                <TextInput onChangeText={setImageID} keyboardType="decimal-pad" placeholder="Insert_image_id..." style={{ width: '100%', flexWrap: 'wrap', fontSize: 25, fontWeight: '700', textDecorationLine: 'none', textDecorationStyle: 'dotted', textDecorationColor: '#ffffff' }}/>
-            </View>
-            <View style={{ gap: 10 }}>
-                <TouchableOpacity
-                    onPress={addPublication}
-                    activeOpacity={.8}
-                >
-                    <View style={add_publication.button}>
-                        <Text style={add_publication.button_text}>Publicar</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => {
-                        navigation.goBack()
-                    }}//navigate('TabNavigator', {screen: 'Home'})  }}
-                    activeOpacity={.8}
-                >
-                    <View style={add_publication.button}>
-                        <Text style={add_publication.button_text}>Voltar</Text>
-                    </View>
-                </TouchableOpacity>
-            </View> */}
-
 
 const styles = StyleSheet.create({
     container: {
@@ -197,6 +161,15 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         fontSize: 18,
         fontWeight: 'regular',
+        textDecorationLine: 'none',
+        textDecorationStyle: 'dotted',
+        textDecorationColor: '#ffffff',
+        textAlign: 'center',
+        color: '#fff'
+    },
+    input_autor: {
+        fontSize: 15,
+        fontWeight: 'bold',
         textDecorationLine: 'none',
         textDecorationStyle: 'dotted',
         textDecorationColor: '#ffffff',
