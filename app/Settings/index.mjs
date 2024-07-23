@@ -71,5 +71,5 @@ export async function SignOut() {
 }
 
 export function SignUp(Email = '', Password = '') {
-    const Email = Email.replace(' ', '').includes('@')
+    const _Email = Email.replace(' ', '').includes('@')
 }

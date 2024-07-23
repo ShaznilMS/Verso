@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { GetAuthentication, SignIn, SignOut, VerifyAuthentication } from './Settings/index.mjs'
+import { GetAuthentication, SignIn, SignOut, SignUp, VerifyAuthentication } from './Settings/index.mjs'
 
 function Button({label, method}) {
     return (
@@ -22,6 +22,7 @@ export default function App() {
             <Button label={'Sign In'} method={() => SignIn(email, password)} />
             <Button label={'Sign Out'} method={() => SignOut() } />
             <Button label={'Get Authentication'} method={() => GetAuthentication().then((user) => console.log(user))} />
+            <Button label={'Sign  Up'} method={() => SignUp().then((user) => console.log(user))} />
         </View>
     )
 }
