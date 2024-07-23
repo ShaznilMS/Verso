@@ -36,11 +36,11 @@ export default function Card(props) {
 
             <Animated.View style={[card.container, { backgroundColor: color }]}>
                 <User time={props.time} user={props.name} />
-                <ImageBackground source={{ uri: IMAGES[ImageNumber].image }} style={{ width: '100%', minHeight: 250, resizeMode: "cover" }}>
+                <ImageBackground source={{ uri: IMAGES[props.img].image }} style={{ width: '100%', minHeight: 250, resizeMode: "cover" }}>
                     <View style={styles.content}>
                         <View>
-                            <Animated.Text onLongPress={() => zoomIn.start()} onPressOut={() => zoomOut.start()} style={{ paddingHorizontal: 20, fontSize: font, textAlign: 'center', fontWeight: 400 }}>{props.text}</Animated.Text>
-                            <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>{props.citation ? props.citation : ''}</Text>
+                            <Animated.Text onLongPress={() => zoomIn.start()} onPressOut={() => zoomOut.start()} style={{ paddingHorizontal: 20, fontSize: font, color: '#fff', textAlign: 'center', fontWeight: 400 }}>{props.text}</Animated.Text>
+                            <Text style={{ textAlign: 'center', fontWeight: 700, top: 30, color: '#fff' }}>{props.citation ? props.citation : ''}</Text>
                         </View>
                     </View>
                 </ImageBackground>
