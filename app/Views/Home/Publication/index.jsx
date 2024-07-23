@@ -125,7 +125,7 @@ export default function AddPublication({ navigation }) {
 
                     return (
 
-                        <TouchableOpacity onPress={IMG(item.id)} style={styles.img_cont}>
+                        <TouchableOpacity onPress={() => IMG(item.id)} style={styles.img_cont}>
                             <Image source={{ uri: item.image }} style={styles.img} resizeMode="cover" />
                         </TouchableOpacity>
 
