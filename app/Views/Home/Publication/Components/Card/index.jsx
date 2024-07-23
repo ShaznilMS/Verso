@@ -1,16 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Animated, Vibration, ImageBackground } from "react-native";
 import User from "../User";
 import ActionBar from "../ActionBar";
-import { IMAGES } from '../../../../../../assets/USER/links.mjs'
+import  IMAGES  from '../../../../../../assets/USER/links.mjs'
 
 export default function Card(props) {
 
     const [ImageNumber, SetImageNumber] = useState(0)
-
-    function Choose() { 
-        SetImageNumber(props.img)
-    }
 
     const [selected, setSelected] = useState(false)
 
@@ -37,6 +33,7 @@ export default function Card(props) {
     return (
 
         <View View style={styles.container} >
+
             <Animated.View style={[card.container, { backgroundColor: color }]}>
                 <User time={props.time} user={props.name} />
                 {/* <ImageBackground source={{ uri: IMAGES[ImageNumber].image }} style={{ width: '100%', minHeight: 250, resizeMode: "cover" }}> */}

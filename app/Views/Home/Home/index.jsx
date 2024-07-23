@@ -15,6 +15,8 @@ import Details from '../Publication/Details';
 let PostCount
 let Publication = [{}, {}]
 
+
+
 export default function Home({ navigation }) {
 
     const [Pub, setPub] = useState([])
@@ -146,9 +148,9 @@ export default function Home({ navigation }) {
                     } else {
                         color = "#ffffff"
                     }
-
+                    
                     return (
-                        <Card name={item.USER_NAME} text={item.CONTENT} time={item.DATE_TIME} citation={item.QUOTE} onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
+                        <Card img={item.IMAGE_ID} name={item.USER_NAME} text={item.CONTENT} time={item.DATE_TIME} citation={item.QUOTE} onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
                     )
                 }}
             />
@@ -164,7 +166,7 @@ export default function Home({ navigation }) {
                     navigation.navigate('StackNavigator', { screen: 'AddPublication' })
                 }}
             >
-                
+
 
                 <View
                     style={{
