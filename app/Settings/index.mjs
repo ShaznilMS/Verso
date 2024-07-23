@@ -68,5 +68,8 @@ export async function SignOut() {
     } catch (error) {
         console.log(error);
     }
+}
 
+export function SignUp(Email = '', Password = '') {
+    const Email = Email.replace(' ', '').includes('@')
 }

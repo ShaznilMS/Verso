@@ -2,7 +2,6 @@
 
 # dependencies
 node_modules/
-app/index.jsx
 # Expo
 .expo/
 dist/
@@ -33,5 +32,3 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
-
-app/index.js
