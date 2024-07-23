@@ -50,7 +50,7 @@ export default function SignIn({ navigation }) {
     })
 
     function handleLogin(data) {
-        console.log(data)
+        Login()
     }
 
     const schema = yup.object({
@@ -69,18 +69,18 @@ export default function SignIn({ navigation }) {
                 <Image source={logo} style={styles.img} />
             </View>
 
-            <Controller control={control} name='email' render={({ field: { onChange, onblur, value } }) => (
+            <Controller control={control} name='email' render={({ field: { setEmail, onblur, value } }) => (
                 <InputText style={{
                     borderWidth: errors.email ? errors.email && 1 : 2, borderColor: errors.email && '#ff375b'
-                }} title='Email' placeholder="Type your email here..." onChangeText={onChange} value={value} onblur={onblur} />
+                }} title='Email' placeholder="Type your email here..." onChangeText={setEmail} value={value} onblur={onblur} />
 
             )} />
             {errors.email && <Text style={styles.error}>{errors.email?.message}</Text>}
 
-            <Controller control={control} name='password' render={({ field: { onChange, onblur, value } }) => (
+            <Controller control={control} name='password' render={({ field: { setPassword, onblur, value } }) => (
                 <InputText style={{
                     borderWidth: errors.email ? errors.email && 1 : 2, borderColor: errors.email && '#ff375b'
-                }} title='Password' placeholder="Type your password here..." onChangeText={onChange} value={value} onblur={onblur} />
+                }} title='Password' placeholder="Type your password here..." onChangeText={setPassword} value={value} onblur={onblur} />
             )} />
             {errors.password && <Text style={styles.error}>{errors.password?.message}</Text>}
 
