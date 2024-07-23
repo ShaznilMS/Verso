@@ -80,7 +80,7 @@ export default function SignIn({ navigation }) {
 
             <Controller control={control} name='password' render={({ field: { onChange, onblur, value } }) => (
                 <InputText style={{
-                    borderWidth: errors.password ? errors.email && 1 : 2, borderColor: errors.password && '#ff375b'
+                    borderWidth: errors.password ? errors.password && 1 : 2, borderColor: errors.password && '#ff375b'
                 }} title='Password' placeholder="Type your password here..." onChangeText={onChange} value={value} onblur={onblur} />
             )} />
             {errors.password && <Text style={styles.error}>{errors.password?.message}</Text>}

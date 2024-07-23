@@ -10,16 +10,16 @@ const User = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.user}>
-            <TouchableOpacity style={{paddingEnd:10}} onPress={props.back}><FontAwesomeIcon icon={faArrowLeft} size={25}/></TouchableOpacity>
-                {/* <View style={styles.img_cont}>
+                <TouchableOpacity style={{ paddingEnd: 10 }} onPress={props.back}><FontAwesomeIcon icon={faArrowLeft} size={25} /></TouchableOpacity>
+                <View style={styles.img_cont}>
                     <Image source={img} style={styles.img} />
-                </View> */}
+                </View>
                 <View style={styles.info}>
                     <Text style={styles.name}>{props.user}</Text>
                     <Text style={styles.time}>{props.time}</Text>
                 </View>
             </View>
-            <TouchableOpacity style={styles.options} onPress={props.onCallHide}><FontAwesomeIcon icon={faEye} color='#cfcfcf' size={25}/></TouchableOpacity>
+            <TouchableOpacity style={styles.options} onPress={props.onCallHide}><FontAwesomeIcon icon={faEye} color='#cfcfcf' size={25} /></TouchableOpacity>
         </View>
     )
 }
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal:20,
+        paddingHorizontal: 20,
         backgroundColor: '#fff'
     },
     img: {
@@ -53,18 +53,18 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffffff",
         padding: 5
     },
-    user:{
-        flexDirection:'row',
+    user: {
+        flexDirection: 'row',
         gap: 5,
-        alignItems:'center'
+        alignItems: 'center'
     },
-    name:{
-        fontWeight:'bold',
-        fontSize:15
+    name: {
+        fontWeight: 'bold',
+        fontSize: 15
     },
-    time:{
-        fontWeight:'bold',
-        fontSize:12,
-        color:'#afaeae'
+    time: {
+        fontWeight: 'bold',
+        fontSize: 12,
+        color: '#afaeae'
     }
 })

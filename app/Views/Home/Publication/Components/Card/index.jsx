@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Animated, Vibration, ImageBackground } from "react-native";
 import User from "../User";
 import ActionBar from "../ActionBar";
-import  IMAGES  from '../../../../../../assets/USER/links.mjs'
+import IMAGES from '../../../../../../assets/USER/links.mjs'
 
 export default function Card(props) {
 
@@ -36,14 +36,14 @@ export default function Card(props) {
 
             <Animated.View style={[card.container, { backgroundColor: color }]}>
                 <User time={props.time} user={props.name} />
-                {/* <ImageBackground source={{ uri: IMAGES[ImageNumber].image }} style={{ width: '100%', minHeight: 250, resizeMode: "cover" }}> */}
+                <ImageBackground source={{ uri: IMAGES[ImageNumber].image }} style={{ width: '100%', minHeight: 250, resizeMode: "cover" }}>
                     <View style={styles.content}>
                         <View>
                             <Animated.Text onLongPress={() => zoomIn.start()} onPressOut={() => zoomOut.start()} style={{ paddingHorizontal: 20, fontSize: font, textAlign: 'center', fontWeight: 400 }}>{props.text}</Animated.Text>
                             <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>{props.citation ? props.citation : ''}</Text>
                         </View>
                     </View>
-                {/* </ImageBackground> */}
+                </ImageBackground>
                 <ActionBar likes='3' coments='1' shares='2' onComment={props.onComment} />
             </Animated.View>
         </View>
