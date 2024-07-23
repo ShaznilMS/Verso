@@ -10,11 +10,10 @@ import User from "./Components/User";
 import IMAGES from "../../../../assets/USER/links.mjs";
 
 export default function AddPublication({ navigation }) {
-
+    const [Autor, setAutor] = useState()
     const [ImageNumber, SetImageNumber] = useState(0)
     const [postCount, setPostCount] = useState()
     const [content, setContent] = useState('')
-    const [ImageID, setImageID] = useState(0)
 
     const [stamp, SetStamp] = useState('')
 
@@ -37,7 +36,6 @@ export default function AddPublication({ navigation }) {
 
     function addPublication() {
         const user = getAuth(app)
-
         const db = getDatabase(app)
         const getReferenceDatabase = ref(db, 'users/' + sha256(user.currentUser.email))
         const appReferenceDatabase = ref(db, 'post_number/')
@@ -66,7 +64,6 @@ export default function AddPublication({ navigation }) {
                         console.log(Post_index);
 
 
-
                         set(setReferenceDatabase, {
                             USER_ID: sha256(user.currentUser.email),
                             USER_NAME: data.Name,
@@ -78,7 +75,7 @@ export default function AddPublication({ navigation }) {
                             QUOTE: '~ ' + data.Name,
                             STATUS: "Initial",
                             COMMENTARY: "",
-                            IMAGE_ID: ImageID
+                            IMAGE_ID: ImageNumber
                         }).then(() => {
                             console.log('Setted!');
                             _post_index.push(POST_ID)
@@ -114,7 +111,7 @@ export default function AddPublication({ navigation }) {
                     <View style={styles.content}>
 
                         <TextInput onChangeText={setContent} style={styles.input} multiline={true} placeholder='Insira seu pensamento...' placeholderTextColor='#fff' />
-                        <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Citacao</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 15 }}>{Autor}</Text>
                     </View>
                 </ImageBackground>
             </View>
@@ -132,6 +129,8 @@ export default function AddPublication({ navigation }) {
                     )
                 }
                 } />
+
+
         </View>
     )
 }
