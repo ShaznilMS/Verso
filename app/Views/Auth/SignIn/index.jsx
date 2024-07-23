@@ -19,10 +19,10 @@ export default function SignIn({ navigation }) {
 
     const [isLoading, setIsLoading] = useState(false)
 
-    function Login() {
-        console.log("Email:", field_email);
-        console.log("Password:", field_password);
-        signInWithEmailAndPassword(auth, field_email.replace(' ', ''), field_password)
+    function Login(email, password) {
+        console.log("Email:", email);
+        console.log("Password:", password);
+        signInWithEmailAndPassword(auth, email.replace(' ', ''), password)
             .then((user) => {
                 console.log("Welcome:", user.user.email);
                 console.log("User allready beem logged!");
@@ -50,9 +50,8 @@ export default function SignIn({ navigation }) {
     })
 
     function handleLogin(data) {
-        setEmail(data.email)
-        setPassword(data.password)
-        Login()
+        const {email, password} = data
+        Login(email, password)
     }
 
     const schema = yup.object({
