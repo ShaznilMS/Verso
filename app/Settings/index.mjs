@@ -1,17 +1,18 @@
-import { get, ref, push, update, limitToFirst, getDatabase, set, query } from "firebase/database";
+import { get, ref, push, update, limitToFirst, getDatabase, set, query, Database } from "firebase/database";
 import { app, auth } from "../../configs/firebase.config.mjs";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, getAuth } from "@firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import sha256 from "sha256";
 
 let isLogged = false
+
+const DATABASE = getDatabase(app)
+const USER_REFERENCE = ref(DATABASE, 'USERS/')
+const POST_REFERENCE = ref(DATABASE, 'POSTS/')
 
 export async function VerifyAuthentication() {
     const _authentication_local = await AsyncStorage.getItem('authentication')
     const _authentication_firebase = getAuth(app)
-
-    console.log('Verify Authentication:');
-    console.log(_authentication_firebase.currentUser);
-    console.log(_authentication_local);
 
     if (_authentication_firebase.currentUser || _authentication_local) {
         isLogged = true
@@ -101,6 +102,76 @@ export async function SignUp(Email = '', Password = '') {
     } catch (error) {
         return error
     }
+}
+
+export function GeneratePosts(Num = 10) {
+    const QUERY = POST_REFERENCE
+
+    let tm = new Date();
+
+    const time = tm.getUTCFullYear() + '/' + (tm.getUTCMonth() + 1 < 10 ? '0' + (tm.getUTCMonth() + 1) : tm.getUTCMonth() + 1) + '/' + (tm.getUTCDate() < 10 ? '0' + tm.getUTCDate() : tm.getUTCDate())
+
+    for (let i = 0; i < 10; i++) {
+        push(QUERY, {
+            USER_ID: sha256('shaznilmussagysulemane'),
+            USER_NAME: 'Shaznil Mussagy Sulemane',
+            POST: "Teste " + i,
+            DATE_TIME: time,
+            CATEGORY: "Filosoficas",
+            QUOTE: '~ Socrates',
+            STATUS: "Initial",
+            IMAGE_ID: "0"
+        }).then(() => {
+            return 'Post adicionado com sucesso!'
+        })
+    }
+}
+
+export function AddPosts(Data) {
+    const QUERY = POST_REFERENCE
+    const { CONTEUDO, AUTOR, CATEGORIA } = Data
+
+    let tm = new Date();
+    const time = tm.getUTCFullYear() + '/' + (tm.getUTCMonth() + 1 < 10 ? '0' + (tm.getUTCMonth() + 1) : tm.getUTCMonth() + 1) + '/' + (tm.getUTCDate() < 10 ? '0' + tm.getUTCDate() : tm.getUTCDate())
+
+    push(QUERY, {
+        USER_ID: sha256('shaznilmussagysulemane'),
+        USER_NAME: 'Shaznil Mussagy Sulemane',
+        POST: CONTEUDO,
+        DATE_TIME: time,
+        CATEGORY: CATEGORIA,
+        QUOTE: AUTOR,
+        STATUS: "Initial",
+        IMAGE_ID: "0"
+    }).then(() => {
+        return 'Post adicionado com sucesso!'
+    })
+
+}
+
+let POSTS = []
+
+export function GetPosts(Limit = 10) {
+    const QUERY = query(POST_REFERENCE, limitToFirst(Limit))
+
+    get(QUERY)
+        .then((value) => {
+            if (value) {
+                POSTS = value.val()
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+        .finally(() => {
+
+        })
+
+    return POSTS;
+}
+
+export function DeletePosts(id) {
+    const QUERY = POST_REFERENCE
 }
 
 function _valid_email_combination(Email) {
