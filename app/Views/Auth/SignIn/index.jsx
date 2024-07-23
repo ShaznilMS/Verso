@@ -52,6 +52,7 @@ export default function SignIn({ navigation }) {
     function handleLogin(data) {
         setEmail(data.email)
         setPassword(data.password)
+        Login()
     }
 
     const schema = yup.object({
