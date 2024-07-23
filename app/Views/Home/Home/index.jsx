@@ -44,9 +44,28 @@ export default function Home({ navigation }) {
         const referenceDatabase = ref(db, 'publication/')
 
         get(referenceDatabase)
-            .then((val) => {
-                Publication = val.val()
-                atualizar(val.val())
+            .then((value) => {
+
+                
+            const data = value.val();
+            
+            if (data) {
+                console.log('Data exist');
+                const keys = Object.keys(data);
+                const randomKeys = keys.sort(() => 0.5 - Math.random()).slice(0, 10);
+                const randomItems = randomKeys.map(key => data[key]);
+
+                console.log(randomItems);
+                // atualizar(randomItems)
+                atualizar(value.val())
+            } else {
+                console.log('Data does not exist');
+
+                atualizar([])
+            }
+
+                // Publication = val.val()
+                // atualizar(val.val())
             })
     }
 
