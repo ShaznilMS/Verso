@@ -1,4 +1,4 @@
-import { get, ref, push, update, limitToFirst, getDatabase, set, query, Database } from "firebase/database";
+import { get, ref, push, remove, update, limitToFirst, getDatabase, set, query, Database } from "firebase/database";
 import { app, auth } from "../../configs/firebase.config.mjs";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, getAuth } from "@firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -104,14 +104,14 @@ export async function SignUp(Email = '', Password = '') {
     }
 }
 
-export function GeneratePosts(Num = 10) {
+export function GeneratePosts(Num = 3) {
     const QUERY = POST_REFERENCE
 
     let tm = new Date();
 
     const time = tm.getUTCFullYear() + '/' + (tm.getUTCMonth() + 1 < 10 ? '0' + (tm.getUTCMonth() + 1) : tm.getUTCMonth() + 1) + '/' + (tm.getUTCDate() < 10 ? '0' + tm.getUTCDate() : tm.getUTCDate())
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < Num; i++) {
         push(QUERY, {
             USER_ID: sha256('shaznilmussagysulemane'),
             USER_NAME: 'Shaznil Mussagy Sulemane',
@@ -142,7 +142,8 @@ export function AddPosts(Data) {
         CATEGORY: CATEGORIA,
         QUOTE: AUTOR,
         STATUS: "Initial",
-        IMAGE_ID: "0"
+        IMAGE_ID: "0",
+        VERIFIED: false
     }).then(() => {
         return 'Post adicionado com sucesso!'
     })
@@ -170,8 +171,67 @@ export function GetPosts(Limit = 10) {
     return POSTS;
 }
 
-export function DeletePosts(id) {
-    const QUERY = POST_REFERENCE
+export async function DeletePosts(ID) {
+    try {
+        const URI = 'POSTS/' + ID
+        console.log(URI);
+        const QUERY = ref(DATABASE, URI);
+        remove(QUERY)
+    } catch (error) {
+
+    }
+}
+
+export async function CommentPost(ID, NAME, COMMENT) {
+    const QUERY = ref(DATABASE, 'POSTS/' + ID + '/COMMENTARY/')
+
+    const tm = new Date()
+
+    const COMMENTARY = {
+        Name: NAME,
+        Time: tm.getUTCFullYear() + '/' + (tm.getUTCMonth() + 1 < 10 ? '0' + (tm.getUTCMonth() + 1) : tm.getUTCMonth() + 1) + '/' + (tm.getUTCDate() < 10 ? '0' + tm.getUTCDate() : tm.getUTCDate()),
+        Comment: COMMENT
+    }
+
+    push(QUERY, COMMENTARY)
+        .then(() => {
+
+        })
+        .catch((e) => {
+            console.log(e);
+        })
+}
+
+export async function LikePost(ID, USER_ID) {
+    const QUERY = ref(DATABASE, 'POSTS/' + ID + '/LIKES/')
+
+    const tm = new Date()
+
+    push(QUERY, USER_ID)
+        .then(() => {
+
+        })
+        .catch((e) => {
+            console.log(e);
+        })
+}
+
+export async function CountPostsLikes(ID) {
+    const QUERY = ref(DATABASE, 'POSTS/'+ ID + '/LIKES/')
+
+    get(QUERY)
+        .then((value) => {
+            console.log(Object.values(value.val()).length);
+        })
+}
+
+export async function CountPostsComments(ID) {
+    const QUERY = ref(DATABASE, 'POSTS/'+ ID + '/COMMENTARY/')
+
+    get(QUERY)
+        .then((value) => {
+            console.log(Object.values(value.val()).length);
+        })
 }
 
 function _valid_email_combination(Email) {
