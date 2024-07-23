@@ -6,6 +6,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth, signInWithEmailAndPassword } from '@firebase/auth';
 import { StyleSheet, Text, Image, TouchableOpacity, View, Modal } from 'react-native';
 
+import { useForm, Controller } from 'react-hook-form';
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup';
+
 const logo = require('../splash.png')
 
 export default function SignIn({ navigation }) {
@@ -45,6 +49,19 @@ export default function SignIn({ navigation }) {
         }
     })
 
+    function handleLogin(data) {
+        console.log(data)
+    }
+
+    const schema = yup.object({
+        email: yup.string().required('Type your email'),
+        password: yup.string().min(8, 'A senha deve ter pelo menos 8 caracteres').required('Type your password')
+    })
+
+    const { control, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema)
+    })
+
     return (
         <View style={styles.container}>
 
@@ -52,8 +69,21 @@ export default function SignIn({ navigation }) {
                 <Image source={logo} style={styles.img} />
             </View>
 
-            <InputText title='Email' placeholder="Type your email here..." onChangeText={setEmail} />
-            <InputText title='Password' placeholder="Type your password here..." onChangeText={setPassword} />
+            <Controller control={control} name='email' render={({ field: { onChange, onblur, value } }) => (
+                <InputText style={{
+                    borderWidth: errors.email ? errors.email && 1 : 2, borderColor: errors.email && '#ff375b'
+                }} title='Email' placeholder="Type your email here..." onChangeText={onChange} value={value} onblur={onblur} />
+
+            )} />
+            {errors.email && <Text style={styles.error}>{errors.email?.message}</Text>}
+
+            <Controller control={control} name='password' render={({ field: { onChange, onblur, value } }) => (
+                <InputText style={{
+                    borderWidth: errors.email ? errors.email && 1 : 2, borderColor: errors.email && '#ff375b'
+                }} title='Password' placeholder="Type your password here..." onChangeText={onChange} value={value} onblur={onblur} />
+            )} />
+            {errors.password && <Text style={styles.error}>{errors.password?.message}</Text>}
+
 
             <TouchableOpacity
                 onPress={() => { }}>
@@ -71,7 +101,7 @@ export default function SignIn({ navigation }) {
             <View style={{ height: 10 }}></View>
 
             <TouchableOpacity
-                onPress={Login}
+                onPress={handleSubmit(handleLogin)}
                 activeOpacity={.8}
             >
                 <View style={styles.button}>
@@ -89,7 +119,7 @@ export default function SignIn({ navigation }) {
 
             <View style={{ height: 10 }}></View>
 
-            
+
         </View>
     );
 }
@@ -140,6 +170,9 @@ const styles = StyleSheet.create({
         width: 200,
         height: 100,
         marginTop: 50
+    },
+    error: {
+        color: '#ff375b'
     }
 })
 
