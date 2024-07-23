@@ -1,7 +1,7 @@
 import React from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faArrowLeft, faEllipsis, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faEye } from '@fortawesome/free-regular-svg-icons';
 
 const img = require('./images.jpg')
@@ -10,7 +10,7 @@ const User = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.user}>
-                <TouchableOpacity style={{ paddingEnd: 10 }} onPress={props.back}><FontAwesomeIcon icon={faArrowLeft} size={25} /></TouchableOpacity>
+            <TouchableOpacity style={{paddingEnd:10}} onPress={props.back}><FontAwesomeIcon icon={faArrowLeft} size={25}/></TouchableOpacity>
                 <View style={styles.img_cont}>
                     <Image source={img} style={styles.img} />
                 </View>
@@ -19,7 +19,7 @@ const User = (props) => {
                     <Text style={styles.time}>{props.time}</Text>
                 </View>
             </View>
-            <TouchableOpacity style={{width:50,height:50,borderRadius:100, justifyContent:'center',alignItems:'center'}} onPress={props.onCallHide}><FontAwesomeIcon icon={faPaperPlane} size={25} /></TouchableOpacity>
+            <TouchableOpacity style={styles.options} onPress={props.onCallHide}><FontAwesomeIcon icon={faEye} color='#cfcfcf' size={25}/></TouchableOpacity>
         </View>
     )
 }
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: 20,
+        paddingHorizontal:20,
         backgroundColor: '#fff'
     },
     img: {
@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
         borderRadius: 100,
     },
     img_cont: {
-        width: 50,
-        height: 50,
+        width: 60,
+        height: 60,
         borderRadius: 100,
         shadowColor: '#171717',
         shadowOffset: { width: -2, height: 4 },
@@ -53,18 +53,18 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffffff",
         padding: 5
     },
-    user: {
-        flexDirection: 'row',
+    user:{
+        flexDirection:'row',
         gap: 5,
-        alignItems: 'center'
+        alignItems:'center'
     },
-    name: {
-        fontWeight: 'bold',
-        fontSize: 15
+    name:{
+        fontWeight:'bold',
+        fontSize:15
     },
-    time: {
-        fontWeight: 'bold',
-        fontSize: 12,
-        color: '#afaeae'
+    time:{
+        fontWeight:'bold',
+        fontSize:12,
+        color:'#afaeae'
     }
 })

@@ -55,7 +55,7 @@ export default function AddPublication({ navigation }) {
                             LIKES: "",
                             ID: num,
                             CATEGORY: "Filosoficas",
-                            QUOTE: '~ '+ data.Name,
+                            QUOTE: '~ ' + data.Name,
                             STATUS: "Initial",
                             COMMENTARY: "",
                             IMAGE_ID: ImageID
@@ -85,7 +85,8 @@ export default function AddPublication({ navigation }) {
     }
 
     return (
-        <View style={add_publication.container}>
+        <View>
+
             <View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text style={add_publication.title_page}>New Publication</Text>
