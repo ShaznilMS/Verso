@@ -48,6 +48,10 @@ export default function SignIn({ navigation }) {
                     StackActions.replace('TabNavigator')
                 )
             }
+            
+            if( value == 'auth/invalid-credential') {
+                setIsLoading(false)
+            }
         }).catch(() => {
             setIsLoading(false)
         })
