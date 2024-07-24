@@ -1,4 +1,4 @@
-import { get, ref, push, remove, update, limitToFirst, getDatabase, set, query, Database, limitToLast } from "firebase/database";
+import { get, ref, push, remove, getDatabase, set, query, limitToLast } from "firebase/database";
 import { app, auth } from "../../configs/firebase.config.mjs";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, getAuth } from "@firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";

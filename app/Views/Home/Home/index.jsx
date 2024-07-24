@@ -3,7 +3,7 @@ import { FlatList, Image, Modal, ScrollView, StyleSheet, Text, BackHandler, Text
 import { app } from '../../../../configs/firebase.config.mjs';
 import NavBar from '../../../../assets/components/NavBar';
 import Categorie from '../../../../assets/components/Categorie';
-import { getDatabase, ref } from 'firebase/database';
+import { getDatabase, limitToLast, onValue, query, ref } from 'firebase/database';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faHeart, faMessage, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { faArrowUpFromBracket, faPen, faPlus, faRecycle } from '@fortawesome/free-solid-svg-icons';
@@ -14,9 +14,6 @@ import { GetPosts, GetUserVerified, LikePost } from '../../../Settings/index.mjs
 import { useFocusEffect } from '@react-navigation/native';
 import { getAuth } from '@firebase/auth';
 import sha256 from 'sha256';
-
-let PostCount;
-let Publication = [{}, {}];
 
 export default function Home({ navigation }) {
 
@@ -55,6 +52,19 @@ export default function Home({ navigation }) {
             };
         }, [navigation])
     );
+
+    const DATABASE = getDatabase(app)
+    const POST_REFERENCE = ref(DATABASE, 'POSTS/')
+
+    // function TestGetPosts(Limit = 10) {
+    //     const QUERY = query(POST_REFERENCE, limitToLast(Limit))
+
+    //     onValue(QUERY, (value) => {
+    //         if (value) {
+    //             console.log(value.val())
+    //         }
+    //     })
+    // }
 
     const handleCategory = (category) => {
         setCategory(category);
@@ -163,7 +173,7 @@ export default function Home({ navigation }) {
                     if (category === 'Tudo' || category === item.CATEGORY) {
                         return (
                             <Card
-                                onShare={() => { console.log(_isVerifieda) }}
+                                onShare={() => {  }}
                                 isVerified={_isVerifieda}
                                 Likes={likes}
                                 img={item.IMAGE_ID}
