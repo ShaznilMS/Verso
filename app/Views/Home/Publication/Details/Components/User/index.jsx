@@ -24,7 +24,7 @@ const User = (props) => {
                     <Text style={styles.time}>{props.time}</Text>
                 </View>
             </View>
-            <TouchableOpacity style={styles.options} onPress={props.onCallHide}><FontAwesomeIcon icon={faEye} color='#cfcfcf' size={25} /></TouchableOpacity>
+            <TouchableOpacity style={styles.options} onPress={props.onCallHide}><FontAwesomeIcon icon={faEllipsis} color='#000' size={25} /></TouchableOpacity>
         </View>
     )
 }
