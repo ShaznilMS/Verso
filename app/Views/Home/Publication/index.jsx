@@ -30,6 +30,7 @@ export default function AddPublication({ navigation }) {
         SetStamp(tm)
     }
 
+    
     stamp === '' ? timeStamp() : console.log(stamp)
 
     function handleAutor(autor) {

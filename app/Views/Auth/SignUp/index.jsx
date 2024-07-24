@@ -16,6 +16,7 @@ export default function SignUp({ navigation }) {
     const [field_password, setPassword] = useState('')
     const [field_cpassword, setCPassword] = useState('')
 
+    
     const [field_country, setCountry] = useState('')
     const [field_name, setName] = useState('')
     const [field_phoneNumber, setPhoneNumber] = useState('')

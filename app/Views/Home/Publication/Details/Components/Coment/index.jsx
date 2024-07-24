@@ -32,6 +32,7 @@ const Coment = (props) => {
     )
 }
 
+
 export default Coment
 
 const styles = StyleSheet.create({

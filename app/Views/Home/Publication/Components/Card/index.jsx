@@ -52,6 +52,7 @@ export default function Card(props) {
     )
 }
 
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
