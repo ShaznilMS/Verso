@@ -1,45 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Image, Modal, ScrollView, StyleSheet, Text, BackHandler, TextInput, TouchableOpacity, View, Alert } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Alert, BackHandler } from 'react-native';
 import { app } from '../../../../configs/firebase.config.mjs';
 import NavBar from '../../../../assets/components/NavBar';
 import Categorie from '../../../../assets/components/Categorie';
-import { getDatabase, limitToLast, onValue, query, ref } from 'firebase/database';
+import { getDatabase, ref, onValue, query, limitToLast } from 'firebase/database';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faHeart, faMessage, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
-import { faArrowUpFromBracket, faPen, faPlus, faRecycle } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Card from '../Publication/Components/Card';
-import { createStackNavigator } from '@react-navigation/stack';
-import Details from '../Publication/Details';
-import { GetPosts, GetUserVerified, LikePost } from '../../../Settings/index.mjs';
 import { useFocusEffect } from '@react-navigation/native';
 import { getAuth } from '@firebase/auth';
 import sha256 from 'sha256';
+import { GetPosts, GetUserVerified, LikePost } from '../../../Settings/index.mjs';
 
 export default function Home({ navigation }) {
-
-    const [Pub, setPub] = useState([]);
     const [data, setData] = useState([]);
-    const [isStarted, setIsStarted] = useState(false);
     const [category, setCategory] = useState('Tudo');
     const [isRefreshing, setIsRefreshing] = useState(false);
-    const USER_PROFILE = require('./../../../../assets/USER/USER_PROFILE.jpg');
-    const [selected, setSelected] = useState();
     const [edit, setEdit] = useState(false);
     const [editText, setEditText] = useState('');
-    const [edited, setEdited] = useState(false);
-    const [limit, setLimit] = useState(10);
-    const [Verified, setVerified] = useState({});
+    const [selected, setSelected] = useState();
+    const [limit, setLimit] = useState(10)
+    const [Verified, setVerified] = useState([])
+    const db = getDatabase(app);
 
     useFocusEffect(
         React.useCallback(() => {
-            handleRefresh();
+            const handleRefresh = () => {
+                setIsRefreshing(true);
+                fetchPosts(limit);
+            };
+
             const onBackPress = () => {
                 Alert.alert(
                     "",
                     "Realmente deseja sair?",
                     [
                         { text: "Cancelar", onPress: () => null, style: "cancel" },
-                        { text: "Sair", onPress: () => { BackHandler.exitApp(); } }
+                        { text: "Sair", onPress: () => BackHandler.exitApp() }
                     ]
                 );
                 return true;
@@ -47,44 +44,16 @@ export default function Home({ navigation }) {
 
             BackHandler.addEventListener('hardwareBackPress', onBackPress);
 
+            // Fetch posts initially
+            handleRefresh();
+
             return () => {
                 BackHandler.removeEventListener('hardwareBackPress', onBackPress);
             };
         }, [navigation])
     );
 
-    const DATABASE = getDatabase(app)
-    const POST_REFERENCE = ref(DATABASE, 'POSTS/')
 
-    // function TestGetPosts(Limit = 10) {
-    //     const QUERY = query(POST_REFERENCE, limitToLast(Limit))
-
-    //     onValue(QUERY, (value) => {
-    //         if (value) {
-    //             console.log(value.val())
-    //         }
-    //     })
-    // }
-
-    const handleCategory = (category) => {
-        setCategory(category);
-    };
-
-    function handleRefresh() {
-        setIsRefreshing(true);
-        GetPost().then(() => {
-            GetVerified().finally(() => {
-                setIsRefreshing(false);
-            });
-        });
-    }
-
-    async function GetPost() {
-        let data = [];
-        await GetPosts(limit) ? await GetPosts(limit).then((value) => data = value) : [];
-        setData(data);
-        setIsRefreshing(false);
-    }
 
     async function GetVerified() {
         const USERS_TO_FETCH = [];
@@ -96,98 +65,107 @@ export default function Home({ navigation }) {
             }
         });
 
+        // Use Promise.all para aguardar todas as promessas
         const verificationPromises = USERS_TO_FETCH.map((userId) => GetUserVerified(userId));
         const verifiedResults = await Promise.all(verificationPromises);
 
         verifiedResults.forEach((result, index) => {
-            let dados = Object.values(result);
-            verifiedMap[USERS_TO_FETCH[index]] = dados[0].value_;
+            verifiedMap[USERS_TO_FETCH[index]] = result;
         });
 
         setVerified(verifiedMap);
+        // console.log(verifiedMap);
     }
 
-    useEffect(() => {
-        if (!isStarted) {
-            const fetchData = async () => {
-                await GetPost(10);
-                await GetVerified().finally(() => {
-                    setIsRefreshing(false)
-                });
-                setIsStarted(true);
-            };
+    const fetchPosts = () => {
+        const postsRef = ref(db, 'POSTS');
+        const QUERY = query(postsRef, limitToLast(limit))
 
-            fetchData();
-        }
-    }, [isStarted]);
+        onValue(postsRef, (snapshot) => {
+            const data = snapshot.val();
+            console.log('Tamanho: ' + Object.values(data).length);
+            const formattedData = data ? data : [];
+            setData(formattedData);
+            GetVerified()
+            setIsRefreshing(false);
+        });
+    };
 
-    const [refreshing, setRefreshing] = useState(false);
+    const handleCategory = (category) => {
+        setCategory(category);
+    };
 
-    function Like(ID) {
+    const Like = (ID) => {
         LikePost(getItemID(ID), getUserID());
-    }
+    };
 
-    function getItemID(index) {
+    const getItemID = (index) => {
         return Object.keys(data).reverse()[index];
-    }
+    };
 
-    function getUserID() {
+    const getUserID = () => {
         return sha256(getAuth(app).currentUser.email);
-    }
+    };
     
+    function Loading({ isLoading }) {
+
+        if (!isLoading) return null
+
+        return (
+            <View style={{
+                width: '100%',
+                height: 30
+            }}>
+                <ActivityIndicator color={"#000"} size={30}></ActivityIndicator>
+            </View>
+        )
+    }
 
     return (
         <View style={styles.bg}>
             <NavBar />
             <View style={styles.container}>
-                <View>
-                    <ScrollView showsHorizontalScrollIndicator={false} bounces={false} alwaysBounceHorizontal={false} bouncesZoom={false} horizontal >
-                        <Categorie text='Tudo' Selecionada={category === 'Tudo'} onPress={() => { handleCategory('Tudo'); }} />
-                        <Categorie text='Filosóficas' Selecionada={category === 'Filosofica'} onPress={() => { handleCategory('Filosofica'); }} />
-                        <Categorie text='Poemas' Selecionada={category === 'Poemas'} onPress={() => { handleCategory('Poemas'); }} />
-                        <Categorie text='Acolhedoras' Selecionada={category === 'Acolhedoras'} onPress={() => { handleCategory('Acolhedoras'); }} />
-                        <Categorie text='Motivacionais' Selecionada={category === 'Motivacionais'} onPress={() => { handleCategory('Motivacionais'); }} />
-                        <Categorie text='Amor' Selecionada={category === 'Amor'} onPress={() => { handleCategory('Amor'); }} />
-                        <Categorie text='Amizade' Selecionada={category === 'Amizade'} onPress={() => { handleCategory('Amizade'); }} />
-                        <Categorie text='Vida' Selecionada={category === 'Vida'} onPress={() => { handleCategory('Vida'); }} />
-                        <Categorie text='Trabalho' Selecionada={category === 'Trabalho'} onPress={() => { handleCategory('Trabalho'); }} />
-                        <Categorie text='Espiritualidade' Selecionada={category === 'Espiritualidade'} onPress={() => { handleCategory('Espiritualidade'); }} />
-                    </ScrollView>
-                </View>
+                <ScrollView showsHorizontalScrollIndicator={false} horizontal>
+                    <Categorie text='Tudo' Selecionada={category === 'Tudo'} onPress={() => { handleCategory('Tudo') }} />
+                    <Categorie text='Filosóficas' Selecionada={category === 'Filosofica'} onPress={() => { handleCategory('Filosofica') }} />
+                    <Categorie text='Poemas' Selecionada={category === 'Poemas'} onPress={() => { handleCategory('Poemas') }} />
+                    <Categorie text='Acolhedoras' Selecionada={category === 'Acolhedoras'} onPress={() => { handleCategory('Acolhedoras') }} />
+                    <Categorie text='Motivacionais' Selecionada={category === 'Motivacionais'} onPress={() => { handleCategory('Motivacionais') }} />
+                    <Categorie text='Amor' Selecionada={category === 'Amor'} onPress={() => { handleCategory('Amor') }} />
+                    <Categorie text='Amizade' Selecionada={category === 'Amizade'} onPress={() => { handleCategory('Amizade') }} />
+                    <Categorie text='Vida' Selecionada={category === 'Vida'} onPress={() => { handleCategory('Vida') }} />
+                    <Categorie text='Trabalho' Selecionada={category === 'Trabalho'} onPress={() => { handleCategory('Trabalho') }} />
+                    <Categorie text='Espiritualidade' Selecionada={category === 'Espiritualidade'} onPress={() => { handleCategory('Espiritualidade') }} />
+                </ScrollView>
             </View>
 
             <FlatList
-                data={Object.values(data).reverse()}
+                data={Object.values(data).filter(item => category === 'Tudo' || category === item.CATEGORY).reverse()}
                 style={{ flex: 1, backgroundColor: "#fff" }}
                 showsVerticalScrollIndicator={false}
+                ListFooterComponent={<Loading isLoading={isRefreshing} />}
                 refreshing={isRefreshing}
-                onRefresh={handleRefresh}
-                onScroll={() => {
-                    setEdited(false);
-                }}
+                onEndReached={() => setLimit(limit + 10)}
+                onEndReachedThreshold={0.2}
+                onRefresh={() => {fetchPosts(limit); console.log(limit)}}
                 renderItem={({ item, index }) => {
                     let likes = item.LIKES ? Object.values(item.LIKES).length : 0;
+                    let _isVerified = Verified[item.USER_ID]
 
-                    let _isVerifieda = Boolean(Verified[item.USER_ID])
-
-                    if (category === 'Tudo' || category === item.CATEGORY) {
-                        return (
-                            <Card
-                                onShare={() => {  }}
-                                isVerified={_isVerifieda}
-                                Likes={likes}
-                                img={item.IMAGE_ID}
-                                name={item.USER_NAME}
-                                text={item.POST}
-                                time={item.DATE_TIME}
-                                citation={item.QUOTE}
-                                onLike={() => { Like(index); handleRefresh(); }}
-                                onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params:  { data: item } }); }}
-                            />
-                        );
-                    }
-
-                    return null;
+                    return (
+                        <Card
+                            isVerified={_isVerified}
+                            onShare={() => console.log(limit)}
+                            Likes={likes}
+                            img={item.IMAGE_ID}
+                            name={item.USER_NAME}
+                            text={item.POST}
+                            time={item.DATE_TIME}
+                            citation={item.QUOTE}
+                            onLike={() => { Like(index); fetchPosts(limit); }}
+                            onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }); }}
+                        />
+                    );
                 }}
             />
 
@@ -199,7 +177,7 @@ export default function Home({ navigation }) {
                     right: 20,
                 }}
                 onPress={() => {
-                    navigation.navigate('StackNavigator', { screen: 'AddPublication' });
+                    navigation.navigate('StackNavigator', { screen: 'AddPublication' })
                 }}
             >
                 <View
@@ -229,7 +207,7 @@ export default function Home({ navigation }) {
 
                     <Text style={{ fontWeight: '700', fontSize: 20 }}>New</Text>
                     {edit ?
-                        <TextInput style={{ fontWeight: '500', fontSize: 18, color: "#333" }} multiline defaultValue={selected >= 0 ? Pub[selected].CONTENT : ''} onChangeText={(valor) => { setEditText(valor); }}></TextInput>
+                        <TextInput style={{ fontWeight: '500', fontSize: 18, color: "#333" }} multiline defaultValue={selected >= 0 ? Pub[selected].CONTENT : ''} onChangeText={(valor) => { setEditText(valor) }}></TextInput>
                         : []
                     }
 
@@ -237,7 +215,7 @@ export default function Home({ navigation }) {
                         <TouchableOpacity
                             activeOpacity={.8}
                             onPress={() => {
-                                setEdit(false);
+                                setEdit(false)
                             }}
                         >
                             <View style={{ borderRadius: 5, paddingHorizontal: 20, paddingVertical: 10, backgroundColor: "#000000" }}>
@@ -247,6 +225,7 @@ export default function Home({ navigation }) {
                         <TouchableOpacity
                             activeOpacity={.8}
                             onPress={() => {
+                                // Implement edit functionality
                                 setEdit(false);
                             }}
                         >
@@ -255,56 +234,12 @@ export default function Home({ navigation }) {
                             </View>
                         </TouchableOpacity>
                     </View>
+
                 </View>
             </Modal>
         </View>
     );
 }
-
-const publication = StyleSheet.create({
-    container: {
-        margin: 10,
-        gap: 15,
-        padding: 15,
-        borderRadius: 20,
-        shadowColor: '#171717',
-        shadowOffset: { width: -2, height: 4 },
-        shadowOpacity: 0.2,
-        shadowRadius: 3,
-        elevation: 4,
-        backgroundColor: "#ffffff"
-    },
-    top: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 15
-    },
-    user_profile: {
-        width: 60,
-        height: 60,
-        borderRadius: 30
-    },
-    user_name: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        maxWidth: 200
-    },
-    content: {
-        fontSize: 18,
-        fontWeight: '400',
-        textAlign: 'center',
-        letterSpacing: 2
-    },
-    bottom: {
-        flexDirection: 'row',
-        gap: 25,
-        paddingHorizontal: 10
-    },
-    bottom_bar: {
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    }
-});
 
 const styles = StyleSheet.create({
     container: {
@@ -317,5 +252,5 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#ffffff",
         paddingHorizontal: 0,
-    }
+    },
 });

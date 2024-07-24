@@ -12,6 +12,7 @@ const POST_REFERENCE = ref(DATABASE, 'POSTS/')
 
 export function VerifyAuthentication() {
     let _authentication_local = null;
+    
 
     async function getUserItem() {
         return await AsyncStorage.getItem('authentication').then((value) => { _authentication_local = value })
@@ -51,12 +52,23 @@ async function SaveAuthentication(Authentication) {
     const _authentication = await AsyncStorage.setItem('authentication', JSON.stringify(Authentication))
 }
 
+async function SaveAuthentication2(Authentication) {
+    const _authentication = await AsyncStorage.setItem('authentication2', JSON.stringify(Authentication))
+}
+
 export async function VersoSignIn(Email = '', Password = '') {
     let localIsLogged = false
+
+    
     try {
         await signInWithEmailAndPassword(auth, Email, Password)
-            .then((value) => {
+        .then((value) => {
+                const QUERY = ref(DATABASE, 'USERS/' + sha256(value.user.email))
                 SaveAuthentication(value.user)
+                get(QUERY)
+                    .then((value_) => {
+                        SaveAuthentication2(value_.val())
+                    })
                 isLogged = true
                 localIsLogged = true
             })
@@ -204,7 +216,7 @@ export async function GetUserVerified(ID) {
         const QUERY = ref(DATABASE, 'USERS/' + ID + '/Verified/')
         await get(QUERY)
             .then((value) => {
-                isVerified = value
+                isVerified = Object.values(value)[0].value_
             })
         return isVerified
     } catch (error) {
