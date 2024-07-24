@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FlatList, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { FlatList, Image, Modal, ScrollView, StyleSheet, Text, BackHandler, TextInput, TouchableOpacity, TouchableWithoutFeedback, View, Alert } from 'react-native';
 import { app } from '../../../../configs/firebase.config.mjs';
 import NavBar from '../../../../assets/components/NavBar'
 import Categorie from '../../../../assets/components/Categorie';
@@ -11,12 +11,10 @@ import Card from '../Publication/Components/Card';
 import { createStackNavigator } from '@react-navigation/stack';
 import Details from '../Publication/Details';
 import { GetPosts } from '../../../Settings/index.mjs';
-
+import { StackActions, useFocusEffect } from '@react-navigation/native';
 
 let PostCount
 let Publication = [{}, {}]
-
-
 
 export default function Home({ navigation }) {
 
@@ -33,6 +31,28 @@ export default function Home({ navigation }) {
     const [edited, setEdited] = useState(false)
     const [limit, setLimit] = useState(10)
 
+    useFocusEffect(
+        React.useCallback(() => {
+            const onBackPress = () => {
+                Alert.alert(
+                    "Hold on!",
+                    "Are you sure you want to exit the app?",
+                    [
+                        { text: "Cancel", onPress: () => null, style: "cancel" },
+                        { text: "YES", onPress: () => {BackHandler.exitApp()} }
+                    ]
+                );
+                return true;
+            };
+
+            BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+            return () => {
+                BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+            };
+        }, [navigation])
+    )
+
     const handleCategory = (category) => {
         setCategory(category)
     }
@@ -48,62 +68,15 @@ export default function Home({ navigation }) {
         setData(GetPosts(limit) ? GetPosts(limit) : [])
     }
 
-
-    // function getPublications() {
-    //     // console.log('Get publication!');
-    //     const db = getDatabase(app)
-
-    //     const referenceDatabase = ref(db, 'publication/')
-
-    //     get(referenceDatabase)
-    //         .then((value) => {
-
-                
-    //         const data = value.val();
-            
-    //         if (data) {
-    //             console.log('Data exist');
-    //             const keys = Object.keys(data);
-    //             const randomKeys = keys.sort(() => 0.5 - Math.random()).slice(0, 10);
-    //             const randomItems = randomKeys.map(key => data[key]);
-
-    //             console.log(randomItems);
-    //             // atualizar(randomItems)
-    //             atualizar(value.val())
-    //         } else {
-    //             console.log('Data does not exist');
-
-    //             atualizar([])
-    //         }
-
-    //             // Publication = val.val()
-    //             // atualizar(val.val())
-    //         })
-    // }
-
-    // function atualizar(data) {
-    //     setPub(data.reverse())
-    // }
-
-    // const onSelect = ind => {
-    //     setSelected(ind)
-    // }
-
-    // const Edited = (valor) => {
-    //     if (!edited) {
-    //         setEdited(true)
-    //     }
-    //     setEditText(valor)
-    // }
-
     useEffect(() => {
         if (!isStarted) {
-            GetPost()
+            GetPost(100)
             setIsStarted(true)
         }
+        console.log('Home');
     })
 
-    
+
     const [refreshing, setRefreshing] = useState(false)
 
     // const Edit = (ind, value) => {
@@ -161,7 +134,7 @@ export default function Home({ navigation }) {
                     } else {
                         color = "#ffffff"
                     }
-                    
+
                     return (
                         <Card img={item.IMAGE_ID} name={item.USER_NAME} text={item.POST} time={item.DATE_TIME} citation={item.QUOTE} onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
                     )

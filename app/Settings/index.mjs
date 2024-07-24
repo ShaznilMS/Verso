@@ -1,4 +1,4 @@
-import { get, ref, push, remove, update, limitToFirst, getDatabase, set, query, Database } from "firebase/database";
+import { get, ref, push, remove, update, limitToFirst, getDatabase, set, query, Database, limitToLast } from "firebase/database";
 import { app, auth } from "../../configs/firebase.config.mjs";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, getAuth } from "@firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -181,7 +181,7 @@ export async function AddPosts(Data) {
 let POSTS = []
 
 export function GetPosts(Limit = 10) {
-    const QUERY = query(POST_REFERENCE, limitToFirst(Limit))
+    const QUERY = query(POST_REFERENCE, limitToLast(Limit))
 
     get(QUERY)
         .then((value) => {
