@@ -22,7 +22,6 @@ const User2 = (props) => {
                     </View>
                     <Text style={styles.time}>{props.time}</Text>
                 </View>
-
             </View>
             <TouchableOpacity style={styles.options}><FontAwesomeIcon icon={faEllipsis} size={25} /></TouchableOpacity>
         </View>

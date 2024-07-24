@@ -5,6 +5,7 @@ import { app } from '../../../../configs/firebase.config.mjs';
 import { Swipeable } from 'react-native-gesture-handler';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowLeft, faComment, faCommentAlt, faComments, faCommentSms, faDiamond, faHeart, faThunderstorm, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faBlackTie } from '@fortawesome/free-brands-svg-icons';
 
 const User_Image = require('./../../../../assets/USER/USER_PROFILE.jpg')
 
@@ -85,6 +86,7 @@ export default function Notifications({ navigation }) {
             <View style={{ flex: 1, paddingHorizontal: 10 }}>
                 <FlatList
                     data={NOTIFICATIONS}
+                    showsVerticalScrollIndicator={false}
                     renderItem={({ item }) => {
                         switch (item.Type) {
                             case 'Comment':
@@ -170,8 +172,8 @@ export default function Notifications({ navigation }) {
                                                     {item.Data.WHERE}
 
                                                 </Text>
-                                                <View style={{ margin: 20, right: 120, justifyContent: 'center', alignItems: 'center', borderRadius: 15, width: 24, height: 24, backgroundColor: "#f66", padding: 10 }}>
-                                                    <FontAwesomeIcon icon={faHeart} size={10} color='#fff' />
+                                                <View style={{ margin: 20, right: 120, justifyContent: 'center', alignItems: 'center', borderRadius: 15, width: 24, height: 24, backgroundColor: "#333", padding: 10 }}>
+                                                    <FontAwesomeIcon icon={faBlackTie} size={10} color='#fff' />
                                                 </View>
                                             </View>
 

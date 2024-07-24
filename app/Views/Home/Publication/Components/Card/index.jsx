@@ -36,7 +36,7 @@ export default function Card(props) {
         <View View style={styles.container} >
 
             <Animated.View style={[card.container, { backgroundColor: color }]}>
-                <User2 time={props.time} user={props.name} verified={isVerified ? { display: 'flex' } : { display: 'none' }} />
+                <User2 time={props.time} user={props.name} verified={props.isVerified ? { display: 'flex' } : { display: 'none' }} />
                 <ImageBackground source={{ uri: IMAGES[props.img].image }} style={{ width: '100%', minHeight: 250, resizeMode: "cover" }}>
                     <View style={styles.content}>
                         <View>
@@ -45,7 +45,7 @@ export default function Card(props) {
                         </View>
                     </View>
                 </ImageBackground>
-                <ActionBar likes={props.Likes} coments='1' shares='2' onComment={props.onComment} onLike={props.onLike}/>
+                <ActionBar likes={props.Likes} coments='1' shares='2' onComment={props.onComment} onLike={props.onLike} onShare={props.onShare}/>
             </Animated.View>
         </View>
 

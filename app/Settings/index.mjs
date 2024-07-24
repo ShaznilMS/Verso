@@ -210,6 +210,20 @@ export async function DeletePosts(ID) {
     }
 }
 
+export async function GetUserVerified(ID) {
+    try {
+        let isVerified = false
+        const QUERY = ref(DATABASE, 'USERS/' + ID + '/Verified/')
+        await get(QUERY)
+            .then((value) => {
+                isVerified = value
+            })
+        return isVerified
+    } catch (error) {
+        return null
+    }
+}
+
 export async function CommentPost(ID, NAME, COMMENT) {
     const QUERY = ref(DATABASE, 'POSTS/' + ID + '/COMMENTARY/')
 

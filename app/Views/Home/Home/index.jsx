@@ -10,7 +10,7 @@ import { faArrowUpFromBracket, faPen, faPlus, faRecycle } from '@fortawesome/fre
 import Card from '../Publication/Components/Card';
 import { createStackNavigator } from '@react-navigation/stack';
 import Details from '../Publication/Details';
-import { CountPostsLikes, GetAuthentication, GetPosts, LikePost } from '../../../Settings/index.mjs';
+import { CountPostsLikes, GetAuthentication, GetPosts, GetUserVerified, LikePost } from '../../../Settings/index.mjs';
 import { StackActions, useFocusEffect } from '@react-navigation/native';
 import { getAuth } from '@firebase/auth';
 import sha256 from 'sha256';
@@ -163,11 +163,10 @@ export default function Home({ navigation }) {
                     setEdited(false)
                     // onSelect(null)
                 }}
-
-
-                renderItem={({ item, index }) => {
+                renderItem={async ({ item, index }) => {
                     let color = "#ffffff"
                     let isSelected = false
+                    let isVerified = null
 
                     if (selected == index) {
                         isSelected = true
@@ -179,19 +178,30 @@ export default function Home({ navigation }) {
                     // console.log(CountPostsLikes(Object.keys(data)[index]))
                     // // let likesNum = 
                     // CountPostsLikes(getItemID(index)).then((value) => { console.log(value) })
+                    let likes = item.LIKES ? Object.values(item.LIKES).length : 0
+                    
+                    const getVerified = async () => {
+                        await GetUserVerified(item.USER_ID).then((value) => {isVerified = value; })//console.log(isVerified, item.USER_NAME);})
+                    }
 
-                    likes = item.LIKES ? Object.values(item.LIKES).length : 0
+                    // console.log('New section \n');
+                    await getVerified()
+                    
+                    // console.log(isVerified);
+                    
                     if(category == 'Tudo') {
+                        console.log(isVerified);
                         return (
-                            <Card Likes={likes} img={item.IMAGE_ID} name={item.USER_NAME} text={item.POST} time={item.DATE_TIME} citation={item.QUOTE} onLike={() => { Like(index); handleRefresh() }} onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
+                            <Card isVerified={false} onShare={() => {}} Likes={likes} img={item.IMAGE_ID} name={item.USER_NAME} text={item.POST} time={item.DATE_TIME} citation={item.QUOTE} onLike={() => { Like(index); handleRefresh() }} onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
                         )
                     } else {
                         if(category == item.CATEGORY){
                             return (
-                            <Card Likes={likes} img={item.IMAGE_ID} name={item.USER_NAME} text={item.POST} time={item.DATE_TIME} citation={item.QUOTE} onLike={() => { Like(index); handleRefresh() }} onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
+                            <Card onShare={() => {}} Likes={likes} img={item.IMAGE_ID} name={item.USER_NAME} text={item.POST} time={item.DATE_TIME} citation={item.QUOTE} onLike={() => { Like(index); handleRefresh() }} onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
                             )
                         }
                     }
+
                 }}
             />
 
