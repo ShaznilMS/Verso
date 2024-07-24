@@ -53,7 +53,7 @@ export default function SignIn({ navigation }) {
     }
 
     const schema = yup.object({
-        email: yup.string().required('Type your email'),
+        email: yup.string().required('Insira seu email'),
         password: yup.string().min(8, 'A senha deve ter pelo menos 8 caracteres').required('Type your password')
     })
 

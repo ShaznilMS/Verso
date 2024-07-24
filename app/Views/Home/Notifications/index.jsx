@@ -7,6 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowLeft, faComment, faCommentAlt, faComments, faCommentSms, faDiamond, faHeart, faThunderstorm, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faBlackTie } from '@fortawesome/free-brands-svg-icons';
 
+import LikeCard from './Componentes/NotificationCards/LikeCard'
+import FollowCard from './Componentes/NotificationCards/FollowCard';
+
 const User_Image = require('./../../../../assets/USER/USER_PROFILE.jpg')
 
 const NOTIFICATIONS = [
@@ -21,13 +24,13 @@ const NOTIFICATIONS = [
     {
         Type: 'Like',
         Data: {
-            WHO: 'Merry Rose',
-            ACTION: 'Liked your',
-            WHERE: 'Web Ui Design Post.'
+            WHO: 'Rose Merry',
+            ACTION: 'Curtiu sua publicacao',
+            MESSAGE: 'O maior inimigo do conhecimento nao e a ignorancia, e a ilusao do conhecimento'
         }
     },
     {
-        Type: 'Joined',
+        Type: 'Shared',
         Data: {
             WHO: 'Sandra Raddon',
             ACTION: 'Joined to',
@@ -35,18 +38,18 @@ const NOTIFICATIONS = [
         }
     },
     {
-        Type: 'Solicitation',
+        Type: 'New',
         Data: {
             WHO: 'Merry Rose',
             ACTION: 'want to follow your',
         }
     },
     {
-        Type: 'Like',
+        Type: 'Follow',
         Data: {
-            WHO: 'Merry Rose',
-            ACTION: 'Liked your',
-            WHERE: 'Web Ui Design Post.'
+            WHO: 'Merry Rose Merry Rose',
+            ACTION: 'Seguiu Voce',
+            MESSAGE: 'Web Ui Design Post.'
         }
     },
 ]
@@ -77,7 +80,7 @@ export default function Notifications({ navigation }) {
                 {/* <View style={{ width: 50, height: 50, backgroundColor: "#ddd", justifyContent: 'center', alignItems: 'center', borderRadius: 25, margin: 10 }}>
                     <FontAwesomeIcon icon={faArrowLeft} size={25} color='#333' />
                 </View> */}
-                <View style={{paddingLeft: 10}}>
+                <View style={{ paddingLeft: 10 }}>
                     <Text style={{ fontSize: 30, fontWeight: '400', color: "#999" }}>Your</Text>
                     <Text style={{ fontSize: 30, fontWeight: '600', color: "#333" }}>Notifications</Text>
                 </View>
@@ -85,6 +88,7 @@ export default function Notifications({ navigation }) {
 
             <View style={{ flex: 1, paddingHorizontal: 10 }}>
                 <FlatList
+                    contentContainerStyle={styles.flatlist}
                     data={NOTIFICATIONS}
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item }) => {
@@ -92,104 +96,25 @@ export default function Notifications({ navigation }) {
                             case 'Comment':
                                 return (
                                     <Swipeable renderRightActions={leftSwipe} overshootLeft={false}>
-                                        <View style={{ width: '100%', height: 100, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center' }}>
-                                            <Image style={{ width: 50, height: 50, borderRadius: 30, marginRight: 10 }} source={User_Image} />
-                                            <Text style={{ lineHeight: 26, fontWeight: '700', fontSize: 16, width: '100%', paddingRight: 110 }}>
 
-                                                {item.Data.WHO}
-
-                                                <Text style={{ color: '#888', fontWeight: '500', fontSize: 16 }}>
-                                                    {' '}{item.Data.ACTION}{' '}
-                                                </Text>
-
-                                                {item.Data.WHERE}
-
-                                            </Text>
-                                            <View style={{ margin: 20, right: 120, justifyContent: 'center', alignItems: 'center', borderRadius: 15, width: 24, height: 24, backgroundColor: "orange", padding: 10 }}>
-                                                <FontAwesomeIcon icon={faCommentAlt} size={10} color='#fff' />
-                                            </View>
-                                        </View>
                                     </Swipeable>
                                 )
                             case 'Like':
                                 return (
                                     <Swipeable renderRightActions={leftSwipe} overshootLeft={false}>
-                                        <View style={{ width: '100%', height: 100, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center' }}>
-                                            <Image style={{ width: 50, height: 50, borderRadius: 30, marginRight: 10 }} source={User_Image} />
-                                            <Text style={{ lineHeight: 26, fontWeight: '700', fontSize: 16, width: '100%', paddingRight: 110 }}>
-
-                                                {item.Data.WHO}
-
-                                                <Text style={{ color: '#888', fontWeight: '500', fontSize: 16 }}>
-                                                    {' '}{item.Data.ACTION}{' '}
-                                                </Text>
-
-                                                {item.Data.WHERE}
-
-                                            </Text>
-                                            <View style={{ margin: 20, right: 120, justifyContent: 'center', alignItems: 'center', borderRadius: 15, width: 24, height: 24, backgroundColor: "#f66", padding: 10 }}>
-                                                <FontAwesomeIcon icon={faHeart} size={10} color='#fff' />
-                                            </View>
-                                        </View>
+                                        <LikeCard user={item.Data.WHO} action={item.Data.ACTION} msg={item.Data.MESSAGE} />
                                     </Swipeable>
                                 )
-                            case 'Joined':
+                            case 'Shared':
                                 return (
                                     <Swipeable renderRightActions={leftSwipe} overshootLeft={false}>
-                                        <View style={{ width: '100%', height: 100, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center' }}>
-                                            <Image style={{ width: 50, height: 50, borderRadius: 30, marginRight: 10 }} source={User_Image} />
-                                            <Text style={{ lineHeight: 26, fontWeight: '700', fontSize: 16, width: '100%', paddingRight: 110 }}>
 
-                                                {item.Data.WHO}
-
-                                                <Text style={{ color: '#888', fontWeight: '500', fontSize: 16 }}>
-                                                    {' '}{item.Data.ACTION}{' '}
-                                                </Text>
-
-                                                {item.Data.WHERE}
-
-                                            </Text>
-                                            <View style={{ margin: 20, right: 120, justifyContent: 'center', alignItems: 'center', borderRadius: 15, width: 24, height: 24, backgroundColor: "#fd0", padding: 10 }}>
-                                                <FontAwesomeIcon icon={faDiamond} size={10} color='#fff' />
-                                            </View>
-                                        </View>
                                     </Swipeable>
                                 )
-                            case 'Solicitation':
+                            case 'Follow':
                                 return (
                                     <Swipeable renderRightActions={leftSwipe} overshootLeft={false}>
-                                        <View>
-                                            <View style={{ width: '100%', height: 100, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center' }}>
-                                                <Image style={{ width: 50, height: 50, borderRadius: 30, marginRight: 10 }} source={User_Image} />
-                                                <Text style={{ lineHeight: 26, fontWeight: '700', fontSize: 16, width: '100%', paddingRight: 110 }}>
-
-                                                    {item.Data.WHO}
-
-                                                    <Text style={{ color: '#888', fontWeight: '500', fontSize: 16 }}>
-                                                        {' '}{item.Data.ACTION}{' '}
-                                                    </Text>
-
-                                                    {item.Data.WHERE}
-
-                                                </Text>
-                                                <View style={{ margin: 20, right: 120, justifyContent: 'center', alignItems: 'center', borderRadius: 15, width: 24, height: 24, backgroundColor: "#333", padding: 10 }}>
-                                                    <FontAwesomeIcon icon={faBlackTie} size={10} color='#fff' />
-                                                </View>
-                                            </View>
-
-                                            <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', gap: 10}}>
-                                                <TouchableOpacity activeOpacity={.8}>
-                                                    <View style={{  paddingHorizontal: 40, borderRadius: 40, paddingVertical: 15, backgroundColor: '#333', alignItems: 'center', justifyContent: 'center'}}>
-                                                        <Text style={{color: "#fff", fontWeight: '700', letterSpacing: 1}}>Aceitar</Text>
-                                                    </View>
-                                                </TouchableOpacity>
-                                                <TouchableOpacity activeOpacity={.8}>
-                                                    <View style={{  paddingHorizontal: 30, borderRadius: 40, paddingVertical: 10, backgroundColor: '#ddd', alignItems: 'center', justifyContent: 'center'}}>
-                                                        <Text style={{color: "#333", fontWeight: '700', letterSpacing: 1}}>Rejeitar</Text>
-                                                    </View>
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>
+                                        <FollowCard user={item.Data.WHO} action={item.Data.ACTION} msg={item.Data.MESSAGE} />
                                     </Swipeable>
                                 )
 
@@ -213,5 +138,9 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: "#ffffff",
         paddingTop: 10,
+    },
+    flatlist: {
+        gap: 5,
+        paddingHorizontal: 10
     }
 })
