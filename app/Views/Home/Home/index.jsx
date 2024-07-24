@@ -162,7 +162,7 @@ export default function Home({ navigation }) {
                     if (category === 'Tudo' || category === item.CATEGORY) {
                         return (
                             <Card
-                                onShare={() => { console.log( Verified )}}
+                                onShare={() => { console.log(_isVerifieda) }}
                                 isVerified={_isVerifieda}
                                 Likes={likes}
                                 img={item.IMAGE_ID}
@@ -171,7 +171,7 @@ export default function Home({ navigation }) {
                                 time={item.DATE_TIME}
                                 citation={item.QUOTE}
                                 onLike={() => { Like(index); handleRefresh(); }}
-                                onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }); }}
+                                onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params:  { data: item } }); }}
                             />
                         );
                     }
