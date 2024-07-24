@@ -10,6 +10,7 @@ import { faArrowUpFromBracket, faPen, faPlus, faRecycle } from '@fortawesome/fre
 import Card from '../Publication/Components/Card';
 import { createStackNavigator } from '@react-navigation/stack';
 import Details from '../Publication/Details';
+import { GetPosts } from '../../../Settings/index.mjs';
 
 
 let PostCount
@@ -20,7 +21,9 @@ let Publication = [{}, {}]
 export default function Home({ navigation }) {
 
     const [Pub, setPub] = useState([])
-    const [started, setStarted] = useState(false)
+    const [data, setData] = useState([])
+
+    const [isStarted, setIsStarted] = useState(false)
     const [category, setCategory] = useState('Tudo')
     const [isRefreshing, setIsRefrshing] = useState(false)
     const USER_PROFILE = require('./../../../../assets/USER/USER_PROFILE.jpg')
@@ -28,6 +31,7 @@ export default function Home({ navigation }) {
     const [edit, setEdit] = useState(false)
     const [editText, setEditText] = useState('')
     const [edited, setEdited] = useState(false)
+    const [limit, setLimit] = useState(10)
 
     const handleCategory = (category) => {
         setCategory(category)
@@ -35,78 +39,87 @@ export default function Home({ navigation }) {
 
     function handleRefresh() {
         setIsRefrshing(true)
-        getPublications()
+        GetPost()
+        console.log(data);
         setIsRefrshing(false)
     }
 
-    function getPublications() {
-        // console.log('Get publication!');
-        const db = getDatabase(app)
+    function GetPost() {
+        setData(GetPosts(limit) ? GetPosts(limit) : [])
+    }
 
-        const referenceDatabase = ref(db, 'publication/')
 
-        get(referenceDatabase)
-            .then((value) => {
+    // function getPublications() {
+    //     // console.log('Get publication!');
+    //     const db = getDatabase(app)
+
+    //     const referenceDatabase = ref(db, 'publication/')
+
+    //     get(referenceDatabase)
+    //         .then((value) => {
 
                 
-            const data = value.val();
+    //         const data = value.val();
             
-            if (data) {
-                console.log('Data exist');
-                const keys = Object.keys(data);
-                const randomKeys = keys.sort(() => 0.5 - Math.random()).slice(0, 10);
-                const randomItems = randomKeys.map(key => data[key]);
+    //         if (data) {
+    //             console.log('Data exist');
+    //             const keys = Object.keys(data);
+    //             const randomKeys = keys.sort(() => 0.5 - Math.random()).slice(0, 10);
+    //             const randomItems = randomKeys.map(key => data[key]);
 
-                console.log(randomItems);
-                // atualizar(randomItems)
-                atualizar(value.val())
-            } else {
-                console.log('Data does not exist');
+    //             console.log(randomItems);
+    //             // atualizar(randomItems)
+    //             atualizar(value.val())
+    //         } else {
+    //             console.log('Data does not exist');
 
-                atualizar([])
-            }
+    //             atualizar([])
+    //         }
 
-                // Publication = val.val()
-                // atualizar(val.val())
-            })
-    }
+    //             // Publication = val.val()
+    //             // atualizar(val.val())
+    //         })
+    // }
 
-    function atualizar(data) {
-        setPub(data.reverse())
-    }
+    // function atualizar(data) {
+    //     setPub(data.reverse())
+    // }
 
-    const onSelect = ind => {
-        setSelected(ind)
-    }
+    // const onSelect = ind => {
+    //     setSelected(ind)
+    // }
 
-    const Edited = (valor) => {
-        if (!edited) {
-            setEdited(true)
-        }
-        setEditText(valor)
-    }
+    // const Edited = (valor) => {
+    //     if (!edited) {
+    //         setEdited(true)
+    //     }
+    //     setEditText(valor)
+    // }
 
     useEffect(() => {
-        if (!started) {
-            getPublications()
-            setStarted(true)
+        if (!isStarted) {
+            GetPost()
+            setIsStarted(true)
         }
     })
 
-    const Edit = (ind, value) => {
-        let old = selected >= 0 ? Pub[selected] : []
-        if (edited && old.CONTENT != value) {
-            console.log(ind, value);
-            const db = getDatabase(app)
-            const reference = ref(db, 'publication/' + old.ID)
-            update(reference, { CONTENT: value })
-                .then(() => {
-                    console.log('Post: ' + ind + ', ' + value);
-                    setEdit(false)
-                    getPublications()
-                })
-        }
-    }
+    
+    const [refreshing, setRefreshing] = useState(false)
+
+    // const Edit = (ind, value) => {
+    //     let old = selected >= 0 ? Pub[selected] : []
+    //     if (edited && old.CONTENT != value) {
+    //         console.log(ind, value);
+    //         const db = getDatabase(app)
+    //         const reference = ref(db, 'publication/' + old.ID)
+    //         update(reference, { CONTENT: value })
+    //             .then(() => {
+    //                 console.log('Post: ' + ind + ', ' + value);
+    //                 setEdit(false)
+    //                 getPublications()
+    //             })
+    //     }
+    // }
 
     return (
 
@@ -130,14 +143,14 @@ export default function Home({ navigation }) {
             </View>
 
             <FlatList
-                data={Pub}
+                data={Object.values(data).reverse()}
                 style={{ flex: 1, backgroundColor: "#fff" }}
                 showsVerticalScrollIndicator={false}
                 refreshing={isRefreshing}
                 onRefresh={handleRefresh}
                 onScroll={() => {
                     setEdited(false)
-                    onSelect(null)
+                    // onSelect(null)
                 }}
                 renderItem={({ item, index }) => {
                     let color = "#ffffff"
@@ -150,7 +163,7 @@ export default function Home({ navigation }) {
                     }
                     
                     return (
-                        <Card img={item.IMAGE_ID} name={item.USER_NAME} text={item.CONTENT} time={item.DATE_TIME} citation={item.QUOTE} onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
+                        <Card img={item.IMAGE_ID} name={item.USER_NAME} text={item.POST} time={item.DATE_TIME} citation={item.QUOTE} onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
                     )
                 }}
             />

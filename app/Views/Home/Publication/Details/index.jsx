@@ -154,7 +154,7 @@ const Details = ({ route, navigation }) => {
                 []
                 :  */}
             <Animated.View style={[styles.content, { opacity: hideValue, display: display }]}>
-                <Text style={{ paddingHorizontal: 20, fontSize: 18, textAlign: 'center', fontWeight: 600 }}>{data.CONTENT}</Text>
+                <Text style={{ paddingHorizontal: 20, fontSize: 18, textAlign: 'center', fontWeight: 600 }}>{data.POST}</Text>
                 <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>{data.QUOTE}</Text>
             </Animated.View>
             {/* } */}

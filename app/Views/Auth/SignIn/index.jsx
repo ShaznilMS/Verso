@@ -1,14 +1,11 @@
 import InputText from '../Componentes/InputText';
-import React, { useEffect, useState } from 'react';
-import { StackActions } from '@react-navigation/native';
-import { app, auth } from '../../../../configs/firebase.config.mjs';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getAuth, signInWithEmailAndPassword } from '@firebase/auth';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, Image, TouchableOpacity, View, Modal } from 'react-native';
-
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup';
+import { VerifyAuthentication, VersoSignIn } from '../../../Settings/index.mjs';
+import { StackActions } from '@react-navigation/native';
 
 const logo = require('../splash.png')
 
@@ -16,42 +13,21 @@ export default function SignIn({ navigation }) {
 
     const [field_email, setEmail] = useState('')
     const [field_password, setPassword] = useState('')
-
     const [isLoading, setIsLoading] = useState(false)
-
-    function Login(email, password) {
-        console.log("Email:", email);
-        console.log("Password:", password);
-        signInWithEmailAndPassword(auth, email.replace(' ', ''), password)
-            .then((user) => {
-                console.log("Welcome:", user.user.email);
-                console.log("User allready beem logged!");
+    
+    function handleLogin(data) {
+        const { email, password } = data
+        console.log(email, password);
+        setIsLoading(true)
+        VersoSignIn(email, password).then((value) => {
+            if (value == true) {
                 navigation.dispatch(
                     StackActions.replace('TabNavigator')
                 )
-            })
-            .catch((e) => {
-                console.log("Sign In:", e.code.replace('/', '').replace('-', ''));
-            })
-            .finally(() => {
-                console.log("Sign In: Done!");
-            })
-    }
-
-    useEffect(() => {
-        if (getAuth(app).currentUser) {
-            console.log("User allready beem logged!");
-            navigation.dispatch(
-                StackActions.replace('TabNavigator')
-            )
-        } else {
-            console.log('User does not exist!');
-        }
-    })
-
-    function handleLogin(data) {
-        const {email, password} = data
-        Login(email, password)
+            }
+        }).finally(() => {
+            setIsLoading(false)
+        })
     }
 
     const schema = yup.object({
