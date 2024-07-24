@@ -13,7 +13,8 @@ import { getAuth } from '@firebase/auth'
 const Details = ({ route, navigation }) => {
 
     const { data } = route.params
-
+    console.log(data.VERIFIED)
+    
     const tabBarStyle = {
         position: 'absolute',
         bottom: 0,
@@ -142,7 +143,7 @@ const Details = ({ route, navigation }) => {
                 flex: 1
             }}
         >
-            <User verified={isVerified ? { display: 'flex' } : { display: 'none' }} back={() => {
+            <User verified={data.VERIFIED ? { display: 'flex' } : { display: 'none' }} back={() => {
                 navigation.getParent().setOptions({ tabBarStyle: tabBarStyle })
                 navigation.goBack()
             }} user={data.USER_NAME} time={data.DATE_TIME} onCallHide={() => { handleHide() }} />
@@ -163,10 +164,10 @@ const Details = ({ route, navigation }) => {
                     data={Object.values(Comments).reverse()}
                     style={{ flex: 1 }}
                     inverted
-                    onEndReached={() => getComments(limitQuery)}
-                    onEndReachedThreshold={0.2}
+                    // onEndReached={() => getComments(limitQuery)}
+                    // onEndReachedThreshold={0.2}
                     ItemSeparatorComponent={<View style={{ width: '100%', height: 20, backgroundColor: "#fff0" }}></View>}
-                    ListFooterComponent={<Loading isLoading={isRefreshing} />}
+                    // ListFooterComponent={<Loading isLoading={isRefreshing} />}
                     renderItem={({ item }) => {
                         return (
                             <Coment user={item.Name} time={item.Time} coment={item.Comment} />
@@ -178,7 +179,7 @@ const Details = ({ route, navigation }) => {
     )
     function Loading({ isLoading }) {
 
-        if(!isLoading) return null
+        if (!isLoading) return null
 
         return (
             <View style={{

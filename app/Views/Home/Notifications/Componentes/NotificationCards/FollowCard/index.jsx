@@ -11,12 +11,11 @@ const FollowCard = (props) => {
             <View style={styles.img_cont}><Image source={img} style={styles.img} /></View>
 
             <View style={styles.top}>
-                <View style={styles.headline}>
-                    <Text style={styles.headline_text}>Notificação</Text>
-                </View>
-
                 <View style={styles.bottom}>
-                    <Text style={styles.head_text}>Antonio Cossa<Text style={styles.head_msg}> Seguio voce</Text></Text>
+                    <View>
+                        <Text style={styles.head_text}>{props.user}</Text>
+                        <Text style={styles.head_msg}>{props.action}</Text>
+                    </View>
                     <Button style={{ width: 48, height: 20 }} text='Perfil' color='#fff' fontSize={10} />
                 </View>
             </View>
@@ -32,22 +31,16 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         height: 100,
-        borderRadius: 20,
-        shadowColor: '#171717',
-        shadowOffset: { width: -2, height: 4 },
-        shadowOpacity: 0.2,
-        shadowRadius: 3,
-        elevation: 4,
+        borderWidth: 1,
+        borderRadius: 10,
         backgroundColor: "#ffffff",
-        borderRadius: 30,
         paddingHorizontal: 20,
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 20
+        gap: 20,
     },
     img_cont: {
         height: '100%',
-        justifyContent: 'center'
     },
     img: {
         width: 60,
@@ -55,11 +48,13 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         borderWidth: 3,
         borderColor: '#fff',
+        top: 20
 
     },
     top: {
         height: '100%',
-        gap: 20
+        gap: 20,
+        justifyContent: 'center'
     },
     headline: {
         flexDirection: 'row',
@@ -80,7 +75,7 @@ const styles = StyleSheet.create({
         fontWeight: 'regular',
         color: '#afafaf'
     },
-    bottom:{
-        gap:10
+    bottom: {
+        gap: 10
     }
 })

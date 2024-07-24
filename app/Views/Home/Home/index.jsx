@@ -181,7 +181,7 @@ export default function Home({ navigation }) {
                                 time={item.DATE_TIME}
                                 citation={item.QUOTE}
                                 onLike={() => { Like(index); handleRefresh(); }}
-                                onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }); }}
+                                onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params:  { data: item } }); }}
                             />
                         );
                     }
