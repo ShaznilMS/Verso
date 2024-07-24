@@ -4,8 +4,6 @@ import { FlatList, Image, ImageBackground, ScrollView, StyleSheet, Text, TextInp
 import sha256 from "sha256";
 import { app } from "../../../../configs/firebase.config.mjs";
 import { get, getDatabase, ref, set, update } from 'firebase/database';
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import User from "./Components/User";
 import IMAGES from "../../../../assets/USER/links.mjs";
 import { AddPosts, GetAuthentication } from "../../../Settings/index.mjs";
@@ -17,7 +15,7 @@ export default function AddPublication({ navigation }) {
     const [postCount, setPostCount] = useState()
     const [content, setContent] = useState('')
     const [category, setCategory] = useState('Filosofica')
-    
+
     const handleCategory = (category) => {
         setCategory(category)
     }
@@ -30,7 +28,7 @@ export default function AddPublication({ navigation }) {
         SetStamp(tm)
     }
 
-    
+
     stamp === '' ? timeStamp() : console.log(stamp)
 
     function handleAutor(autor) {
@@ -92,7 +90,11 @@ export default function AddPublication({ navigation }) {
                 </ImageBackground>
             </View>
 
-            <ScrollView style={{ height: 50, maxHeight: 50, width: '100%', backgroundColor: '#0000' }} showsHorizontalScrollIndicator={false} bounces={false} alwaysBounceHorizontal={false} bouncesZoom={false} horizontal >
+            <View style={{ paddingVertical: 5, backgroundColor: '#ececec', width: '100%' }}>
+                <Text style={{ fontWeight: '500', backgroundColor: '#c2c2c2', padding: 5, textAlign: 'center' }}>Categoria</Text>
+            </View>
+
+            <ScrollView style={{ height: 50, maxHeight: 50, width: '100%', backgroundColor: '#ececec' }} showsHorizontalScrollIndicator={false} bounces={false} alwaysBounceHorizontal={false} bouncesZoom={false} horizontal >
                 <View style={{ height: 50, width: '100%', justifyContent: 'center', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20 }}>
                     <Categorie text='Filosóficas' Selecionada={category === 'Filosofica'} onPress={() => { handleCategory('Filosofica') }} />
                     <Categorie text='Poemas' Selecionada={category === 'Poemas'} onPress={() => { handleCategory('Poemas') }} />
@@ -106,7 +108,12 @@ export default function AddPublication({ navigation }) {
                 </View>
             </ScrollView>
 
+            <View style={{ paddingVertical: 5, backgroundColor: '#ececec', width: '100%' }}>
+                <Text style={{ fontWeight: '500', backgroundColor: '#c2c2c2',padding: 5, textAlign: 'center' }}>Imagem de Fundo</Text>
+            </View>
+
             <FlatList data={IMAGES}
+            showsHorizontalScrollIndicator={false}
                 horizontal={true}
                 renderItem={({ item }) => {
 

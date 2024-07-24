@@ -55,6 +55,13 @@ const NOTIFICATIONS = [
             MESSAGE: 'Web Ui Design Post.'
         }
     },
+    {
+        Type: 'New',
+        Data: {
+            WHO: 'Merry Rose',
+            MESSAGE: 'O maior inimigo do conhecimento nao e a ignorancia, e a ilusao do conhecimento',
+        }
+    }
 ]
 
 export default function Notifications({ navigation }) {
