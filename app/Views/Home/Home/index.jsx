@@ -156,21 +156,13 @@ export default function Home({ navigation }) {
                 }}
                 renderItem={({ item, index }) => {
                     let likes = item.LIKES ? Object.values(item.LIKES).length : 0;
-                    // let _isVerifieda = Verified[item.USER_ID] //|| false; // Adiciona a verificação correta
 
-                    let _isVerifieda = Boolean(Verified[item.USER_ID]) // Ajusta a verificação
-                    // console.log(_isVerifieda, item.USER_NAME);
-
-                    if (Boolean(Verified[item.USER_ID])) {
-                        // console.log(Boolean(Verified[item.USER_ID]));
-                    }
-
+                    let _isVerifieda = Boolean(Verified[item.USER_ID])
 
                     if (category === 'Tudo' || category === item.CATEGORY) {
                         return (
                             <Card
                                 onShare={() => { console.log( Verified )}}
-                                // Só passa isVerified se for verdadeiro
                                 isVerified={_isVerifieda}
                                 Likes={likes}
                                 img={item.IMAGE_ID}
@@ -244,8 +236,7 @@ export default function Home({ navigation }) {
                         <TouchableOpacity
                             activeOpacity={.8}
                             onPress={() => {
-                                // Edit(selected, editText); // Certifique-se de ter a função Edit implementada corretamente
-                                setEdit(false); // Adicionado para fechar o modal após a edição
+                                setEdit(false);
                             }}
                         >
                             <View style={{ borderRadius: 5, paddingHorizontal: 20, paddingVertical: 10, backgroundColor: "#000000" }}>
