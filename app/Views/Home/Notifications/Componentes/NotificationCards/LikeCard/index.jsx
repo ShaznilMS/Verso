@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         height: 150,
-        borderRadius: 10,
-        borderWidth:1,
+        borderRadius: 20,
+        borderWidth: 1,
         backgroundColor: "#fff",
         paddingHorizontal: 20,
         flexDirection: 'row',
@@ -47,7 +47,8 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         borderWidth: 3,
         borderColor: '#fff',
-        top:30
+        top: 30
+
 
     },
     top: {
@@ -86,3 +87,4 @@ const styles = StyleSheet.create({
         top: 10
     }
 })
+

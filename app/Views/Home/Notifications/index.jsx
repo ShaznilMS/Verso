@@ -9,6 +9,8 @@ import { faBlackTie } from '@fortawesome/free-brands-svg-icons';
 
 import LikeCard from './Componentes/NotificationCards/LikeCard'
 import FollowCard from './Componentes/NotificationCards/FollowCard';
+import NavBar from '../../../../assets/components/NavBar';
+import NewPubCard from './Componentes/NotificationCards/NewPubCard';
 
 const User_Image = require('./../../../../assets/USER/USER_PROFILE.jpg')
 
@@ -41,7 +43,7 @@ const NOTIFICATIONS = [
         Type: 'New',
         Data: {
             WHO: 'Merry Rose',
-            ACTION: 'want to follow your',
+            MESSAGE: 'O maior inimigo do conhecimento nao e a ignorancia, e a ilusao do conhecimento',
         }
     },
     {
@@ -76,15 +78,8 @@ export default function Notifications({ navigation }) {
 
     return (
         <View style={styles.bg}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {/* <View style={{ width: 50, height: 50, backgroundColor: "#ddd", justifyContent: 'center', alignItems: 'center', borderRadius: 25, margin: 10 }}>
-                    <FontAwesomeIcon icon={faArrowLeft} size={25} color='#333' />
-                </View> */}
-                <View style={{ paddingLeft: 10 }}>
-                    <Text style={{ fontSize: 30, fontWeight: '400', color: "#999" }}>Your</Text>
-                    <Text style={{ fontSize: 30, fontWeight: '600', color: "#333" }}>Notifications</Text>
-                </View>
-            </View>
+            <NavBar />
+
 
             <View style={{ flex: 1, paddingHorizontal: 10 }}>
                 <FlatList
@@ -118,6 +113,12 @@ export default function Notifications({ navigation }) {
                                     </Swipeable>
                                 )
 
+                            case 'New':
+                                return (
+                                    <Swipeable renderRightActions={leftSwipe} overshootLeft={false}>
+                                        <NewPubCard user={item.Data.WHO} msg={item.Data.MESSAGE}/>
+                                    </Swipeable>
+                                )
                             default:
                                 break;
                         }
@@ -128,11 +129,12 @@ export default function Notifications({ navigation }) {
     );
 }
 
+
+
 const styles = StyleSheet.create({
     bg: {
         gap: 15,
         flex: 1,
-        padding: 20,
         backgroundColor: "#ffffff"
     },
     container: {

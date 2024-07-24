@@ -134,6 +134,7 @@ export default function Home({ navigation }) {
     function getUserID() {
         return sha256(getAuth(app).currentUser.email);
     }
+    
 
     return (
         <View style={styles.bg}>

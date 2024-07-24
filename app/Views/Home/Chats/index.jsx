@@ -9,7 +9,8 @@ export default function Chats({ navigation }) {
     if (!getAuth(app).currentUser) {
         navigation.navigate('SignIn')
     }
-
+ 
+    
     return (
         <>
             <NavBar />

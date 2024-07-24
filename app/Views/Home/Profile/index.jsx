@@ -14,6 +14,7 @@ import { GetAuthentication, VerifyAuthentication, VersoSignOut } from '../../../
 
 const User_Image = require('./../../../../assets/USER/USER_PROFILE.jpg')
 
+
 export default function Profile({ navigation }) {
 
     const [UserInformation, setUserInformation] = useState()

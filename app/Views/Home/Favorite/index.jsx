@@ -10,6 +10,7 @@ export default function Favorite({ navigation }) {
         
     }
 
+    
     return (
         <View style={styles.bg}>
             <NavBar />

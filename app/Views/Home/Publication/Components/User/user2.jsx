@@ -28,6 +28,8 @@ const User2 = (props) => {
     )
 }
 
+
+
 export default User2
 
 const styles = StyleSheet.create({

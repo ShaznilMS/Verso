@@ -14,11 +14,12 @@ const FollowCard = (props) => {
                 <View style={styles.bottom}>
                     <View>
                         <Text style={styles.head_text}>{props.user}</Text>
-                        <Text style={styles.head_msg}>{props.action}</Text>
+                        <Text style={styles.head_msg}>seguiu voce</Text>
                     </View>
                     <Button style={{ width: 48, height: 20 }} text='Perfil' color='#fff' fontSize={10} />
                 </View>
             </View>
+
 
 
         </View>
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 100,
         borderWidth: 1,
-        borderRadius: 10,
+        borderRadius: 20,
         backgroundColor: "#ffffff",
         paddingHorizontal: 20,
         flexDirection: 'row',

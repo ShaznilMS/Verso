@@ -76,6 +76,7 @@ const Details = ({ route, navigation }) => {
         return () => clearInterval(interval);
     });
 
+    
     function getComments(limit) {
         const db = getDatabase(app)
         const reference = ref(db, 'publication/' + data.ID + '/COMMENTARY')
