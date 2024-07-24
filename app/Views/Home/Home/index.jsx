@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FlatList, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { FlatList, Image, Modal, ScrollView, StyleSheet, Text, BackHandler, TextInput, TouchableOpacity, TouchableWithoutFeedback, View, Alert } from 'react-native';
 import { app } from '../../../../configs/firebase.config.mjs';
 import NavBar from '../../../../assets/components/NavBar'
 import Categorie from '../../../../assets/components/Categorie';
@@ -10,17 +10,20 @@ import { faArrowUpFromBracket, faPen, faPlus, faRecycle } from '@fortawesome/fre
 import Card from '../Publication/Components/Card';
 import { createStackNavigator } from '@react-navigation/stack';
 import Details from '../Publication/Details';
-
+import { CountPostsLikes, GetAuthentication, GetPosts, LikePost } from '../../../Settings/index.mjs';
+import { StackActions, useFocusEffect } from '@react-navigation/native';
+import { getAuth } from '@firebase/auth';
+import sha256 from 'sha256';
 
 let PostCount
 let Publication = [{}, {}]
 
-
-
 export default function Home({ navigation }) {
 
     const [Pub, setPub] = useState([])
-    const [started, setStarted] = useState(false)
+    const [data, setData] = useState([])
+
+    const [isStarted, setIsStarted] = useState(false)
     const [category, setCategory] = useState('Tudo')
     const [isRefreshing, setIsRefrshing] = useState(false)
     const USER_PROFILE = require('./../../../../assets/USER/USER_PROFILE.jpg')
@@ -28,6 +31,30 @@ export default function Home({ navigation }) {
     const [edit, setEdit] = useState(false)
     const [editText, setEditText] = useState('')
     const [edited, setEdited] = useState(false)
+    const [limit, setLimit] = useState(10)
+
+    useFocusEffect(
+        React.useCallback(() => {
+            handleRefresh()
+            const onBackPress = () => {
+                Alert.alert(
+                    "",
+                    "Realmente deseja sair?",
+                    [
+                        { text: "Cancelar", onPress: () => null, style: "cancel" },
+                        { text: "Sair", onPress: () => { BackHandler.exitApp() } }
+                    ]
+                );
+                return true;
+            };
+
+            BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+            return () => {
+                BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+            };
+        }, [navigation])
+    )
 
     const handleCategory = (category) => {
         setCategory(category)
@@ -35,78 +62,75 @@ export default function Home({ navigation }) {
 
     function handleRefresh() {
         setIsRefrshing(true)
-        getPublications()
+        GetPost()
+        // console.log(data);
+        // setIsRefrshing(false)
+    }
+
+    async function GetPost() {
+        let data = []
+        await GetPosts(limit) ? await GetPosts(limit).then((value) => data = value) : []
+        console.log(data);
+        setData(data)
         setIsRefrshing(false)
-    }
 
-    function getPublications() {
-        // console.log('Get publication!');
-        const db = getDatabase(app)
-
-        const referenceDatabase = ref(db, 'publication/')
-
-        get(referenceDatabase)
-            .then((value) => {
-
-                
-            const data = value.val();
-            
-            if (data) {
-                console.log('Data exist');
-                const keys = Object.keys(data);
-                const randomKeys = keys.sort(() => 0.5 - Math.random()).slice(0, 10);
-                const randomItems = randomKeys.map(key => data[key]);
-
-                console.log(randomItems);
-                // atualizar(randomItems)
-                atualizar(value.val())
-            } else {
-                console.log('Data does not exist');
-
-                atualizar([])
-            }
-
-                // Publication = val.val()
-                // atualizar(val.val())
-            })
-    }
-
-    function atualizar(data) {
-        setPub(data.reverse())
-    }
-
-    const onSelect = ind => {
-        setSelected(ind)
-    }
-
-    const Edited = (valor) => {
-        if (!edited) {
-            setEdited(true)
-        }
-        setEditText(valor)
     }
 
     useEffect(() => {
-        if (!started) {
-            getPublications()
-            setStarted(true)
+        if (!isStarted) {
+            GetPost(100)
+            setIsStarted(true)
         }
+        console.log('Home');
     })
 
-    const Edit = (ind, value) => {
-        let old = selected >= 0 ? Pub[selected] : []
-        if (edited && old.CONTENT != value) {
-            console.log(ind, value);
-            const db = getDatabase(app)
-            const reference = ref(db, 'publication/' + old.ID)
-            update(reference, { CONTENT: value })
-                .then(() => {
-                    console.log('Post: ' + ind + ', ' + value);
-                    setEdit(false)
-                    getPublications()
-                })
-        }
+
+    const [refreshing, setRefreshing] = useState(false)
+
+    // const Edit = (ind, value) => {
+    //     let old = selected >= 0 ? Pub[selected] : []
+    //     if (edited && old.CONTENT != value) {
+    //         console.log(ind, value);
+    //         const db = getDatabase(app)
+    //         const reference = ref(db, 'publication/' + old.ID)
+    //         update(reference, { CONTENT: value })
+    //             .then(() => {
+    //                 console.log('Post: ' + ind + ', ' + value);
+    //                 setEdit(false)
+    //                 getPublications()
+    //             })
+    //     }
+    // }
+
+    function Like(ID) {
+        console.log(ID);
+        console.log(getItemID(ID));
+        LikePost(getItemID(ID), getUserID())
     }
+    
+    function getItemID(index) {
+        return Object.keys(data).reverse()[index]
+    }
+
+    function getUserID() {
+        return sha256(getAuth(app).currentUser.email)
+    }
+    
+    // GetUser().then((value) => {console.log(value.Name);})
+    // async function GetUser() {
+    //     const db = getDatabase(app)
+    //     const reference = ref(db, 'USERS/' + getUserID())
+    //     let data = {}
+    //     await get(reference)
+    //         .then((value) => {
+    //             data = value.val()
+    //         })
+    //         .finally(() => {
+    //             console.log('Finally');
+    //         })
+
+    //     return data
+    // }
 
     return (
 
@@ -116,7 +140,7 @@ export default function Home({ navigation }) {
                 <View>
                     <ScrollView showsHorizontalScrollIndicator={false} bounces={false} alwaysBounceHorizontal={false} bouncesZoom={false} horizontal >
                         <Categorie text='Tudo' Selecionada={category === 'Tudo'} onPress={() => { handleCategory('Tudo') }} />
-                        <Categorie text='Filosóficas' Selecionada={category === 'Filosóficas'} onPress={() => { handleCategory('Filosóficas') }} />
+                        <Categorie text='Filosóficas' Selecionada={category === 'Filosofica'} onPress={() => { handleCategory('Filosofica') }} />
                         <Categorie text='Poemas' Selecionada={category === 'Poemas'} onPress={() => { handleCategory('Poemas') }} />
                         <Categorie text='Acolhedoras' Selecionada={category === 'Acolhedoras'} onPress={() => { handleCategory('Acolhedoras') }} />
                         <Categorie text='Motivacionais' Selecionada={category === 'Motivacionais'} onPress={() => { handleCategory('Motivacionais') }} />
@@ -130,28 +154,44 @@ export default function Home({ navigation }) {
             </View>
 
             <FlatList
-                data={Pub}
+                data={Object.values(data).reverse()}
                 style={{ flex: 1, backgroundColor: "#fff" }}
                 showsVerticalScrollIndicator={false}
                 refreshing={isRefreshing}
                 onRefresh={handleRefresh}
                 onScroll={() => {
                     setEdited(false)
-                    onSelect(null)
+                    // onSelect(null)
                 }}
+
+
                 renderItem={({ item, index }) => {
                     let color = "#ffffff"
                     let isSelected = false
+
                     if (selected == index) {
                         isSelected = true
                         color = "#E8DEF8"
                     } else {
                         color = "#ffffff"
                     }
-                    
-                    return (
-                        <Card verified={true} img={item.IMAGE_ID} name={item.USER_NAME} text={item.CONTENT} time={item.DATE_TIME} citation={item.QUOTE} onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
-                    )
+
+                    // console.log(CountPostsLikes(Object.keys(data)[index]))
+                    // // let likesNum = 
+                    // CountPostsLikes(getItemID(index)).then((value) => { console.log(value) })
+
+                    likes = item.LIKES ? Object.values(item.LIKES).length : 0
+                    if(category == 'Tudo') {
+                        return (
+                            <Card Likes={likes} img={item.IMAGE_ID} name={item.USER_NAME} text={item.POST} time={item.DATE_TIME} citation={item.QUOTE} onLike={() => { Like(index); handleRefresh() }} onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
+                        )
+                    } else {
+                        if(category == item.CATEGORY){
+                            return (
+                            <Card Likes={likes} img={item.IMAGE_ID} name={item.USER_NAME} text={item.POST} time={item.DATE_TIME} citation={item.QUOTE} onLike={() => { Like(index); handleRefresh() }} onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
+                            )
+                        }
+                    }
                 }}
             />
 

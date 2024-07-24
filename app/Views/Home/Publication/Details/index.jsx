@@ -102,32 +102,30 @@ const Details = ({ route, navigation }) => {
     }
 
     function pushComments() {
+        console.log(data);
+        // getUserId()
+        // const reference_comment = ref(db, 'POSTS/' + data.ID + '/COMMENTARY')
 
-        const db = getDatabase(app)
+        // const tm = new Date()
 
-        const reference_user = ref(db, 'users/' + getUserId())
-        const reference_comment = ref(db, 'publication/' + data.ID + '/COMMENTARY')
-
-        const tm = new Date()
-
-        // console.log('Push Comments', getUserId());
+        // // console.log('Push Comments', getUserId());
 
 
-        get(reference_user)
-            .then((value) => {
-                const user_data = value.val()
-                const comment = { Name: user_data.Name, Time: tm.getUTCFullYear() + '/' + (tm.getUTCMonth() + 1 < 10 ? '0' + (tm.getUTCMonth() + 1) : tm.getUTCMonth() + 1) + '/' + (tm.getUTCDate() < 10 ? '0' + tm.getUTCDate() : tm.getUTCDate()), Comment: text }
-                push(reference_comment, comment)
-                    .then(() => {
-                        getComments(limitQuery)
-                    })
-            })
-            .catch((error) => {
-                // console.log(error)
-            })
-            .finally(() => {
-                // console.log(data);
-            })
+        // get(reference_user)
+        //     .then((value) => {
+        //         const user_data = value.val()
+        //         const comment = { Name: user_data.Name, Time: tm.getUTCFullYear() + '/' + (tm.getUTCMonth() + 1 < 10 ? '0' + (tm.getUTCMonth() + 1) : tm.getUTCMonth() + 1) + '/' + (tm.getUTCDate() < 10 ? '0' + tm.getUTCDate() : tm.getUTCDate()), Comment: text }
+        //         push(reference_comment, comment)
+        //             .then(() => {
+        //                 getComments(limitQuery)
+        //             })
+        //     })
+        //     .catch((error) => {
+        //         // console.log(error)
+        //     })
+        //     .finally(() => {
+        //         // console.log(data);
+        //     })
     }
 
     function doNothing() {
@@ -154,7 +152,7 @@ const Details = ({ route, navigation }) => {
                 []
                 :  */}
             <Animated.View style={[styles.content, { opacity: hideValue, display: display }]}>
-                <Text style={{ paddingHorizontal: 20, fontSize: 18, textAlign: 'center', fontWeight: 600 }}>{data.CONTENT}</Text>
+                <Text style={{ paddingHorizontal: 20, fontSize: 18, textAlign: 'center', fontWeight: 600 }}>{data.POST}</Text>
                 <Text style={{ textAlign: 'center', fontWeight: 700, top: 30 }}>{data.QUOTE}</Text>
             </Animated.View>
             {/* } */}

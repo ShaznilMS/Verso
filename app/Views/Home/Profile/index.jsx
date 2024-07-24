@@ -10,6 +10,7 @@ import { StatusBar } from 'expo-status-bar';
 import { faCalendar, faUser } from '@fortawesome/free-regular-svg-icons';
 import { get, getDatabase, ref } from 'firebase/database';
 import sha256 from 'sha256';
+import { GetAuthentication, VerifyAuthentication, VersoSignOut } from '../../../Settings/index.mjs';
 
 const User_Image = require('./../../../../assets/USER/USER_PROFILE.jpg')
 
@@ -21,45 +22,55 @@ export default function Profile({ navigation }) {
 
     useEffect(() => {
         if (!isStarted) {
+            console.log('Is started');
             setIsStarted(true)
             GetUser()
         }
     })
 
-    if (!getAuth(app).currentUser) {
-        navigation.reset({
-            index: 0,
-            routes: [{ name: 'StackNavigator' }],
-        })
-    }
+    // if (!getAuth(app).currentUser) {
+    //     navigation.reset({
+    //         index: 0,
+    //         routes: [{ name: 'StackNavigator' }],
+    //     })
+    // }
 
     function Sair() {
-
-        console.log('Sair!');
-        const user = getAuth(app).currentUser
-        if (user) {
-            console.log('Usuário', user.email.toUpperCase(), "saiu da conta!");
-            signOut(auth)
-                .then(() => {
-                    console.log('Sign out has been executed successfully!');
-                    navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'StackNavigator' }],
-                    })
+        if (VerifyAuthentication()) {
+            VersoSignOut().finally(() => {
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'StackNavigator' }],
                 })
+            })
+        } else {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'StackNavigator' }],
+            })
+        }
+    }
+
+    function canContinue() {
+        if (!VerifyAuthentication()) {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'StackNavigator' }],
+            })
         }
     }
 
     function getUserId() {
+        canContinue()
         return sha256(getAuth(app).currentUser.email)
     }
 
     function GetUser() {
         const db = getDatabase(app)
-        const reference = ref(db, 'users/' + getUserId())
-
+        const reference = ref(db, 'USERS/' + getUserId())
         get(reference)
             .then((value) => {
+                console.log(value.val());
                 setUserInformation(value.val())
             })
             .finally(() => {
@@ -256,7 +267,7 @@ export default function Profile({ navigation }) {
                     </View>
 
                     <TouchableWithoutFeedback
-                        onPress={() => { console.log(UserInformation.Name) }}
+                    onPress={() => { console.log(UserInformation.Name) }}
                     >
                         <View
                             style={{

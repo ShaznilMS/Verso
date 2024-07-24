@@ -1,4 +1,4 @@
-import { get, ref, push, remove, update, limitToFirst, getDatabase, set, query, Database } from "firebase/database";
+import { get, ref, push, remove, update, limitToFirst, getDatabase, set, query, Database, limitToLast } from "firebase/database";
 import { app, auth } from "../../configs/firebase.config.mjs";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, getAuth } from "@firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -10,8 +10,14 @@ const DATABASE = getDatabase(app)
 const USER_REFERENCE = ref(DATABASE, 'USERS/')
 const POST_REFERENCE = ref(DATABASE, 'POSTS/')
 
-export async function VerifyAuthentication() {
-    const _authentication_local = await AsyncStorage.getItem('authentication')
+export function VerifyAuthentication() {
+    let _authentication_local = null;
+
+    async function getUserItem() {
+        return await AsyncStorage.getItem('authentication').then((value) => { _authentication_local = value })
+    }
+
+    getUserItem()
     const _authentication_firebase = getAuth(app)
 
     if (_authentication_firebase.currentUser || _authentication_local) {
@@ -28,8 +34,7 @@ export async function GetAuthentication() {
     const _authentication_local = await AsyncStorage.getItem('authentication')
     const _authentication_firebase = getAuth(app)
 
-    if (isLogged) {
-        console.log("Is logged? :" + isLogged);
+    if (_authentication_local || _authentication_firebase.currentUser) {
         if (_authentication_firebase.currentUser) {
             return { type: 'firebase', auth: _authentication_firebase.currentUser }
         }
@@ -46,33 +51,35 @@ async function SaveAuthentication(Authentication) {
     const _authentication = await AsyncStorage.setItem('authentication', JSON.stringify(Authentication))
 }
 
-export async function SignIn(Email = '', Password = '') {
+export async function VersoSignIn(Email = '', Password = '') {
+    let localIsLogged = false
     try {
-        signInWithEmailAndPassword(auth, Email, Password)
+        await signInWithEmailAndPassword(auth, Email, Password)
             .then((value) => {
                 SaveAuthentication(value.user)
                 isLogged = true
-                console.log('User signed successfully!');
+                localIsLogged = true
             })
+        return localIsLogged
     } catch (error) {
         return error.code
     }
+
 }
 
-export async function SignOut() {
+export async function VersoSignOut() {
     try {
         signOut(auth)
             .then(async () => {
                 await AsyncStorage.removeItem('authentication')
                 isLogged = false
-                console.log(isLogged, "Done|")
             })
     } catch (error) {
         console.log(error);
     }
 }
 
-export async function SignUp(Email = '', Password = '') {
+export async function VersoSignUp(Email = '', Password = '') {
     try {
         if (!_valid_email_combination(Email)) {
             return 'Email Inválido!'
@@ -127,35 +134,56 @@ export function GeneratePosts(Num = 3) {
     }
 }
 
-export function AddPosts(Data) {
-    const QUERY = POST_REFERENCE
-    const { CONTEUDO, AUTOR, CATEGORIA } = Data
+export async function AddPosts(Data) {
+    try {
+        let LOG = ''
+        const QUERY = POST_REFERENCE
+        const { CONTEUDO, AUTOR, CATEGORIA, USER_ID, USER_NAME, IMAGE_ID } = Data
 
-    let tm = new Date();
-    const time = tm.getUTCFullYear() + '/' + (tm.getUTCMonth() + 1 < 10 ? '0' + (tm.getUTCMonth() + 1) : tm.getUTCMonth() + 1) + '/' + (tm.getUTCDate() < 10 ? '0' + tm.getUTCDate() : tm.getUTCDate())
+        let tm = new Date();
+        const time = tm.getUTCFullYear() + '/' + (tm.getUTCMonth() + 1 < 10 ? '0' + (tm.getUTCMonth() + 1) : tm.getUTCMonth() + 1) + '/' + (tm.getUTCDate() < 10 ? '0' + tm.getUTCDate() : tm.getUTCDate())
 
-    push(QUERY, {
-        USER_ID: sha256('shaznilmussagysulemane'),
-        USER_NAME: 'Shaznil Mussagy Sulemane',
-        POST: CONTEUDO,
-        DATE_TIME: time,
-        CATEGORY: CATEGORIA,
-        QUOTE: AUTOR,
-        STATUS: "Initial",
-        IMAGE_ID: "0",
-        VERIFIED: false
-    }).then(() => {
-        return 'Post adicionado com sucesso!'
-    })
+        // console.log({
+        //     USER_ID: USER_ID,
+        //     USER_NAME: USER_NAME,
+        //     POST: CONTEUDO,
+        //     DATE_TIME: time,
+        //     CATEGORY: CATEGORIA,
+        //     QUOTE: AUTOR,
+        //     STATUS: "Initial",
+        //     IMAGE_ID: IMAGE_ID,
+        //     VERIFIED: false
+        // });
 
+        console.log('Chegou!');
+
+
+        await push(QUERY, {
+            USER_ID: USER_ID,
+            USER_NAME: USER_NAME,
+            POST: CONTEUDO,
+            DATE_TIME: time,
+            CATEGORY: CATEGORIA,
+            QUOTE: AUTOR,
+            STATUS: "Initial",
+            IMAGE_ID: IMAGE_ID,
+            VERIFIED: false
+        }).then((v) => {
+            LOG = 'Post adicionado com sucesso!'
+        })
+
+        return LOG
+    } catch (error) {
+        return false
+    }
 }
 
 let POSTS = []
 
-export function GetPosts(Limit = 10) {
-    const QUERY = query(POST_REFERENCE, limitToFirst(Limit))
+export async function GetPosts(Limit = 10) {
+    const QUERY = query(POST_REFERENCE, limitToLast(Limit))
 
-    get(QUERY)
+    await get(QUERY)
         .then((value) => {
             if (value) {
                 POSTS = value.val()
@@ -217,7 +245,30 @@ export async function LikePost(ID, USER_ID) {
 }
 
 export async function CountPostsLikes(ID) {
-    const QUERY = ref(DATABASE, 'POSTS/'+ ID + '/LIKES/')
+
+    try {
+        const QUERY = ref(DATABASE, 'POSTS/' + ID + '/LIKES/')
+        let num = 0
+        await get(QUERY)
+            .then((value) => {
+                console.log('Then');
+                if (value.val()) {
+                    // console.log('Count Posts Likes: ' + Object.values(value.val()).length)
+                    console.log('Count Posts Likes: 10', value.val())
+                } else {
+                    console.log('Count Posts Likes: 0')
+                }
+            })
+
+        return num
+
+    } catch (error) {
+
+    }
+}
+
+export async function CountPostsComments(ID) {
+    const QUERY = ref(DATABASE, 'POSTS/' + ID + '/COMMENTARY/')
 
     get(QUERY)
         .then((value) => {
@@ -225,13 +276,25 @@ export async function CountPostsLikes(ID) {
         })
 }
 
-export async function CountPostsComments(ID) {
-    const QUERY = ref(DATABASE, 'POSTS/'+ ID + '/COMMENTARY/')
 
-    get(QUERY)
-        .then((value) => {
-            console.log(Object.values(value.val()).length);
-        })
+export async function AddUserToDatabase(Email, Data) {
+    const email = Email.replace(' ', '').toLowerCase()
+    try {
+        let LOG = true
+        const QUERY = ref(DATABASE, 'USERS/' + sha256(email))
+
+        set(QUERY, Data)
+            .then(() => {
+                LOG = true
+            })
+            .catch((error) => {
+                console.log("Add to database:", error.code);
+                LOG = false
+            })
+        return LOG
+    } catch (error) {
+        return error
+    }
 }
 
 function _valid_email_combination(Email) {

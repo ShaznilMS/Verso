@@ -1,6 +1,6 @@
 import { getAuth } from "@firebase/auth";
 import { useEffect, useState } from "react";
-import { FlatList, Image, ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, ImageBackground, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import sha256 from "sha256";
 import { app } from "../../../../configs/firebase.config.mjs";
 import { get, getDatabase, ref, set, update } from 'firebase/database';
@@ -8,12 +8,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import User from "./Components/User";
 import IMAGES from "../../../../assets/USER/links.mjs";
+import { AddPosts, GetAuthentication } from "../../../Settings/index.mjs";
+import Categorie from "../../../../assets/components/Categorie";
 
 export default function AddPublication({ navigation }) {
     const [Autor, setAutor] = useState('')
     const [ImageNumber, SetImageNumber] = useState(0)
     const [postCount, setPostCount] = useState()
     const [content, setContent] = useState('')
+    const [category, setCategory] = useState('Filosoficas')
+    
+    const handleCategory = (category) => {
+        setCategory(category)
+    }
 
     const [stamp, SetStamp] = useState('')
 
@@ -38,70 +45,35 @@ export default function AddPublication({ navigation }) {
     }
 
     function addPublication() {
-        const user = getAuth(app)
-        const db = getDatabase(app)
-        const getReferenceDatabase = ref(db, 'users/' + sha256(user.currentUser.email))
-        const appReferenceDatabase = ref(db, 'post_number/')
 
-        console.log('Add publication!', user.currentUser.email);
+        const email = getAuth(app).currentUser.email
 
-        get(getReferenceDatabase)
-            .then((val) => {
-                const data = val.val()
-                PostCount = data.Post_Count
-                let _post_index = data.Post_Index ? data.Post_Index : []
+        const DATABASE = getDatabase(app)
+        const reference = ref(DATABASE, 'USERS/' + sha256(email))
 
-                console.log('Getted!');
+        if (content.replace(' ') == '') {
+            return
+        }
 
-                console.log(_post_index);
-
-                get(appReferenceDatabase)
-                    .then((app_user) => {
-                        const POST_ID = app_user.val()
-                        console.log('Getted!');
-
-                        const num = POST_ID
-                        const setReferenceDatabase = ref(db, 'publication/' + num)
-                        let Post_index = _post_index
-
-                        console.log(Post_index);
-
-
-                        set(setReferenceDatabase, {
-                            USER_ID: sha256(user.currentUser.email),
-                            USER_NAME: data.Name,
-                            CONTENT: content,
-                            DATE_TIME: stamp,
-                            LIKES: "",
-                            ID: num,
-                            CATEGORY: "Filosoficas",
-                            QUOTE: '~ ' + Autor || data.Name,
-                            STATUS: "Initial",
-                            COMMENTARY: "",
-                            IMAGE_ID: ImageNumber
-                        }).then(() => {
-                            console.log('Setted!');
-                            _post_index.push(POST_ID)
-                            // update(getReferenceDatabase, { Post_Count: data.Post_Count + 1 })
-
-                            console.log({ Post_Count: data.Post_Count + 1, Post_Index: _post_index });
-                            console.log(num, _post_index);
-
-                            update(getReferenceDatabase, { Post_Count: data.Post_Count + 1, Post_Index: _post_index })
-                                .then(() => {
-                                    set(appReferenceDatabase, num + 1)
-                                        .then(() => {
-                                            console.log('Updated!');
-                                            navigation.goBack()
-                                        })
-                                })
-                        })
+        get(reference)
+            .then((_values) => {
+                GetAuthentication().then((value) => {
+                    AddPosts({
+                        CONTEUDO: content,
+                        AUTOR: Autor.replace(' ') == '' ? 'Desconhecido' : Autor,
+                        CATEGORIA: category,
+                        USER_ID: sha256(value.auth.email),
+                        USER_NAME: _values.val().Name,
+                        IMAGE_ID: ImageNumber
+                    }).then((result) => {
+                        console.log('Success', result);
+                        if (result == 'Post adicionado com sucesso!') {
+                            navigation.goBack()
+                        }
                     })
 
+                })
             })
-            .finally(() => {
-            })
-        // set()
     }
 
     return (
@@ -114,10 +86,24 @@ export default function AddPublication({ navigation }) {
                     <View style={styles.content}>
 
                         <TextInput onChangeText={setContent} style={styles.input} multiline={true} placeholder='Insira seu pensamento...' placeholderTextColor='#fff' />
-                        <TextInput onChangeText={handleAutor} style={styles.input_autor} placeholder="Insira o nome do autor..." placeholderTextColor='#fff' />
+                        <TextInput onChangeText={setAutor} style={styles.input} multiline={true} placeholder='Autor...' placeholderTextColor='#fff' />
                     </View>
                 </ImageBackground>
             </View>
+
+            <ScrollView style={{ height: 50, maxHeight: 50, width: '100%', backgroundColor: '#0000' }} showsHorizontalScrollIndicator={false} bounces={false} alwaysBounceHorizontal={false} bouncesZoom={false} horizontal >
+                <View style={{ height: 50, width: '100%', justifyContent: 'center', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20 }}>
+                    <Categorie text='Filosóficas' Selecionada={category === 'Filosoficas'} onPress={() => { handleCategory('Filosoficas') }} />
+                    <Categorie text='Poemas' Selecionada={category === 'Poemas'} onPress={() => { handleCategory('Poemas') }} />
+                    <Categorie text='Acolhedoras' Selecionada={category === 'Acolhedoras'} onPress={() => { handleCategory('Acolhedoras') }} />
+                    <Categorie text='Motivacionais' Selecionada={category === 'Motivacionais'} onPress={() => { handleCategory('Motivacionais') }} />
+                    <Categorie text='Amor' Selecionada={category === 'Amor'} onPress={() => { handleCategory('Amor') }} />
+                    <Categorie text='Amizade' Selecionada={category === 'Amizade'} onPress={() => { handleCategory('Amizade') }} />
+                    <Categorie text='Vida' Selecionada={category === 'Vida'} onPress={() => { handleCategory('Vida') }} />
+                    <Categorie text='Trabalho' Selecionada={category === 'Trabalho'} onPress={() => { handleCategory('Trabalho') }} />
+                    <Categorie text='Espirtualidade' Selecionada={category === 'Espirtualidade'} onPress={() => { handleCategory('Espirtualidade') }} />
+                </View>
+            </ScrollView>
 
             <FlatList data={IMAGES}
                 horizontal={true}

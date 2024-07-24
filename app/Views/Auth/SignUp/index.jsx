@@ -6,6 +6,7 @@ import { createUserWithEmailAndPassword } from '@firebase/auth';
 import { app, auth } from '../../../../configs/firebase.config.mjs';
 import { ref, set, getDatabase } from 'firebase/database';
 import sha256 from 'sha256';
+import { AddUserToDatabase, VersoSignUp } from '../../../Settings/index.mjs';
 
 const logo = require('../splash.png')
 
@@ -26,28 +27,29 @@ export default function SignUp({ navigation }) {
         console.log("Password:", field_password);
         console.log("Confirm Password:", field_cpassword);
 
-        if (field_password, field_cpassword) {
-            createUserWithEmailAndPassword(auth, field_email.replace(' ', ''), field_password)
-                .then((value) => {
-                    console.log('User created successfully!');
+        if (field_password == field_cpassword) {
+            VersoSignUp(field_email, field_password).then((value) => {
+                if (value == 'Usuário criado com sucesso!') {
                     setCreated(true)
-                    addToDatabase(value.user.email)
-                })
-                .catch((error) => {
-                    console.log('SignUp:', error.code);
-                })
-                .finally(() => {
-                    console.log('SignUp: Done!');
-                })
+                }
+            }).catch((error) => {
+                console.log('SignUp:', error.code);
+            }).finally(() => {
+                console.log('SignUp: Done!');
+            })
         }
     }
 
-    function addToDatabase(mail) {
+    function addToDatabase() {
         console.log(field_name);
         console.log(field_country);
         console.log(field_phoneNumber);
 
         const email = field_email.toLowerCase().replace(' ', '')
+
+        const tm = new Date()
+
+        const time = tm.getUTCFullYear() + '/' + (tm.getUTCMonth() + 1 < 10 ? '0' + (tm.getUTCMonth() + 1) : tm.getUTCMonth() + 1) + '/' + (tm.getUTCDate() < 10 ? '0' + tm.getUTCDate() : tm.getUTCDate())
 
         const data = {
             Name: field_name,
@@ -56,28 +58,20 @@ export default function SignUp({ navigation }) {
             Email: email,
             image_path: '',
             Post_Count: 0,
-            Verified: false
+            Verified: false,
+            Joined: time
         }
 
         if (isCreated) {
-            const db = getDatabase(app)
-            const databaseReference = ref(db, 'users/' + sha256(email))
-
-            console.log("Add to database: Is created!");
-
-            set(databaseReference, data)
-                .then(() => {
-                    console.log("Add to database: Data added successfully!")
+            AddUserToDatabase(email, data).then((value) => {
+                if (value == true) {
+                    setCreated(false)
                     navigation.navigate('SignIn')
-                })
-                .catch((error) => {
-                    console.log("Add to database:", error.code);
-                })
-                .finally(() => {
-                    console.log("Add to database: Done!")
-                })
+                }
+            })
         }
     }
+
 
     return (
         <View style={styles.container}>
