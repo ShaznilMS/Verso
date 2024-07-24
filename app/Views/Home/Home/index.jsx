@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, ScrollView, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Alert, BackHandler } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Alert, BackHandler, ActivityIndicator } from 'react-native';
 import { app } from '../../../../configs/firebase.config.mjs';
 import NavBar from '../../../../assets/components/NavBar';
 import Categorie from '../../../../assets/components/Categorie';
