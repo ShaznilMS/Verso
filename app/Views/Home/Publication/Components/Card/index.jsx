@@ -45,7 +45,7 @@ export default function Card(props) {
                         </View>
                     </View>
                 </ImageBackground>
-                <ActionBar likes='3' coments='1' shares='2' onComment={props.onComment} />
+                <ActionBar likes='0' coments='0' shares='0' onComment={props.onComment} />
             </Animated.View>
         </View>
 

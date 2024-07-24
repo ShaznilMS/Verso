@@ -14,8 +14,6 @@ const Details = ({ route, navigation }) => {
 
     const { data } = route.params
 
-    const isVerified = true
-
     const tabBarStyle = {
         position: 'absolute',
         bottom: 0,
@@ -146,7 +144,7 @@ const Details = ({ route, navigation }) => {
                 flex: 1
             }}
         >
-            <User back={() => {
+            <User verified={isVerified ? { display: 'flex' } : { display: 'none' }} back={() => {
                 navigation.getParent().setOptions({ tabBarStyle: tabBarStyle })
                 navigation.goBack()
             }} user={data.USER_NAME} time={data.DATE_TIME} onCallHide={() => { handleHide() }} />
