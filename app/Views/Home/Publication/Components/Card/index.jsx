@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Animated, Vibration, ImageBackground } from "react-native";
-import User from "../User";
 import ActionBar from "../ActionBar";
 import IMAGES from '../../../../../../assets/USER/links.mjs'
+import User2 from "../User/user2";
 
 export default function Card(props) {
 
+    const isVerified = props.verified
     const [ImageNumber, SetImageNumber] = useState(0)
 
     const [selected, setSelected] = useState(false)
@@ -35,7 +36,7 @@ export default function Card(props) {
         <View View style={styles.container} >
 
             <Animated.View style={[card.container, { backgroundColor: color }]}>
-                <User time={props.time} user={props.name} />
+                <User2 time={props.time} user={props.name} verified={isVerified ? { display: 'flex' } : { display: 'none' }} />
                 <ImageBackground source={{ uri: IMAGES[props.img].image }} style={{ width: '100%', minHeight: 250, resizeMode: "cover" }}>
                     <View style={styles.content}>
                         <View>

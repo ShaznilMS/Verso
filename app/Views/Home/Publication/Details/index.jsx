@@ -14,6 +14,8 @@ const Details = ({ route, navigation }) => {
 
     const { data } = route.params
 
+    const isVerified = true
+
     const tabBarStyle = {
         position: 'absolute',
         bottom: 0,

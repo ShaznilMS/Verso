@@ -2,20 +2,19 @@ import React from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowLeft, faCheck, faEllipsis } from '@fortawesome/free-solid-svg-icons';
-import { faEye } from '@fortawesome/free-regular-svg-icons';
+import { faEye, faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 
 const img = require('./images.jpg')
 
-const User = (props) => {
+const User2 = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.user}>
-                <TouchableOpacity style={{ paddingEnd: 10 }} onPress={props.back}><FontAwesomeIcon icon={faArrowLeft} size={25} /></TouchableOpacity>
                 <View style={styles.img_cont}>
                     <Image source={img} style={styles.img} />
                 </View>
                 <View style={styles.info}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+                    <View style={{flexDirection:'row', alignItems:'center', gap:5}}>
                         <Text style={styles.name}>{props.user}</Text>
                         <View style={[styles.verified, props.verified]}>
                             <FontAwesomeIcon icon={faCheck} color='#fff' size={9} />
@@ -23,13 +22,14 @@ const User = (props) => {
                     </View>
                     <Text style={styles.time}>{props.time}</Text>
                 </View>
+
             </View>
-            <TouchableOpacity style={styles.options} onPress={props.onCallHide}><FontAwesomeIcon icon={faEye} color='#cfcfcf' size={25} /></TouchableOpacity>
+            <TouchableOpacity style={styles.options}><FontAwesomeIcon icon={faEllipsis} size={25} /></TouchableOpacity>
         </View>
     )
 }
 
-export default User
+export default User2
 
 const styles = StyleSheet.create({
     container: {
@@ -61,7 +61,8 @@ const styles = StyleSheet.create({
     user: {
         flexDirection: 'row',
         gap: 5,
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     name: {
         fontWeight: 'bold',
