@@ -3,7 +3,7 @@ import { FlatList, ScrollView, StyleSheet, Text, View, TouchableOpacity, Modal, 
 import { app } from '../../../../configs/firebase.config.mjs';
 import NavBar from '../../../../assets/components/NavBar';
 import Categorie from '../../../../assets/components/Categorie';
-import { getDatabase, ref, onValue, query, limitToLast } from 'firebase/database';
+import { getDatabase, ref, onValue, query, limitToLast, get } from 'firebase/database';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Card from '../Publication/Components/Card';
@@ -81,7 +81,7 @@ export default function Home({ navigation }) {
         const postsRef = ref(db, 'POSTS');
         const QUERY = query(postsRef, limitToLast(limit))
 
-        onValue(postsRef, (snapshot) => {
+        get(postsRef).then((snapshot) => {
             const data = snapshot.val();
             console.log('Tamanho: ' + Object.values(data).length);
             const formattedData = data ? data : [];
