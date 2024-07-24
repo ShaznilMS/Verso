@@ -163,10 +163,9 @@ export default function Home({ navigation }) {
                     setEdited(false)
                     // onSelect(null)
                 }}
-                renderItem={async ({ item, index }) => {
+                renderItem={({ item, index }) => {
                     let color = "#ffffff"
                     let isSelected = false
-                    let isVerified = null
 
                     if (selected == index) {
                         isSelected = true
@@ -178,21 +177,11 @@ export default function Home({ navigation }) {
                     // console.log(CountPostsLikes(Object.keys(data)[index]))
                     // // let likesNum = 
                     // CountPostsLikes(getItemID(index)).then((value) => { console.log(value) })
-                    let likes = item.LIKES ? Object.values(item.LIKES).length : 0
-                    
-                    const getVerified = async () => {
-                        await GetUserVerified(item.USER_ID).then((value) => {isVerified = value; })//console.log(isVerified, item.USER_NAME);})
-                    }
 
-                    // console.log('New section \n');
-                    await getVerified()
-                    
-                    // console.log(isVerified);
-                    
+                    likes = item.LIKES ? Object.values(item.LIKES).length : 0
                     if(category == 'Tudo') {
-                        console.log(isVerified);
                         return (
-                            <Card isVerified={false} onShare={() => {}} Likes={likes} img={item.IMAGE_ID} name={item.USER_NAME} text={item.POST} time={item.DATE_TIME} citation={item.QUOTE} onLike={() => { Like(index); handleRefresh() }} onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
+                            <Card onShare={() => {}} Likes={likes} img={item.IMAGE_ID} name={item.USER_NAME} text={item.POST} time={item.DATE_TIME} citation={item.QUOTE} onLike={() => { Like(index); handleRefresh() }} onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
                         )
                     } else {
                         if(category == item.CATEGORY){
@@ -201,7 +190,6 @@ export default function Home({ navigation }) {
                             )
                         }
                     }
-
                 }}
             />
 
