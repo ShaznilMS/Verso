@@ -12,6 +12,7 @@ const POST_REFERENCE = ref(DATABASE, 'POSTS/')
 
 export function VerifyAuthentication() {
     let _authentication_local = null;
+    
 
     async function getUserItem() {
         return await AsyncStorage.getItem('authentication').then((value) => { _authentication_local = value })
