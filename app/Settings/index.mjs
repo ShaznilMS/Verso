@@ -99,8 +99,8 @@ export async function VersoSignUp(Email = '', Password = '') {
             .then(() => {
                 isCreated = 'Usuário criado com sucesso!'
             })
-            .catch((e) => {
-                isCreated = e.code
+            .catch((error) => {
+                isCreated = error.code
             })
 
         return isCreated
@@ -135,6 +135,7 @@ export function GeneratePosts(Num = 3) {
 }
 
 export async function AddPosts(Data) {
+
     try {
         let LOG = ''
         const QUERY = POST_REFERENCE
@@ -143,20 +144,7 @@ export async function AddPosts(Data) {
         let tm = new Date();
         const time = tm.getUTCFullYear() + '/' + (tm.getUTCMonth() + 1 < 10 ? '0' + (tm.getUTCMonth() + 1) : tm.getUTCMonth() + 1) + '/' + (tm.getUTCDate() < 10 ? '0' + tm.getUTCDate() : tm.getUTCDate())
 
-        // console.log({
-        //     USER_ID: USER_ID,
-        //     USER_NAME: USER_NAME,
-        //     POST: CONTEUDO,
-        //     DATE_TIME: time,
-        //     CATEGORY: CATEGORIA,
-        //     QUOTE: AUTOR,
-        //     STATUS: "Initial",
-        //     IMAGE_ID: IMAGE_ID,
-        //     VERIFIED: false
-        // });
-
         console.log('Chegou!');
-
 
         await push(QUERY, {
             USER_ID: USER_ID,
@@ -168,7 +156,7 @@ export async function AddPosts(Data) {
             STATUS: "Initial",
             IMAGE_ID: IMAGE_ID,
             VERIFIED: false
-        }).then((v) => {
+        }).then(() => {
             LOG = 'Post adicionado com sucesso!'
         })
 
@@ -236,12 +224,6 @@ export async function CommentPost(ID, NAME, COMMENT) {
     }
 
     push(QUERY, COMMENTARY)
-        .then(() => {
-
-        })
-        .catch((e) => {
-            console.log(e);
-        })
 }
 
 export async function LikePost(ID, USER_ID) {
@@ -250,12 +232,6 @@ export async function LikePost(ID, USER_ID) {
     const tm = new Date()
 
     push(QUERY, USER_ID)
-        .then(() => {
-
-        })
-        .catch((e) => {
-            console.log(e);
-        })
 }
 
 export async function CountPostsLikes(ID) {
@@ -285,9 +261,6 @@ export async function CountPostsComments(ID) {
     const QUERY = ref(DATABASE, 'POSTS/' + ID + '/COMMENTARY/')
 
     get(QUERY)
-        .then((value) => {
-            console.log(Object.values(value.val()).length);
-        })
 }
 
 
