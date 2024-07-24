@@ -70,7 +70,7 @@ export default function Home({ navigation }) {
     async function GetPost() {
         let data = []
         await GetPosts(limit) ? await GetPosts(limit).then((value) => data = value) : []
-        console.log(data);
+        // console.log(data);
         setData(data)
         setIsRefrshing(false)
 
@@ -81,7 +81,7 @@ export default function Home({ navigation }) {
             GetPost(100)
             setIsStarted(true)
         }
-        console.log('Home');
+        // console.log('Home');
     })
 
 

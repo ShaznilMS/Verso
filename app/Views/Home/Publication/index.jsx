@@ -16,7 +16,7 @@ export default function AddPublication({ navigation }) {
     const [ImageNumber, SetImageNumber] = useState(0)
     const [postCount, setPostCount] = useState()
     const [content, setContent] = useState('')
-    const [category, setCategory] = useState('Filosoficas')
+    const [category, setCategory] = useState('Filosofica')
     
     const handleCategory = (category) => {
         setCategory(category)
@@ -93,7 +93,7 @@ export default function AddPublication({ navigation }) {
 
             <ScrollView style={{ height: 50, maxHeight: 50, width: '100%', backgroundColor: '#0000' }} showsHorizontalScrollIndicator={false} bounces={false} alwaysBounceHorizontal={false} bouncesZoom={false} horizontal >
                 <View style={{ height: 50, width: '100%', justifyContent: 'center', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20 }}>
-                    <Categorie text='Filosóficas' Selecionada={category === 'Filosoficas'} onPress={() => { handleCategory('Filosoficas') }} />
+                    <Categorie text='Filosóficas' Selecionada={category === 'Filosofica'} onPress={() => { handleCategory('Filosofica') }} />
                     <Categorie text='Poemas' Selecionada={category === 'Poemas'} onPress={() => { handleCategory('Poemas') }} />
                     <Categorie text='Acolhedoras' Selecionada={category === 'Acolhedoras'} onPress={() => { handleCategory('Acolhedoras') }} />
                     <Categorie text='Motivacionais' Selecionada={category === 'Motivacionais'} onPress={() => { handleCategory('Motivacionais') }} />
