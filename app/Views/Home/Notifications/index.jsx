@@ -11,6 +11,7 @@ import LikeCard from './Componentes/NotificationCards/LikeCard'
 import FollowCard from './Componentes/NotificationCards/FollowCard';
 import NavBar from '../../../../assets/components/NavBar';
 import NewPubCard from './Componentes/NotificationCards/NewPubCard';
+import ShareCard from './Componentes/NotificationCards/ShareCard';
 
 const User_Image = require('./../../../../assets/USER/USER_PROFILE.jpg')
 
@@ -36,7 +37,7 @@ const NOTIFICATIONS = [
         Data: {
             WHO: 'Sandra Raddon',
             ACTION: 'Joined to',
-            WHERE: 'Final Presentation'
+            MESSAGE: 'maior inimigo do conhecimento nao e a ignorancia, e a ilusao do conhecimento'
         }
     },
     {
@@ -103,7 +104,7 @@ export default function Notifications({ navigation }) {
                             case 'Shared':
                                 return (
                                     <Swipeable renderRightActions={leftSwipe} overshootLeft={false}>
-
+                                        <ShareCard user={item.Data.WHO} msg={item.Data.MESSAGE} />
                                     </Swipeable>
                                 )
                             case 'Follow':
@@ -116,7 +117,7 @@ export default function Notifications({ navigation }) {
                             case 'New':
                                 return (
                                     <Swipeable renderRightActions={leftSwipe} overshootLeft={false}>
-                                        <NewPubCard user={item.Data.WHO} msg={item.Data.MESSAGE}/>
+                                        <NewPubCard user={item.Data.WHO} msg={item.Data.MESSAGE} />
                                     </Swipeable>
                                 )
                             default:
