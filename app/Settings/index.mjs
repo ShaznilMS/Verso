@@ -169,7 +169,7 @@ export async function AddPosts(Data) {
             IMAGE_ID: IMAGE_ID,
             VERIFIED: false
         }).then((v) => {
-            LOG =  'Post adicionado com sucesso!'
+            LOG = 'Post adicionado com sucesso!'
         })
 
         return LOG
@@ -180,10 +180,10 @@ export async function AddPosts(Data) {
 
 let POSTS = []
 
-export function GetPosts(Limit = 10) {
+export async function GetPosts(Limit = 10) {
     const QUERY = query(POST_REFERENCE, limitToLast(Limit))
 
-    get(QUERY)
+    await get(QUERY)
         .then((value) => {
             if (value) {
                 POSTS = value.val()
@@ -245,12 +245,26 @@ export async function LikePost(ID, USER_ID) {
 }
 
 export async function CountPostsLikes(ID) {
-    const QUERY = ref(DATABASE, 'POSTS/' + ID + '/LIKES/')
 
-    get(QUERY)
-        .then((value) => {
-            console.log(Object.values(value.val()).length);
-        })
+    try {
+        const QUERY = ref(DATABASE, 'POSTS/' + ID + '/LIKES/')
+        let num = 0
+        await get(QUERY)
+            .then((value) => {
+                console.log('Then');
+                if (value.val()) {
+                    // console.log('Count Posts Likes: ' + Object.values(value.val()).length)
+                    console.log('Count Posts Likes: 10', value.val())
+                } else {
+                    console.log('Count Posts Likes: 0')
+                }
+            })
+
+        return num
+
+    } catch (error) {
+
+    }
 }
 
 export async function CountPostsComments(ID) {

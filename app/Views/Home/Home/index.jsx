@@ -10,8 +10,10 @@ import { faArrowUpFromBracket, faPen, faPlus, faRecycle } from '@fortawesome/fre
 import Card from '../Publication/Components/Card';
 import { createStackNavigator } from '@react-navigation/stack';
 import Details from '../Publication/Details';
-import { GetPosts } from '../../../Settings/index.mjs';
+import { CountPostsLikes, GetAuthentication, GetPosts, LikePost } from '../../../Settings/index.mjs';
 import { StackActions, useFocusEffect } from '@react-navigation/native';
+import { getAuth } from '@firebase/auth';
+import sha256 from 'sha256';
 
 let PostCount
 let Publication = [{}, {}]
@@ -33,13 +35,14 @@ export default function Home({ navigation }) {
 
     useFocusEffect(
         React.useCallback(() => {
+            handleRefresh()
             const onBackPress = () => {
                 Alert.alert(
-                    "Hold on!",
-                    "Are you sure you want to exit the app?",
+                    "",
+                    "Realmente deseja sair?",
                     [
-                        { text: "Cancel", onPress: () => null, style: "cancel" },
-                        { text: "YES", onPress: () => {BackHandler.exitApp()} }
+                        { text: "Cancelar", onPress: () => null, style: "cancel" },
+                        { text: "Sair", onPress: () => { BackHandler.exitApp() } }
                     ]
                 );
                 return true;
@@ -60,12 +63,17 @@ export default function Home({ navigation }) {
     function handleRefresh() {
         setIsRefrshing(true)
         GetPost()
-        console.log(data);
-        setIsRefrshing(false)
+        // console.log(data);
+        // setIsRefrshing(false)
     }
 
-    function GetPost() {
-        setData(GetPosts(limit) ? GetPosts(limit) : [])
+    async function GetPost() {
+        let data = []
+        await GetPosts(limit) ? await GetPosts(limit).then((value) => data = value) : []
+        console.log(data);
+        setData(data)
+        setIsRefrshing(false)
+
     }
 
     useEffect(() => {
@@ -94,6 +102,36 @@ export default function Home({ navigation }) {
     //     }
     // }
 
+    function Like(ID) {
+        console.log(ID);
+        console.log(getItemID(ID));
+        LikePost(getItemID(ID), getUserID())
+    }
+    
+    function getItemID(index) {
+        return Object.keys(data).reverse()[index]
+    }
+
+    function getUserID() {
+        return sha256(getAuth(app).currentUser.email)
+    }
+    
+    // GetUser().then((value) => {console.log(value.Name);})
+    // async function GetUser() {
+    //     const db = getDatabase(app)
+    //     const reference = ref(db, 'USERS/' + getUserID())
+    //     let data = {}
+    //     await get(reference)
+    //         .then((value) => {
+    //             data = value.val()
+    //         })
+    //         .finally(() => {
+    //             console.log('Finally');
+    //         })
+
+    //     return data
+    // }
+
     return (
 
         <View style={styles.bg}>
@@ -102,7 +140,7 @@ export default function Home({ navigation }) {
                 <View>
                     <ScrollView showsHorizontalScrollIndicator={false} bounces={false} alwaysBounceHorizontal={false} bouncesZoom={false} horizontal >
                         <Categorie text='Tudo' Selecionada={category === 'Tudo'} onPress={() => { handleCategory('Tudo') }} />
-                        <Categorie text='Filosóficas' Selecionada={category === 'Filosóficas'} onPress={() => { handleCategory('Filosóficas') }} />
+                        <Categorie text='Filosóficas' Selecionada={category === 'Filosofica'} onPress={() => { handleCategory('Filosofica') }} />
                         <Categorie text='Poemas' Selecionada={category === 'Poemas'} onPress={() => { handleCategory('Poemas') }} />
                         <Categorie text='Acolhedoras' Selecionada={category === 'Acolhedoras'} onPress={() => { handleCategory('Acolhedoras') }} />
                         <Categorie text='Motivacionais' Selecionada={category === 'Motivacionais'} onPress={() => { handleCategory('Motivacionais') }} />
@@ -125,9 +163,12 @@ export default function Home({ navigation }) {
                     setEdited(false)
                     // onSelect(null)
                 }}
+
+
                 renderItem={({ item, index }) => {
                     let color = "#ffffff"
                     let isSelected = false
+
                     if (selected == index) {
                         isSelected = true
                         color = "#E8DEF8"
@@ -135,9 +176,22 @@ export default function Home({ navigation }) {
                         color = "#ffffff"
                     }
 
-                    return (
-                        <Card img={item.IMAGE_ID} name={item.USER_NAME} text={item.POST} time={item.DATE_TIME} citation={item.QUOTE} onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
-                    )
+                    // console.log(CountPostsLikes(Object.keys(data)[index]))
+                    // // let likesNum = 
+                    // CountPostsLikes(getItemID(index)).then((value) => { console.log(value) })
+
+                    likes = item.LIKES ? Object.values(item.LIKES).length : 0
+                    if(category == 'Tudo') {
+                        return (
+                            <Card Likes={likes} img={item.IMAGE_ID} name={item.USER_NAME} text={item.POST} time={item.DATE_TIME} citation={item.QUOTE} onLike={() => { Like(index); handleRefresh() }} onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
+                        )
+                    } else {
+                        if(category == item.CATEGORY){
+                            return (
+                            <Card Likes={likes} img={item.IMAGE_ID} name={item.USER_NAME} text={item.POST} time={item.DATE_TIME} citation={item.QUOTE} onLike={() => { Like(index); handleRefresh() }} onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }) }} />
+                            )
+                        }
+                    }
                 }}
             />
 

@@ -1,11 +1,11 @@
 import InputText from '../Componentes/InputText';
-import { useEffect, useState } from 'react';
-import { StyleSheet, Text, Image, TouchableOpacity, View, Modal } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, Image, TouchableOpacity, View, Modal, ActivityIndicator, Alert, BackHandler } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup';
 import { VerifyAuthentication, VersoSignIn } from '../../../Settings/index.mjs';
-import { StackActions } from '@react-navigation/native';
+import { StackActions, useFocusEffect } from '@react-navigation/native';
 
 const logo = require('../splash.png')
 
@@ -14,7 +14,29 @@ export default function SignIn({ navigation }) {
     const [field_email, setEmail] = useState('')
     const [field_password, setPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-    
+
+    useFocusEffect(
+        React.useCallback(() => {
+            const onBackPress = () => {
+                Alert.alert(
+                    "",
+                    "Realmente deseja sair?",
+                    [
+                        { text: "Cancelar", onPress: () => null, style: "cancel" },
+                        { text: "Sair", onPress: () => { BackHandler.exitApp() } }
+                    ]
+                );
+                return true;
+            };
+
+            BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+            return () => {
+                BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+            };
+        }, [navigation])
+    )
+
     function handleLogin(data) {
         const { email, password } = data
         console.log(email, password);
@@ -25,7 +47,7 @@ export default function SignIn({ navigation }) {
                     StackActions.replace('TabNavigator')
                 )
             }
-        }).finally(() => {
+        }).catch(() => {
             setIsLoading(false)
         })
     }
@@ -38,6 +60,22 @@ export default function SignIn({ navigation }) {
     const { control, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
     })
+
+    if (isLoading) {
+        return (
+            <Modal>
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
+                >
+                    <ActivityIndicator color={"#333"} size={40}></ActivityIndicator>
+                </View>
+            </Modal>
+        )
+    }
 
     return (
         <View style={styles.container}>
