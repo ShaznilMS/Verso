@@ -123,7 +123,7 @@ export default function Home({ navigation }) {
 
     return (
         <View style={styles.bg}>
-            <NavBar />
+            <NavBar onPress={() => {navigation.navigate('StackNavigator',{ screen: 'Chats'})}} />
             <View style={styles.container}>
                 <ScrollView showsHorizontalScrollIndicator={false} horizontal>
                     <Categorie text='Tudo' Selecionada={category === 'Tudo'} onPress={() => { handleCategory('Tudo') }} />
@@ -162,7 +162,7 @@ export default function Home({ navigation }) {
                             text={item.POST}
                             time={item.DATE_TIME}
                             citation={item.QUOTE}
-                            onLike={() => { Like(index); fetchPosts(limit); }}
+                            onLike={() => { Like(index)}}
                             onComment={() => { navigation.navigate('StackNavigator', { screen: 'Details', params: { data: item } }); }}
                         />
                     );

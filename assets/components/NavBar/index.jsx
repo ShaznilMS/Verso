@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faMessage } from '@fortawesome/free-regular-svg-icons';
 import SearchBar from '../SearchBar';
 
-export default function NavBar(props) {
+export default function NavBar({onPress}) {
 
     return (
         <>
@@ -15,7 +15,7 @@ export default function NavBar(props) {
                     style={styles.stretch}
                     source={require('./../../../assets/splash.png')}
                 />
-                <TouchableOpacity activeOpacity={.6}>
+                <TouchableOpacity activeOpacity={.6} onPress={onPress}>
                     <FontAwesomeIcon size={25} icon={faMessage} />
                 </TouchableOpacity>
             </View>
