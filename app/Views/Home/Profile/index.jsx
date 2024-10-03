@@ -69,7 +69,9 @@ export default function Profile({ navigation }) {
     }
 
     function Sair() {
-        
+        navigation.dispatch(
+            StackActions.replace('StackNavigator', { screen: 'SignIn' })
+        )
     }
 
     function RoundCategories(props) {
