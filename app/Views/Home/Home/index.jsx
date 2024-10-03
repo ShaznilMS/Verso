@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, ScrollView, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Alert, BackHandler, ActivityIndicator } from 'react-native';
-import { app } from '../../../../configs/firebase.config.mjs';
 import NavBar from '../../../../assets/components/NavBar';
 import Categorie from '../../../../assets/components/Categorie';
-import { getDatabase, ref, onValue, query, limitToLast, get } from 'firebase/database';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Card from '../Publication/Components/Card';
-import { useFocusEffect } from '@react-navigation/native';
-import { getAuth } from '@firebase/auth';
-import sha256 from 'sha256';
-import { GetPosts, GetUserVerified, LikePost } from '../../../Settings/index.mjs';
 
 export default function Home({ navigation }) {
     const [data, setData] = useState([]);
@@ -21,91 +15,6 @@ export default function Home({ navigation }) {
     const [selected, setSelected] = useState();
     const [limit, setLimit] = useState(10)
     const [Verified, setVerified] = useState([])
-    const db = getDatabase(app);
-
-    useFocusEffect(
-        React.useCallback(() => {
-            const handleRefresh = () => {
-                setIsRefreshing(true);
-                fetchPosts(limit);
-            };
-
-            const onBackPress = () => {
-                Alert.alert(
-                    "",
-                    "Realmente deseja sair?",
-                    [
-                        { text: "Cancelar", onPress: () => null, style: "cancel" },
-                        { text: "Sair", onPress: () => BackHandler.exitApp() }
-                    ]
-                );
-                return true;
-            };
-
-            BackHandler.addEventListener('hardwareBackPress', onBackPress);
-
-            // Fetch posts initially
-            handleRefresh();
-
-            return () => {
-                BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-            };
-        }, [navigation])
-    );
-
-
-
-    async function GetVerified() {
-        const USERS_TO_FETCH = [];
-        const verifiedMap = {};
-
-        Object.values(data).forEach((value) => {
-            if (!USERS_TO_FETCH.includes(value.USER_ID)) {
-                USERS_TO_FETCH.push(value.USER_ID);
-            }
-        });
-
-        // Use Promise.all para aguardar todas as promessas
-        const verificationPromises = USERS_TO_FETCH.map((userId) => GetUserVerified(userId));
-        const verifiedResults = await Promise.all(verificationPromises);
-
-        verifiedResults.forEach((result, index) => {
-            verifiedMap[USERS_TO_FETCH[index]] = result;
-        });
-
-        setVerified(verifiedMap);
-        // console.log(verifiedMap);
-    }
-
-    const fetchPosts = () => {
-        const postsRef = ref(db, 'POSTS');
-        const QUERY = query(postsRef, limitToLast(limit))
-
-        get(postsRef).then((snapshot) => {
-            const data = snapshot.val();
-            console.log('Tamanho: ' + Object.values(data).length);
-            const formattedData = data ? data : [];
-            setData(formattedData);
-            GetVerified()
-            setIsRefreshing(false);
-        });
-    };
-
-    const handleCategory = (category) => {
-        setCategory(category);
-    };
-
-    const Like = (ID) => {
-        LikePost(getItemID(ID), getUserID());
-    };
-
-    const getItemID = (index) => {
-        return Object.keys(data).reverse()[index];
-    };
-
-    const getUserID = () => {
-        return sha256(getAuth(app).currentUser.email);
-    };
     
     function Loading({ isLoading }) {
 
@@ -126,16 +35,16 @@ export default function Home({ navigation }) {
             <NavBar onPress={() => {navigation.navigate('StackNavigator',{ screen: 'Chats'})}} />
             <View style={styles.container}>
                 <ScrollView showsHorizontalScrollIndicator={false} horizontal>
-                    <Categorie text='Tudo' Selecionada={category === 'Tudo'} onPress={() => { handleCategory('Tudo') }} />
-                    <Categorie text='Filosóficas' Selecionada={category === 'Filosofica'} onPress={() => { handleCategory('Filosofica') }} />
-                    <Categorie text='Poemas' Selecionada={category === 'Poemas'} onPress={() => { handleCategory('Poemas') }} />
-                    <Categorie text='Acolhedoras' Selecionada={category === 'Acolhedoras'} onPress={() => { handleCategory('Acolhedoras') }} />
-                    <Categorie text='Motivacionais' Selecionada={category === 'Motivacionais'} onPress={() => { handleCategory('Motivacionais') }} />
-                    <Categorie text='Amor' Selecionada={category === 'Amor'} onPress={() => { handleCategory('Amor') }} />
-                    <Categorie text='Amizade' Selecionada={category === 'Amizade'} onPress={() => { handleCategory('Amizade') }} />
-                    <Categorie text='Vida' Selecionada={category === 'Vida'} onPress={() => { handleCategory('Vida') }} />
-                    <Categorie text='Trabalho' Selecionada={category === 'Trabalho'} onPress={() => { handleCategory('Trabalho') }} />
-                    <Categorie text='Espiritualidade' Selecionada={category === 'Espiritualidade'} onPress={() => { handleCategory('Espiritualidade') }} />
+                    <Categorie text='Tudo' Selecionada={category === 'Tudo'} onPress={() => {}} />
+                    <Categorie text='Filosóficas' Selecionada={category === 'Filosofica'} onPress={() => {}} />
+                    <Categorie text='Poemas' Selecionada={category === 'Poemas'} onPress={() => {}} />
+                    <Categorie text='Acolhedoras' Selecionada={category === 'Acolhedoras'} onPress={() => {}} />
+                    <Categorie text='Motivacionais' Selecionada={category === 'Motivacionais'} onPress={() => {}} />
+                    <Categorie text='Amor' Selecionada={category === 'Amor'} onPress={() => {}} />
+                    <Categorie text='Amizade' Selecionada={category === 'Amizade'} onPress={() => {}} />
+                    <Categorie text='Vida' Selecionada={category === 'Vida'} onPress={() => {}} />
+                    <Categorie text='Trabalho' Selecionada={category === 'Trabalho'} onPress={() => {}} />
+                    <Categorie text='Espiritualidade' Selecionada={category === 'Espiritualidade'} onPress={() => {}} />
                 </ScrollView>
             </View>
 
@@ -145,9 +54,9 @@ export default function Home({ navigation }) {
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={<Loading isLoading={isRefreshing} />}
                 refreshing={isRefreshing}
-                onEndReached={() => setLimit(limit + 10)}
+                onEndReached={() => {}}
                 onEndReachedThreshold={0.2}
-                onRefresh={() => {fetchPosts(limit); console.log(limit)}}
+                onRefresh={() => {}}
                 renderItem={({ item, index }) => {
                     let likes = item.LIKES ? Object.values(item.LIKES).length : 0;
                     let _isVerified = Verified[item.USER_ID]

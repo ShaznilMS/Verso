@@ -1,7 +1,5 @@
-import { getAuth } from '@firebase/auth';
 import React, { useState } from 'react';
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { app } from '../../../../configs/firebase.config.mjs';
 import { Swipeable } from 'react-native-gesture-handler';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowLeft, faComment, faCommentAlt, faComments, faCommentSms, faDiamond, faHeart, faThunderstorm, faTrash } from '@fortawesome/free-solid-svg-icons';

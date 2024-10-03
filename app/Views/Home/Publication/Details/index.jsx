@@ -4,10 +4,7 @@ import User from './Components/User'
 import ActionBar from './Components/ActionBar'
 import InputComent from './Components/InputComent'
 import Coment from './Components/Coment'
-import { get, getDatabase, ref, push, limitToFirst, query } from 'firebase/database'
-import { app } from '../../../../../configs/firebase.config.mjs'
 import sha256 from 'sha256'
-import { getAuth } from '@firebase/auth'
 
 
 const Details = ({ route, navigation }) => {
@@ -76,67 +73,9 @@ const Details = ({ route, navigation }) => {
         return () => clearInterval(interval);
     });
 
-    
-    function getComments(limit) {
-        const db = getDatabase(app)
-        const reference = ref(db, 'publication/' + data.ID + '/COMMENTARY')
-
-        const limitedQuery = query(reference, limitToFirst(limitQuery));
-
-        setIsRefreshing(true)
-        get(limitedQuery)
-            .then((value) => {
-                if (value.val()) {
-                    setComments(value.val())
-                    setLimitQuery(limitQuery + 7)
-                }
-            })
-            .catch((error) => {
-                // console.log(error.code);
-            })
-            .finally(() => {
-                setIsRefreshing(false)
-            })
-    }
-
-    function getUserId() {
-        return sha256(getAuth(app).currentUser.email)
-    }
-
-    function pushComments() {
-        console.log(data);
-        // getUserId()
-        // const reference_comment = ref(db, 'POSTS/' + data.ID + '/COMMENTARY')
-
-        // const tm = new Date()
-
-        // // console.log('Push Comments', getUserId());
-
-
-        // get(reference_user)
-        //     .then((value) => {
-        //         const user_data = value.val()
-        //         const comment = { Name: user_data.Name, Time: tm.getUTCFullYear() + '/' + (tm.getUTCMonth() + 1 < 10 ? '0' + (tm.getUTCMonth() + 1) : tm.getUTCMonth() + 1) + '/' + (tm.getUTCDate() < 10 ? '0' + tm.getUTCDate() : tm.getUTCDate()), Comment: text }
-        //         push(reference_comment, comment)
-        //             .then(() => {
-        //                 getComments(limitQuery)
-        //             })
-        //     })
-        //     .catch((error) => {
-        //         // console.log(error)
-        //     })
-        //     .finally(() => {
-        //         // console.log(data);
-        //     })
-    }
-
     function doNothing() {
         // console.log('Do Nothing!');
     }
-
-    // setInterval(() => {
-    //     getComments()
-    // }, 2000)
 
     return (
         <View
@@ -175,7 +114,7 @@ const Details = ({ route, navigation }) => {
                         )
                     }} />
             </View>
-            <InputComent onSendComment={() => { pushComments() }} onText={setText} style={styles.InputComent} />
+            <InputComent onSendComment={() => { }} onText={setText} style={styles.InputComent} />
         </View>
     )
     function Loading({ isLoading }) {
@@ -192,7 +131,6 @@ const Details = ({ route, navigation }) => {
         )
     }
 }
-
 
 export default Details
 

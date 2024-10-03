@@ -9,7 +9,6 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@firebase/auth": "^1.7.5",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-brands-svg-icons": "^6.5.2",
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
@@ -18,8 +17,6 @@
     "@hookform/resolvers": "^3.9.0",
     "@react-native-async-storage/async-storage": "^1.24.0",
     "@react-native-community/masked-view": "^0.1.11",
-    "@react-native-firebase/app": "^20.1.0",
-    "@react-native-firebase/database": "^20.1.0",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.10.1",
@@ -31,7 +28,7 @@
     "expo-linking": "~6.3.1",
     "expo-router": "~3.5.18",
     "expo-status-bar": "~1.12.1",
-    "firebase": "^10.12.4",
+    "mongoose": "^8.7.0",
     "react": "18.2.0",
     "react-hook-form": "^7.52.1",
     "react-native": "0.74.3",

@@ -1,31 +1,25 @@
-import { getAuth, signOut } from '@firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Image, Modal, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
-import { app, auth } from '../../../../configs/firebase.config.mjs';
 import { Link } from 'expo-router';
 import { StackActions } from '@react-navigation/native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowRightFromBracket, faAt, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { StatusBar } from 'expo-status-bar';
 import { faCalendar, faUser } from '@fortawesome/free-regular-svg-icons';
-import { get, getDatabase, ref } from 'firebase/database';
 import sha256 from 'sha256';
-import { GetAuthentication, VerifyAuthentication, VersoSignOut } from '../../../Settings/index.mjs';
 
 const User_Image = require('./../../../../assets/USER/USER_PROFILE.jpg')
-
 
 export default function Profile({ navigation }) {
 
     const [UserInformation, setUserInformation] = useState()
     const [isStarted, setIsStarted] = useState(false)
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         if (!isStarted) {
             console.log('Is started');
             setIsStarted(true)
-            GetUser()
         }
     })
 
@@ -35,50 +29,6 @@ export default function Profile({ navigation }) {
     //         routes: [{ name: 'StackNavigator' }],
     //     })
     // }
-
-    function Sair() {
-        if (VerifyAuthentication()) {
-            VersoSignOut().finally(() => {
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'StackNavigator' }],
-                })
-            })
-        } else {
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'StackNavigator' }],
-            })
-        }
-    }
-
-    function canContinue() {
-        if (!VerifyAuthentication()) {
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'StackNavigator' }],
-            })
-        }
-    }
-
-    function getUserId() {
-        canContinue()
-        return sha256(getAuth(app).currentUser.email)
-    }
-
-    function GetUser() {
-        const db = getDatabase(app)
-        const reference = ref(db, 'USERS/' + getUserId())
-        get(reference)
-            .then((value) => {
-                console.log(value.val());
-                setUserInformation(value.val())
-            })
-            .finally(() => {
-                console.log('Finally');
-                setIsLoading(false)
-            })
-    }
 
     function InformationField(props) {
         return (
@@ -116,6 +66,10 @@ export default function Profile({ navigation }) {
 
             </View>
         )
+    }
+
+    function Sair() {
+        
     }
 
     function RoundCategories(props) {
@@ -202,7 +156,10 @@ export default function Profile({ navigation }) {
                             color: "#ffffff",
                             fontSize: 20,
                             fontWeight: 'bold'
-                        }}>{UserInformation.Name}</Text>
+                        }}>
+                            {/* {UserInformation.Name} */}
+                            Shaznil Mussagy Sulemane
+                        </Text>
 
                         <TouchableOpacity activeOpacity={.8} onPress={Sair}>
                             <View style={{
@@ -218,7 +175,7 @@ export default function Profile({ navigation }) {
                     </View>
 
                     <TouchableWithoutFeedback
-                        onPress={GetUser}
+                        // onPress={GetUser}
                     >
                         <Image source={User_Image} style={{
                             width: 100,
@@ -237,7 +194,7 @@ export default function Profile({ navigation }) {
                         gap: 5
                     }}
                 >
-                    <Text style={{ fontSize: 18, fontStyle: 'italic', fontWeight: '700', letterSpacing: 1 }}>@{UserInformation.Email.split('@')[0]}</Text>
+                    <Text style={{ fontSize: 18, fontStyle: 'italic', fontWeight: '700', letterSpacing: 1 }}>@shaznilmussagysulemane</Text>
                     <View
                         style={{
                             flexDirection: 'row',
@@ -252,7 +209,8 @@ export default function Profile({ navigation }) {
                                 fontWeight: '700'
                             }}
                         >
-                            {UserInformation.Country.toUpperCase()}
+                            {/* {UserInformation.Country.toUpperCase()} */}
+                            Mozambique
                         </Text>
                         <View
                             style={{
@@ -263,12 +221,12 @@ export default function Profile({ navigation }) {
 
                         </View>
                         <Text>
-                            Joined {UserInformation.Joined}
+                            Joined 2023
                         </Text>
                     </View>
 
                     <TouchableWithoutFeedback
-                    onPress={() => { console.log(UserInformation.Name) }}
+                    // onPress={() => { console.log(UserInformation.Name) }}
                     >
                         <View
                             style={{
@@ -299,8 +257,8 @@ export default function Profile({ navigation }) {
                                     fontWeight: '700'
                                 }}
                             >
-                                {UserInformation.Followers}
-
+                                {/* {UserInformation.Followers} */}
+                                1876
                             </Text>
                         </View>
                     </TouchableWithoutFeedback>
@@ -316,7 +274,8 @@ export default function Profile({ navigation }) {
                             marginTop: 6
                         }}
                     >
-                        {UserInformation.Biography}
+                        {/* {UserInformation.Biography} */}
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quidem obcaecati rem placeat facilis iure quaerat delectus dolores tempora laboriosam molestias recusandae at veritatis qui error, corrupti pariatur accusantium? Veniam.
                     </Text>
 
                     <View
@@ -343,10 +302,10 @@ export default function Profile({ navigation }) {
                             >
                                 Information
                             </Text>
-                            <InformationField icon={faUser} name="Name" text={UserInformation.Name} />
-                            <InformationField icon={faAt} name="Email" text={UserInformation.Email} />
-                            <InformationField icon={faPhone} name="Phone" text={UserInformation.Phone_Number} />
-                            <InformationField icon={faCalendar} name="Joined" text={UserInformation.Joined} />
+                            <InformationField icon={faUser} name="Name" text={"Shaznil Mussagy Sulemane"} />
+                            <InformationField icon={faAt} name="Email" text={"shaznilmussagysulemane@gmail.com"} />
+                            <InformationField icon={faPhone} name="Phone" text={"+258 85 193 5325"} />
+                            <InformationField icon={faCalendar} name="Joined" text={"2023"} />
                         </View>
 
                         <ScrollView

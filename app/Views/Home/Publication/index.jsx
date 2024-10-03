@@ -1,9 +1,6 @@
-import { getAuth } from "@firebase/auth";
 import { useEffect, useState } from "react";
 import { FlatList, Image, ImageBackground, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import sha256 from "sha256";
-import { app } from "../../../../configs/firebase.config.mjs";
-import { get, getDatabase, ref, set, update } from 'firebase/database';
 import User from "./Components/User";
 import IMAGES from "../../../../assets/USER/links.mjs";
 import { AddPosts, GetAuthentication } from "../../../Settings/index.mjs";
@@ -28,7 +25,6 @@ export default function AddPublication({ navigation }) {
         SetStamp(tm)
     }
 
-
     stamp === '' ? timeStamp() : console.log(stamp)
 
     function handleAutor(autor) {
@@ -43,41 +39,8 @@ export default function AddPublication({ navigation }) {
         navigation.goBack()
     }
 
-    function addPublication() {
-
-        const email = getAuth(app).currentUser.email
-
-        const DATABASE = getDatabase(app)
-        const reference = ref(DATABASE, 'USERS/' + sha256(email))
-
-        if (content.replace(' ') == '') {
-            return
-        }
-
-        get(reference)
-            .then((_values) => {
-                GetAuthentication().then((value) => {
-                    AddPosts({
-                        CONTEUDO: content,
-                        AUTOR: Autor.replace(' ') == '' ? 'Desconhecido' : Autor,
-                        CATEGORIA: category,
-                        USER_ID: sha256(value.auth.email),
-                        USER_NAME: _values.val().Name,
-                        IMAGE_ID: ImageNumber
-                    }).then((result) => {
-                        console.log('Success', result);
-                        if (result == 'Post adicionado com sucesso!') {
-                            navigation.goBack()
-                        }
-                    })
-
-                })
-            })
-    }
 
     return (
-
-
         <View style={styles.container}>
             <View style={styles.Card}>
                 <User user='Antonio Cossa' time={stamp} back={back} pub={addPublication} />
@@ -96,15 +59,15 @@ export default function AddPublication({ navigation }) {
 
             <ScrollView style={{ height: 50, maxHeight: 50, width: '100%', backgroundColor: '#ececec' }} showsHorizontalScrollIndicator={false} bounces={false} alwaysBounceHorizontal={false} bouncesZoom={false} horizontal >
                 <View style={{ height: 50, width: '100%', justifyContent: 'center', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20 }}>
-                    <Categorie text='Filosóficas' Selecionada={category === 'Filosofica'} onPress={() => { handleCategory('Filosofica') }} />
-                    <Categorie text='Poemas' Selecionada={category === 'Poemas'} onPress={() => { handleCategory('Poemas') }} />
-                    <Categorie text='Acolhedoras' Selecionada={category === 'Acolhedoras'} onPress={() => { handleCategory('Acolhedoras') }} />
-                    <Categorie text='Motivacionais' Selecionada={category === 'Motivacionais'} onPress={() => { handleCategory('Motivacionais') }} />
-                    <Categorie text='Amor' Selecionada={category === 'Amor'} onPress={() => { handleCategory('Amor') }} />
-                    <Categorie text='Amizade' Selecionada={category === 'Amizade'} onPress={() => { handleCategory('Amizade') }} />
-                    <Categorie text='Vida' Selecionada={category === 'Vida'} onPress={() => { handleCategory('Vida') }} />
-                    <Categorie text='Trabalho' Selecionada={category === 'Trabalho'} onPress={() => { handleCategory('Trabalho') }} />
-                    <Categorie text='Espirtualidade' Selecionada={category === 'Espirtualidade'} onPress={() => { handleCategory('Espirtualidade') }} />
+                    <Categorie text='Filosóficas' Selecionada={category === 'Filosofica'} onPress={() => {}} />
+                    <Categorie text='Poemas' Selecionada={category === 'Poemas'} onPress={() => {}} />
+                    <Categorie text='Acolhedoras' Selecionada={category === 'Acolhedoras'} onPress={() => {}} />
+                    <Categorie text='Motivacionais' Selecionada={category === 'Motivacionais'} onPress={() => {}} />
+                    <Categorie text='Amor' Selecionada={category === 'Amor'} onPress={() => {}} />
+                    <Categorie text='Amizade' Selecionada={category === 'Amizade'} onPress={() => {}} />
+                    <Categorie text='Vida' Selecionada={category === 'Vida'} onPress={() => {}} />
+                    <Categorie text='Trabalho' Selecionada={category === 'Trabalho'} onPress={() => {}} />
+                    <Categorie text='Espirtualidade' Selecionada={category === 'Espirtualidade'} onPress={() => {}} />
                 </View>
             </ScrollView>
 

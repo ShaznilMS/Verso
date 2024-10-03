@@ -1,159 +1,173 @@
+import { StackActions } from '@react-navigation/native';
 import InputText from '../Componentes/InputText';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, Image, TouchableOpacity, View, Modal, ActivityIndicator, Alert, BackHandler } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup';
-import { VerifyAuthentication, VersoSignIn } from '../../../Settings/index.mjs';
-import { StackActions, useFocusEffect } from '@react-navigation/native';
+import { StyleSheet, Text, Image, TouchableOpacity, View, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, ActivityIndicator } from 'react-native';
 
 const logo = require('../splash.png')
 
 export default function SignIn({ navigation }) {
 
-    const [field_email, setEmail] = useState('')
-    const [field_password, setPassword] = useState('')
+    const [field_mail, setMail] = useState('')
+    const [field_pass, setPass] = useState('')
+
+    const [field_mail_valid, setMailValid] = useState(true)
+    const [field_pass_valid, setPassValid] = useState(true)
+
+    const [field_error, setFieldError] = useState('')
+
+    const [isValid, setIsValid] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
-    useFocusEffect(
-        React.useCallback(() => {
-            const onBackPress = () => {
-                Alert.alert(
-                    "",
-                    "Realmente deseja sair?",
-                    [
-                        { text: "Cancelar", onPress: () => null, style: "cancel" },
-                        { text: "Sair", onPress: () => { BackHandler.exitApp() } }
-                    ]
-                );
-                return true;
-            };
+    const preset_mail = "shaznilmussagysulemane@gmail.com"
+    const preset_pass = "Sm030106"
 
-            
-            BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    const handleMail = (value = '') => {
 
-            return () => {
-                BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-            };
-        }, [navigation])
-    )
+        setMail(value)
 
-    function handleLogin(data) {
-        const { email, password } = data
-        console.log(email, password);
+        if (!value.includes('@')) {
+            setMailValid(false)
+            setIsValid(false)
+            setFieldError("Email invalido! Ausencia de '@'.")
+            return
+        }
+
+        if (!value.split('@')[1].includes('.')) {
+            setMailValid(false)
+            setIsValid(false)
+            setFieldError("Email invalido")
+            return
+        }
+
+        if (value.split('@')[1].split('.')[0].length == 0 || value.split('@')[1].split('.')[1].length == 0) {
+            setMailValid(false)
+            setIsValid(false)
+            setFieldError("Email invalido")
+            return
+        }
+
+        setMailValid(true)
+        setIsValid(field_pass_valid)
+        setFieldError("")
+    }
+
+    const handlePass = (value = '') => {
+        setPass(value)
+
+        if (value.length < 8) {
+            console.log("Oito")
+            setPassValid(false)
+            setIsValid(false)
+            setFieldError("Deve possuir minimo 8 caracteres.")
+            return false
+        }
+        console.log("Oitos")
+
+
+        setPassValid(true)
+        setIsValid(field_mail_valid)
+        setFieldError("")
+        return true
+    }
+
+    const handleSignin = async () => {
+        // handleMail(field_mail)
+        setFieldError("")
+        console.log(await handlePass(field_pass))
+        console.log("IV" + isValid);
+
+        if (!isValid) return
+
         setIsLoading(true)
-        VersoSignIn(email, password).then((value) => {
-            if (value == true) {
+
+        setTimeout(() => {
+            if(!(field_mail.toLowerCase() == preset_mail.toLowerCase()) || !(field_pass == preset_pass)) {
+                setFieldError('Usuário ou senha inválidos.')
+                setIsLoading(false)
+            } else {
+                
                 navigation.dispatch(
                     StackActions.replace('TabNavigator')
                 )
-            }
-            
-            if( value == 'auth/invalid-credential') {
                 setIsLoading(false)
+
             }
-        }).catch(() => {
-            setIsLoading(false)
-        })
+        }, 3000)
+        // clearTimeout(timeout)
+
     }
-
-    const schema = yup.object({
-        email: yup.string().required('Insira seu email'),
-        password: yup.string().min(8, 'A senha deve ter pelo menos 8 caracteres').required('Type your password')
-    })
-
-    const { control, handleSubmit, formState: { errors } } = useForm({
-        resolver: yupResolver(schema)
-    })
 
     if (isLoading) {
         return (
-            <Modal>
-                <View
-                    style={{
-                        flex: 1,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}
-                >
-                    <ActivityIndicator color={"#333"} size={40}></ActivityIndicator>
-                </View>
-            </Modal>
+            <View style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}>
+                <ActivityIndicator color="#333" size={30}></ActivityIndicator>
+            </View>
         )
     }
 
     return (
-        <View style={styles.container}>
+        <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
 
-            <View style={{ width: '100%', alignItems: 'center' }}>
-                <Image source={logo} style={styles.img} />
-            </View>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={styles.container}>
 
-            <Controller control={control} name='email' render={({ field: { onChange, onblur, value } }) => (
-                <InputText style={{
-                    borderWidth: errors.email ? errors.email && 1 : 2, borderColor: errors.email && '#ff375b'
-                }} title='Email' placeholder="Type your email here..." onChangeText={onChange} value={value} onblur={onblur} />
+                <View style={styles.container}>
+                    <View style={{ width: '100%', alignItems: 'center' }}>
+                        <Image source={logo} style={styles.img} />
+                    </View>
 
-            )} />
-            {errors.email && <Text style={styles.error}>{errors.email?.message}</Text>}
+                    <InputText style={{
+                        borderColor: field_mail_valid ? '#333' : '#ff375b'
+                    }} title='Email' placeholder="Type your email here..." onChangeText={handleMail} value={field_mail} />
 
-            <Controller control={control} name='password' render={({ field: { onChange, onblur, value } }) => (
-                <InputText style={{
-                    borderWidth: errors.password ? errors.password && 1 : 2, borderColor: errors.password && '#ff375b'
-                }} title='Password' placeholder="Type your password here..." onChangeText={onChange} value={value} onblur={onblur} />
-            )} />
-            {errors.password && <Text style={styles.error}>{errors.password?.message}</Text>}
+                    <InputText style={{
+                        borderColor: field_pass_valid ? '#333' : '#ff375b'
+                    }} title='Password' placeholder="Type your password here..." onChangeText={handlePass} value={field_pass} />
 
+                    <View style={{ height: 10 }}></View>
+                    {<Text style={{ color: "#ff375b", fontWeight: '700' }}>{field_error}</Text>}
+                    <View style={{ height: 10 }}></View>
 
-            <TouchableOpacity
-                onPress={() => { }}>
+                    <TouchableOpacity
+                        onPress={handleSignin}
+                        activeOpacity={.8}
+                    >
+                        <View style={styles.button}>
+                            <Text style={styles.button_text}>Entrar</Text>
+                        </View>
+                    </TouchableOpacity>
 
-                {/*  navigation.navigate('SignUp') }}> */}
+                    <Text></Text>
 
-                <Text style={{
-                    textAlign: 'right'
-                }}> </Text>
+                    <TouchableOpacity
+                        onPress={() => { navigation.navigate('SignUp') }}>
+                        <Text style={{
+                            textAlign: 'center'
+                        }}>Have not an account? Create</Text>
+                    </TouchableOpacity>
 
-                {/* Forgot password? Reset</Text> */}
-
-            </TouchableOpacity>
-
-            <View style={{ height: 10 }}></View>
-
-            <TouchableOpacity
-                onPress={handleSubmit(handleLogin)}
-                activeOpacity={.8}
-            >
-                <View style={styles.button}>
-                    <Text style={styles.button_text}>Entrar</Text>
+                    <View style={{ height: 10 }}></View>
                 </View>
-            </TouchableOpacity>
-
-
-            <TouchableOpacity
-                onPress={() => { navigation.navigate('SignUp') }}>
-                <Text style={{
-                    textAlign: 'center'
-                }}>Have not an account? Create</Text>
-            </TouchableOpacity>
-
-            <View style={{ height: 10 }}></View>
-
-
-        </View>
+            </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
+        gap: 10,
         padding: 20,
-        gap: 20,
         flex: 1,
         justifyContent: 'flex-end',
         backgroundColor: "#ffffff"
     },
     input: {
-        gap: 10
+        gap: 5
     },
     title: {
         fontSize: 20,
@@ -165,7 +179,7 @@ const styles = StyleSheet.create({
         borderColor: '#000000',
         borderRadius: 10,
         padding: 10,
-        height: 60
+        height: 54
     },
     button: {
         width: '100%',
